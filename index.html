@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Korg Monologue Prototype Layout</title>
+    <style>
+      body {
+        margin: 0;
+        background: #222;
+        font-family: sans-serif;
+      }
+
+      /* Global container controls absolute coordinate system */
+      #synth-container {
+        position: relative;
+        width: 900px;
+        height: 400px;
+        margin: 20px auto;
+        background: #f38989;
+        border: 2px solid #000000;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+      }
+
+      .module {
+        position: absolute;
+        border: 2px solid #000000;
+        background: rgba(138, 130, 130, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-size: 14px;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      /* Individual Grid Lines matching SVG coordinates (178x79) */
+      .grid-line {
+        position: absolute;
+        pointer-events: none;
+        background-color: rgba(0, 255, 255, 0.8);
+        box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
+      }
+
+      /* Vertical lines at SVG coordinate intervals */
+      .vertical-line {
+        width: 1px;
+        height: 100%;
+        top: 0;
+      }
+
+      /* Horizontal lines at SVG coordinate intervals */
+      .horizontal-line {
+        width: 100%;
+        height: 1px;
+        left: 0;
+      }
+
+      /* Yellow circle */
+      .yellow-circle {
+        position: absolute;
+        background-color: yellow;
+        border: 2px solid #ffcc00;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      /* Knob circles */
+      .knob-circle {
+        position: absolute;
+        background-color: rgba(255, 165, 0, 0.3);
+        border: 2px solid rgb(255, 165, 0);
+        border-radius: 50%;
+        pointer-events: none;
+        /* Standard knob size - diameter 7 SVG units */
+        width: calc(7 / 178 * 100%);
+        height: calc(7 / 79 * 100%);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="synth-container"
+      style="background-image: url('monologue.svg'); background-size: 100% 100%; background-repeat: no-repeat"
+    >
+      <!-- Vertical line at SVG coordinate x=11.9 (11.9/178 = 6.69% from left) -->
+      <div class="grid-line vertical-line" style="left: calc(11.9 / 178 * 100%)"></div>
+
+      <!-- Horizontal line at SVG coordinate y=13.1 (9.6+3.5, 13.1/79 = 16.58% from top) -->
+      <div class="grid-line horizontal-line" style="top: calc(13.1 / 79 * 100%)"></div>
+      <!-- Horizontal line at SVG coordinate y=13.1 (9.6+3.5, 13.1/79 = 16.58% from top) -->
+      <div class="grid-line horizontal-line" style="top: calc(27.6 / 79 * 100%)"></div>
+
+      <!-- Custom straight lines as requested -->
+      <!-- First line: starting at x=11.7, y=7, width=0.2, length=27.7 -->
+      <div class="grid-line" style="
+        left: calc(11.7 / 178 * 100%);
+        top: calc(7 / 79 * 100%);
+        width: calc(0.2 / 178 * 100%);
+        height: calc(27.7 / 79 * 100%);
+        background-color: rgba(0, 255, 255, 0.8);
+        box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
+      "></div>
+
+      <!-- Second line: starting at x=66.7, y=7, width=0.2, length=27.7 -->
+      <div class="grid-line" style="
+        left: calc(66.7 / 178 * 100%);
+        top: calc(7 / 79 * 100%);
+        width: calc(0.2 / 178 * 100%);
+        height: calc(27.7 / 79 * 100%);
+        background-color: rgba(0, 255, 255, 0.8);
+        box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
+      "></div>
+
+      <!-- Additional lines with same specifications -->
+      <!-- Line at x=22.7, y=7, width=0.2, length=27.7 -->
+      <div class="grid-line" style="
+        left: calc(22.7 / 178 * 100%);
+        top: calc(7 / 79 * 100%);
+        width: calc(0.2 / 178 * 100%);
+        height: calc(27.7 / 79 * 100%);
+        background-color: rgba(0, 255, 255, 0.8);
+        box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
+      "></div>
+
+      <!-- Line at x=37.3, y=7, width=0.2, length=27.7 -->
+      <div class="grid-line" style="
+        left: calc(37.3 / 178 * 100%);
+        top: calc(7 / 79 * 100%);
+        width: calc(0.2 / 178 * 100%);
+        height: calc(27.7 / 79 * 100%);
+        background-color: rgba(0, 255, 255, 0.8);
+        box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
+      "></div>
+
+      <!-- Line at x=81.3, y=7, width=0.2, length=27.7 -->
+      <div class="grid-line" style="
+        left: calc(81.3 / 178 * 100%);
+        top: calc(7 / 79 * 100%);
+        width: calc(0.2 / 178 * 100%);
+        height: calc(27.7 / 79 * 100%);
+        background-color: rgba(0, 255, 255, 0.8);
+        box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
+      "></div>
+
+      <!-- Line at x=95.9, y=7, width=0.2, length=27.7 -->
+      <div class="grid-line" style="
+        left: calc(95.9 / 178 * 100%);
+        top: calc(7 / 79 * 100%);
+        width: calc(0.2 / 178 * 100%);
+        height: calc(27.7 / 79 * 100%);
+        background-color: rgba(0, 255, 255, 0.8);
+        box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
+      "></div>
+
+      <!-- Line at x=157.2, y=7, width=0.2, length=27.7 -->
+      <div class="grid-line" style="
+        left: calc(157.2 / 178 * 100%);
+        top: calc(7 / 79 * 100%);
+        width: calc(0.2 / 178 * 100%);
+        height: calc(27.7 / 79 * 100%);
+        background-color: rgba(0, 255, 255, 0.8);
+        box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
+      "></div>
+
+      <!-- Yellow circle at crosshairs: diameter=7, positioned with top-left at x=11.9, y=9.6 -->
+      <!-- <div
+        class="yellow-circle"
+        style="
+          left: calc(11.9 / 178 * 100%);
+          top: calc(9.6 / 79 * 100%);
+          width: calc(7 / 178 * 100%);
+          height: calc(7 / 79 * 100%);
+        "
+      ></div> -->
+    </div>
+
+    <script>
+      // Load knobs JSON and create circles
+      fetch("drive.json")
+        .then((response) => response.json())
+        .then((knobs) => {
+          const container = document.getElementById("synth-container");
+
+          knobs.forEach((knob) => {
+            // Create circle element
+            const circle = document.createElement("div");
+            circle.className = "knob-circle";
+            circle.id = knob.name;
+
+            // Position using SVG coordinates
+            // Adjust coordinates by the transform offset (-1.8, -5.1) already included in JSON
+            const leftPercent = (knob.x / 178) * 100;
+            const topPercent = (knob.y / 79) * 100;
+
+            // Center the circle on the knob position (subtract half diameter)
+            const halfDiameterX = (7 / 178) * 100; // 7/2 = 3.5
+            const halfDiameterY = (7 / 79) * 100;
+
+            circle.style.left = `calc(${leftPercent}% - ${halfDiameterX}%)`;
+            circle.style.top = `calc(${topPercent}% - ${halfDiameterY}%)`;
+
+            // Add tooltip with knob name
+            circle.title = knob.name.replace("knob-", "").replace(/-/g, " ");
+
+            container.appendChild(circle);
+          });
+        })
+        .catch((error) => {
+          console.error("Error loading knobs:", error);
+        });
+    </script>
+  </body>
+</html>
