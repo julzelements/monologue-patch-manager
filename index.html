@@ -57,144 +57,191 @@
         left: 0;
       }
 
-      /* Yellow circle */
-      .yellow-circle {
-        position: absolute;
-        background-color: yellow;
-        border: 2px solid #ffcc00;
-        border-radius: 50%;
-        pointer-events: none;
-      }
-
       /* Knob circles */
       .knob-circle {
         position: absolute;
-        background-color: rgba(255, 165, 0, 0.3);
-        border: 2px solid rgb(255, 165, 0);
+        background-color: rgba(194, 162, 104, 0.3);
+        border: 2px solid rgb(31, 24, 11);
         border-radius: 50%;
         pointer-events: none;
         /* Standard knob size - diameter 7 SVG units */
         width: calc(7 / 178 * 100%);
         height: calc(7 / 79 * 100%);
       }
+
+      /* Background toggle button */
+      .bg-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(40, 40, 40, 0.9);
+        border: 2px solid #00ffff;
+        border-radius: 6px;
+        color: #00ffff;
+        padding: 8px 12px;
+        font-size: 12px;
+        cursor: pointer;
+        z-index: 1000;
+        transition: all 0.2s ease;
+      }
+
+      .bg-toggle:hover {
+        background: rgba(60, 60, 60, 0.9);
+        box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+      }
+
+      .bg-toggle.off {
+        border-color: #666;
+        color: #666;
+      }
     </style>
   </head>
   <body>
+    <!-- Background Toggle Button -->
+    <button class="bg-toggle" id="bg-toggle" onclick="toggleBackground()">BG ON</button>
+
     <div
       id="synth-container"
       style="background-image: url('monologue.svg'); background-size: 100% 100%; background-repeat: no-repeat"
     >
-      <!-- Vertical line at SVG coordinate x=11.9 (11.9/178 = 6.69% from left) -->
-      <div class="grid-line vertical-line" style="left: calc(11.9 / 178 * 100%)"></div>
-
-      <!-- Horizontal line at SVG coordinate y=13.1 (9.6+3.5, 13.1/79 = 16.58% from top) -->
-      <div class="grid-line horizontal-line" style="top: calc(13.1 / 79 * 100%)"></div>
-      <!-- Horizontal line at SVG coordinate y=13.1 (9.6+3.5, 13.1/79 = 16.58% from top) -->
-      <div class="grid-line horizontal-line" style="top: calc(27.6 / 79 * 100%)"></div>
-
       <!-- Custom straight lines as requested -->
       <!-- First line: starting at x=11.7, y=7, width=0.2, length=27.7 -->
-      <div
-        class="grid-line"
-        style="
-          left: calc(11.7 / 178 * 100%);
-          top: calc(7 / 79 * 100%);
-          width: calc(0.2 / 178 * 100%);
-          height: calc(27.7 / 79 * 100%);
-          background-color: rgba(0, 255, 255, 0.8);
-          box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
-        "
-      ></div>
+      <!-- Vertical guide lines -->
+      <script>
+        // Single utility function to convert SVG coordinates to CSS percentages
+        function svgToPercent(coords) {
+          const result = {};
 
-      <!-- Second line: starting at x=66.7, y=7, width=0.2, length=27.7 -->
-      <div
-        class="grid-line"
-        style="
-          left: calc(66.7 / 178 * 100%);
-          top: calc(7 / 79 * 100%);
-          width: calc(0.2 / 178 * 100%);
-          height: calc(27.7 / 79 * 100%);
-          background-color: rgba(0, 255, 255, 0.8);
-          box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
-        "
-      ></div>
+          // Handle x coordinate
+          if (coords.x !== undefined) {
+            result.x = (coords.x / 178) * 100;
+          }
 
-      <!-- Additional lines with same specifications -->
-      <!-- Line at x=22.7, y=7, width=0.2, length=27.7 -->
-      <div
-        class="grid-line"
-        style="
-          left: calc(22.7 / 178 * 100%);
-          top: calc(7 / 79 * 100%);
-          width: calc(0.2 / 178 * 100%);
-          height: calc(27.7 / 79 * 100%);
-          background-color: rgba(0, 255, 255, 0.8);
-          box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
-        "
-      ></div>
+          // Handle y coordinate
+          if (coords.y !== undefined) {
+            result.y = (coords.y / 79) * 100;
+          }
 
-      <!-- Line at x=37.3, y=7, width=0.2, length=27.7 -->
-      <div
-        class="grid-line"
-        style="
-          left: calc(37.3 / 178 * 100%);
-          top: calc(7 / 79 * 100%);
-          width: calc(0.2 / 178 * 100%);
-          height: calc(27.7 / 79 * 100%);
-          background-color: rgba(0, 255, 255, 0.8);
-          box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
-        "
-      ></div>
+          // Handle width
+          if (coords.width !== undefined) {
+            result.width = (coords.width / 178) * 100;
+          }
 
-      <!-- Line at x=81.3, y=7, width=0.2, length=27.7 -->
-      <div
-        class="grid-line"
-        style="
-          left: calc(81.3 / 178 * 100%);
-          top: calc(7 / 79 * 100%);
-          width: calc(0.2 / 178 * 100%);
-          height: calc(27.7 / 79 * 100%);
-          background-color: rgba(0, 255, 255, 0.8);
-          box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
-        "
-      ></div>
+          // Handle height
+          if (coords.height !== undefined) {
+            result.height = (coords.height / 79) * 100;
+          }
 
-      <!-- Line at x=95.9, y=7, width=0.2, length=27.7 -->
-      <div
-        class="grid-line"
-        style="
-          left: calc(95.9 / 178 * 100%);
-          top: calc(7 / 79 * 100%);
-          width: calc(0.2 / 178 * 100%);
-          height: calc(27.7 / 79 * 100%);
-          background-color: rgba(0, 255, 255, 0.8);
-          box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
-        "
-      ></div>
+          return result;
+        }
 
-      <!-- Line at x=157.2, y=7, width=0.2, length=27.7 -->
-      <div
-        class="grid-line"
-        style="
-          left: calc(157.2 / 178 * 100%);
-          top: calc(7 / 79 * 100%);
-          width: calc(0.2 / 178 * 100%);
-          height: calc(27.7 / 79 * 100%);
-          background-color: rgba(0, 255, 255, 0.8);
-          box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
-        "
-      ></div>
+        // Reusable function to create vertical guide lines
+        function createVerticalLine(x, y, width, length) {
+          const line = document.createElement("div");
+          const pos = svgToPercent({ x, y, width, height: length });
 
-      <!-- Yellow circle at crosshairs: diameter=7, positioned with top-left at x=11.9, y=9.6 -->
-      <!-- <div
-        class="yellow-circle"
-        style="
-          left: calc(11.9 / 178 * 100%);
-          top: calc(9.6 / 79 * 100%);
-          width: calc(7 / 178 * 100%);
-          height: calc(7 / 79 * 100%);
-        "
-      ></div> -->
+          line.className = "grid-line";
+          line.style.left = `${pos.x}%`;
+          line.style.top = `${pos.y}%`;
+          line.style.width = `${pos.width}%`;
+          line.style.height = `${pos.height}%`;
+          line.style.backgroundColor = "rgba(0, 255, 255, 0.8)";
+          line.style.boxShadow = "0 0 2px rgba(0, 255, 255, 0.5)";
+          return line;
+        }
+
+        // X coordinates for vertical lines
+        const verticalLineX = [22.7, 37.3, 66.7, 81.3, 95.9, 157.2];
+        const container = document.getElementById("synth-container");
+
+        verticalLineX.forEach((x) => {
+          container.appendChild(createVerticalLine(x, 7, 0.2, 27.7));
+        });
+
+        // Background toggle functionality
+        function toggleBackground() {
+          const container = document.getElementById("synth-container");
+          const button = document.getElementById("bg-toggle");
+          const currentBg = container.style.backgroundImage;
+
+          if (currentBg && currentBg !== "none") {
+            // Turn off background
+            container.style.backgroundImage = "none";
+            button.textContent = "BG OFF";
+            button.classList.add("off");
+          } else {
+            // Turn on background
+            container.style.backgroundImage = "url('monologue.svg')";
+            button.textContent = "BG ON";
+            button.classList.remove("off");
+          }
+        }
+      </script>
+
+      <!-- VCO Filter Cutoff Knob Circle -->
+      <script>
+        // Add VCO Filter Cutoff knob circle
+        const synthContainer = document.getElementById("synth-container");
+        const cutoffKnob = document.createElement("div");
+        cutoffKnob.className = "knob-circle";
+        cutoffKnob.id = "knob-vco-filter-cutoff";
+        cutoffKnob.title = "VCO Filter Cutoff";
+
+        // Position at SVG coordinates (141.9, 32.7) adjusted for transform (-1.8, -5.1)
+        const pos = svgToPercent({ x: 140.1, y: 27.6 });
+        const knobSize = svgToPercent({ width: 3.5, height: 3.5 });
+
+        cutoffKnob.style.left = `calc(${pos.x}% - ${knobSize.width}%)`;
+        cutoffKnob.style.top = `calc(${pos.y}% - ${knobSize.height}%)`;
+        cutoffKnob.style.backgroundColor = "rgba(144, 238, 144, 0.3)";
+        cutoffKnob.style.border = "2px solid rgba(34, 139, 34, 0.6)";
+        cutoffKnob.style.boxShadow = "0 0 8px rgba(144, 238, 144, 0.4), inset 0 0 4px rgba(255, 255, 255, 0.1)";
+        cutoffKnob.style.zIndex = "100";
+
+        synthContainer.appendChild(cutoffKnob);
+
+        // Create wispy green knob circles for all other knobs
+        const knobs = [
+          { id: "knob-vco-filter-resonance", x: 127.2, y: 32.7, name: "VCO Filter Resonance" },
+          { id: "knob-vco-wave", x: 127.2, y: 18, name: "VCO Wave" },
+          { id: "knob-vco-pitch", x: 112.6, y: 18, name: "VCO Pitch" },
+          { id: "knob-vco-shape", x: 90.6, y: 18, name: "VCO Shape" },
+          { id: "knob-filter-eg-intensity", x: 141.9, y: 18, name: "Filter EG Intensity" },
+          { id: "knob-lfo-rate", x: 75.9, y: 18, name: "LFO Rate" },
+          { id: "knob-lfo-intensity", x: 90.6, y: 32.7, name: "LFO Intensity" },
+          { id: "knob-lfo-pitch-intensity", x: 75.9, y: 32.7, name: "LFO Pitch Intensity" },
+          { id: "knob-eg-attack", x: 61.2, y: 18, name: "EG Attack" },
+          { id: "knob-eg-decay-release", x: 61.2, y: 32.7, name: "EG Decay Release" },
+          { id: "knob-drive", x: 17.2, y: 18.2, name: "Drive" },
+          { id: "knob-delay-time", x: 17.3, y: 32.8, name: "Delay Time" },
+          { id: "knob-delay-feedback", x: 31.7, y: 32.7, name: "Delay Feedback" },
+          { id: "knob-master-volume", x: 150.7, y: 42.3, name: "Master Volume", noTransform: true },
+          { id: "knob-sync", x: 162.1, y: 12.9, name: "Sync", noTransform: true },
+        ];
+
+        knobs.forEach((knobData) => {
+          const knob = document.createElement("div");
+          knob.className = "knob-circle";
+          knob.id = knobData.id;
+          knob.title = knobData.name;
+
+          // Apply transform offset (-1.8, -5.1) only for knobs that need it
+          const adjustedX = knobData.noTransform ? knobData.x : knobData.x - 1.8;
+          const adjustedY = knobData.noTransform ? knobData.y : knobData.y - 5.1;
+
+          const pos = svgToPercent({ x: adjustedX, y: adjustedY });
+          const knobSize = svgToPercent({ width: 3.5, height: 3.5 });
+
+          knob.style.left = `calc(${pos.x}% - ${knobSize.width}%)`;
+          knob.style.top = `calc(${pos.y}% - ${knobSize.height}%)`;
+          knob.style.backgroundColor = "rgba(144, 238, 144, 0.3)";
+          knob.style.border = "2px solid rgba(34, 139, 34, 0.6)";
+          knob.style.boxShadow = "0 0 8px rgba(144, 238, 144, 0.4), inset 0 0 4px rgba(255, 255, 255, 0.1)";
+          knob.style.zIndex = "100";
+
+          synthContainer.appendChild(knob);
+        });
+      </script>
     </div>
 
     <script>
@@ -210,17 +257,19 @@
             circle.className = "knob-circle";
             circle.id = knob.name;
 
-            // Position using SVG coordinates
-            // Adjust coordinates by the transform offset (-1.8, -5.1) already included in JSON
-            const leftPercent = (knob.x / 178) * 100;
-            const topPercent = (knob.y / 79) * 100;
+            // Convert SVG coordinates to percentages
+            const pos = svgToPercent({ x: knob.x, y: knob.y });
+            const knobSize = svgToPercent({ width: 7, height: 3.5 });
 
             // Center the circle on the knob position (subtract half diameter)
-            const halfDiameterX = (7 / 178) * 100; // 7/2 = 3.5
-            const halfDiameterY = (7 / 79) * 100;
+            circle.style.left = `calc(${pos.x}% - ${knobSize.width}%)`;
+            circle.style.top = `calc(${pos.y}% - ${knobSize.height}%)`;
 
-            circle.style.left = `calc(${leftPercent}% - ${halfDiameterX}%)`;
-            circle.style.top = `calc(${topPercent}% - ${halfDiameterY}%)`;
+            // Special styling for drive knob - mark with grey color
+            if (knob.name === "knob-drive") {
+              circle.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
+              circle.style.border = "2px solid rgb(64, 64, 64)";
+            }
 
             // Add tooltip with knob name
             circle.title = knob.name.replace("knob-", "").replace(/-/g, " ");
