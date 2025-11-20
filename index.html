@@ -157,10 +157,21 @@
         height: 35px;
       }
 
-      .knob-drive {
+      .knob-volume {
         background-color: #00ffff;
         top: 49px;
         left: 60px;
+      }
+
+      .knob-drive {
+        background-color: chartreuse;
+      }
+
+      .knob-tempo {
+        background-color: #00ffff;
+        top: 48px;
+        left: 802.3px;
+
       }
 
       .knob-vco-filter-resonance {
@@ -178,7 +189,7 @@
 
     <div
       id="synth-container"
-      style="background-image: url('monologue.svg'); background-size: 100% 100%; background-repeat: no-repeat"
+      style="background-image: url('knobs\ only.svg'); background-size: 100% 100%; background-repeat: no-repeat"
     >
       <!-- Custom straight lines as requested -->
       <!-- First line: starting at x=11.7, y=7, width=0.2, length=27.7 -->
@@ -214,8 +225,8 @@
         // Transform function to convert SVG circle coordinates to CSS positioning
         function transformCirclePosition(svgX, svgY, radius = 3.5) {
           // SVG dimensions
-          const SVG_WIDTH = 178;
-          const SVG_HEIGHT = 79;
+          const SVG_WIDTH = 176;
+          const SVG_HEIGHT = 78;
           
           // Container dimensions
           const CONTAINER_WIDTH = 900;
@@ -284,7 +295,8 @@
       </script>
 
 
-      <div class="knob knob-drive"></div>
+      <div class="knob knob-volume"></div>
+      <div class="knob knob-tempo"></div>
       <div class="coordinate-grid" id="coordinate-grid">
         <!-- Grid overlay for visual reference -->
         <div class="grid-overlay" id="grid-overlay"></div>
