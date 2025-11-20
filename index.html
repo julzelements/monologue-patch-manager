@@ -57,16 +57,71 @@
         left: 0;
       }
 
-      /* Knob circles */
-      .knob-circle {
+      /* Coordinate-based Grid System */
+      .coordinate-grid {
         position: absolute;
-        background-color: rgba(194, 162, 104, 0.3);
-        border: 2px solid rgb(31, 24, 11);
-        border-radius: 50%;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         pointer-events: none;
-        /* Standard knob size - diameter 7 SVG units */
-        width: calc(7 / 178 * 100%);
-        height: calc(7 / 79 * 100%);
+      }
+
+      .grid-item {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(144, 238, 144, 0.3);
+        border: 2px solid rgba(34, 139, 34, 0.6);
+        border-radius: 50%;
+        box-shadow: 0 0 8px rgba(144, 238, 144, 0.4), inset 0 0 4px rgba(255, 255, 255, 0.1);
+        font-size: 7px;
+        color: rgba(255, 255, 255, 0.8);
+        text-align: center;
+        pointer-events: auto;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-weight: bold;
+        /* Smaller size to fit within 50px grid cells */
+        width: 30px;
+        height: 30px;
+      }
+
+      .grid-item:hover {
+        background-color: rgba(144, 238, 144, 0.5);
+        border-color: rgba(34, 139, 34, 0.8);
+        box-shadow: 0 0 12px rgba(144, 238, 144, 0.6), inset 0 0 6px rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
+      }
+
+      /* Grid overlay helper lines */
+      .grid-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0.1;
+        z-index: -1;
+      }
+
+      .grid-line-x,
+      .grid-line-y {
+        position: absolute;
+        background: rgba(255, 255, 0, 0.5);
+        pointer-events: none;
+      }
+
+      .grid-line-x {
+        width: 100%;
+        height: 1px;
+      }
+
+      .grid-line-y {
+        width: 1px;
+        height: 100%;
       }
 
       /* Background toggle button */
@@ -93,6 +148,27 @@
       .bg-toggle.off {
         border-color: #666;
         color: #666;
+      }
+
+      .knob {
+        border-radius: 50%;
+        position: absolute;
+        width: 35px;
+        height: 35px;
+      }
+
+      .knob-drive {
+        background-color: #00ffff;
+        top: 49px;
+        left: 60px;
+      }
+
+      .knob-vco-filter-resonance {
+        background-color: #ff6b6b;
+      }
+
+      .knob-vco-wave {
+        background-color: #4ecdc4;
       }
     </style>
   </head>
@@ -133,6 +209,35 @@
           }
 
           return result;
+        }
+
+        // Transform function to convert SVG circle coordinates to CSS positioning
+        function transformCirclePosition(svgX, svgY, radius = 3.5) {
+          // SVG dimensions
+          const SVG_WIDTH = 178;
+          const SVG_HEIGHT = 79;
+          
+          // Container dimensions
+          const CONTAINER_WIDTH = 900;
+          const CONTAINER_HEIGHT = 400;
+          
+          // Convert SVG coordinates to container pixels
+          const containerX = (svgX / SVG_WIDTH) * CONTAINER_WIDTH;
+          const containerY = (svgY / SVG_HEIGHT) * CONTAINER_HEIGHT;
+          
+          // Calculate CSS radius in pixels
+          const cssRadius = (radius / SVG_WIDTH) * CONTAINER_WIDTH;
+          
+          // Position is center-based, so subtract radius for top-left positioning
+          const cssLeft = containerX - cssRadius;
+          const cssTop = containerY - cssRadius;
+          
+          return {
+            left: Math.round(cssLeft),
+            top: Math.round(cssTop),
+            width: Math.round(cssRadius * 2),
+            height: Math.round(cssRadius * 2)
+          };
         }
 
         // Reusable function to create vertical guide lines
@@ -178,108 +283,15 @@
         }
       </script>
 
-      <!-- VCO Filter Cutoff Knob Circle -->
-      <script>
-        // Add VCO Filter Cutoff knob circle
-        const synthContainer = document.getElementById("synth-container");
-        const cutoffKnob = document.createElement("div");
-        cutoffKnob.className = "knob-circle";
-        cutoffKnob.id = "knob-vco-filter-cutoff";
-        cutoffKnob.title = "VCO Filter Cutoff";
 
-        // Position at SVG coordinates (141.9, 32.7) adjusted for transform (-1.8, -5.1)
-        const pos = svgToPercent({ x: 140.1, y: 27.6 });
-        const knobSize = svgToPercent({ width: 3.5, height: 3.5 });
+      <div class="knob knob-drive"></div>
+      <div class="coordinate-grid" id="coordinate-grid">
+        <!-- Grid overlay for visual reference -->
+        <div class="grid-overlay" id="grid-overlay"></div>
+      </div>
 
-        cutoffKnob.style.left = `calc(${pos.x}% - ${knobSize.width}%)`;
-        cutoffKnob.style.top = `calc(${pos.y}% - ${knobSize.height}%)`;
-        cutoffKnob.style.backgroundColor = "rgba(144, 238, 144, 0.3)";
-        cutoffKnob.style.border = "2px solid rgba(34, 139, 34, 0.6)";
-        cutoffKnob.style.boxShadow = "0 0 8px rgba(144, 238, 144, 0.4), inset 0 0 4px rgba(255, 255, 255, 0.1)";
-        cutoffKnob.style.zIndex = "100";
-
-        synthContainer.appendChild(cutoffKnob);
-
-        // Create wispy green knob circles for all other knobs
-        const knobs = [
-          { id: "knob-vco-filter-resonance", x: 127.2, y: 32.7, name: "VCO Filter Resonance" },
-          { id: "knob-vco-wave", x: 127.2, y: 18, name: "VCO Wave" },
-          { id: "knob-vco-pitch", x: 112.6, y: 18, name: "VCO Pitch" },
-          { id: "knob-vco-shape", x: 90.6, y: 18, name: "VCO Shape" },
-          { id: "knob-filter-eg-intensity", x: 141.9, y: 18, name: "Filter EG Intensity" },
-          { id: "knob-lfo-rate", x: 75.9, y: 18, name: "LFO Rate" },
-          { id: "knob-lfo-intensity", x: 90.6, y: 32.7, name: "LFO Intensity" },
-          { id: "knob-lfo-pitch-intensity", x: 75.9, y: 32.7, name: "LFO Pitch Intensity" },
-          { id: "knob-eg-attack", x: 61.2, y: 18, name: "EG Attack" },
-          { id: "knob-eg-decay-release", x: 61.2, y: 32.7, name: "EG Decay Release" },
-          { id: "knob-drive", x: 17.2, y: 18.2, name: "Drive" },
-          { id: "knob-delay-time", x: 17.3, y: 32.8, name: "Delay Time" },
-          { id: "knob-delay-feedback", x: 31.7, y: 32.7, name: "Delay Feedback" },
-          { id: "knob-master-volume", x: 150.7, y: 42.3, name: "Master Volume", noTransform: true },
-          { id: "knob-sync", x: 162.1, y: 12.9, name: "Sync", noTransform: true },
-        ];
-
-        knobs.forEach((knobData) => {
-          const knob = document.createElement("div");
-          knob.className = "knob-circle";
-          knob.id = knobData.id;
-          knob.title = knobData.name;
-
-          // Apply transform offset (-1.8, -5.1) only for knobs that need it
-          const adjustedX = knobData.noTransform ? knobData.x : knobData.x - 1.8;
-          const adjustedY = knobData.noTransform ? knobData.y : knobData.y - 5.1;
-
-          const pos = svgToPercent({ x: adjustedX, y: adjustedY });
-          const knobSize = svgToPercent({ width: 3.5, height: 3.5 });
-
-          knob.style.left = `calc(${pos.x}% - ${knobSize.width}%)`;
-          knob.style.top = `calc(${pos.y}% - ${knobSize.height}%)`;
-          knob.style.backgroundColor = "rgba(144, 238, 144, 0.3)";
-          knob.style.border = "2px solid rgba(34, 139, 34, 0.6)";
-          knob.style.boxShadow = "0 0 8px rgba(144, 238, 144, 0.4), inset 0 0 4px rgba(255, 255, 255, 0.1)";
-          knob.style.zIndex = "100";
-
-          synthContainer.appendChild(knob);
-        });
+ 
       </script>
     </div>
-
-    <script>
-      // Load knobs JSON and create circles
-      fetch("drive.json")
-        .then((response) => response.json())
-        .then((knobs) => {
-          const container = document.getElementById("synth-container");
-
-          knobs.forEach((knob) => {
-            // Create circle element
-            const circle = document.createElement("div");
-            circle.className = "knob-circle";
-            circle.id = knob.name;
-
-            // Convert SVG coordinates to percentages
-            const pos = svgToPercent({ x: knob.x, y: knob.y });
-            const knobSize = svgToPercent({ width: 7, height: 3.5 });
-
-            // Center the circle on the knob position (subtract half diameter)
-            circle.style.left = `calc(${pos.x}% - ${knobSize.width}%)`;
-            circle.style.top = `calc(${pos.y}% - ${knobSize.height}%)`;
-
-            // Special styling for drive knob - mark with grey color
-            if (knob.name === "knob-drive") {
-              circle.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
-              circle.style.border = "2px solid rgb(64, 64, 64)";
-            }
-
-            // Add tooltip with knob name
-            circle.title = knob.name.replace("knob-", "").replace(/-/g, " ");
-
-            container.appendChild(circle);
-          });
-        })
-        .catch((error) => {
-          console.error("Error loading knobs:", error);
-        });
-    </script>
   </body>
 </html>
