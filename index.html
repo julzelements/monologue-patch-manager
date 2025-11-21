@@ -91,6 +91,17 @@
         background-color: #78e484;
       }
 
+      .lcd-screen {
+        position: absolute;
+        width: 71px;
+        height: 41px;
+        top: 192px;
+        left: 635px;
+        border: 1px solid #333;
+        background-color: #333;
+        border-radius: 2px;
+      }
+
       .sequencer-container {
         display: grid;
         grid-template-columns: repeat(16, 32px);
@@ -135,13 +146,12 @@
 
       .key-trig-hold {
         position: absolute;
-        top: 121px;
-        left: 801px;
-        width: 40px;
-        height: 37px;
-        background-color: red;
-        opacity: 50%;
-        border-radius: 2px;
+        top: 123px;
+        left: 804px;
+        width: 32px;
+        height: 30px;
+        background-color: rgb(82, 150, 173);
+        border: 1px solid #333;
       }
 
       .u-path {
@@ -240,6 +250,8 @@
       <svg width="100%" height="100%" viewBox="0 0 900 300">
         <path class="u-path" d="M 237 164 H 230 V 249 H 240" />
       </svg>
+
+      <div class="lcd-screen"></div>
     </div>
 
     <script>
