@@ -89,6 +89,31 @@
   top: 50px;
   left: 450px;
 }
+
+.ruler {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 282px;
+  left: 246px;
+  background-color: #78e484;
+}
+
+.sequencer-container {
+  display: grid;
+  grid-template-columns: repeat(16, 5px);
+  gap: 10px; /* spacing between squares */
+  position: absolute;
+  left: 246px;
+  top: 282px;
+}
+
+.square {
+  width: 32px;
+  height: 31px;
+  background-color: rgb(82, 150, 173);
+  border: 1px solid #333;
+}
       
     </style>
   <!-- </head> -->
@@ -143,8 +168,32 @@
   <div class="divider" style="top: 35px; left: 410px;"></div>
   <div class="divider" style="top: 35px; left: 484px;"></div>
   <div class="divider" style="top: 35px; left: 795px;"></div>
-  
 
+  <div class="sequencer-container">
+  <!-- 16 squares -->
+<div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+</div>
+
+  
+<div class="ruler"></div>
 </div>
 
 
