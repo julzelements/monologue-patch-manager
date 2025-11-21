@@ -54,12 +54,14 @@
   border: 1px solid #ccc; /* optional, to visualize container */
 }
 
+
 .circle {
-  width: 30px;
-  height: 30px;
+  width: 37px;
+  height: 37px;
   background-color: blue;
   border-radius: 50%;
   position: absolute; /* allows individual positioning */
+  opacity: 50%;
 }
 
 
@@ -74,14 +76,18 @@
   background-color: #00ffff;
   border-radius: 10px;
   position: absolute;
-  opacity: 20%;
 
 }
 
-.pill:hover {
-  background-color: #33ffff;
-  box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
-  cursor: pointer;
+
+
+.divider {
+  position: absolute;
+  width: 1px;
+  height: 140px;
+  background-color: #78e484;
+  top: 50px;
+  left: 450px;
 }
       
     </style>
@@ -96,7 +102,7 @@
     >
 
 
-<div class="container">
+
   <div class="circle" style="top: 50px; left: 60px;"></div>
   <div class="circle" style="top: 50px; left: 284px;"></div>
   <div class="circle" style="top: 50px; left: 358px;"></div>
@@ -117,6 +123,27 @@
 
   <!-- Pill-shaped object -->
   <div class="pill" style="top: 38px; left: 139px;"></div>
+  <div class="pill" style="top: 38px; left: 198px;"></div>
+  <div class="pill" style="top: 38px; left: 495px;"></div>
+  <div class="pill" style="top: 38px; left: 751px;"></div>
+  
+  
+  <div class="pill" style="top: 113px; left: 198px;"></div>
+  <div class="pill" style="top: 113px; left: 235px;"></div>
+  <div class="pill" style="top: 113px; left: 495px;"></div>
+  <div class="pill" style="top: 113px; left: 549px;"></div>
+  <div class="pill" style="top: 113px; left: 751px;"></div>
+
+  <div class="pill" style="top: 187px; left: 235px;"></div>
+  
+  
+  <div class="divider" style="top: 35px; left: 112px;"></div>
+  <div class="divider" style="top: 35px; left: 186px;"></div>
+  <div class="divider" style="top: 35px; left: 336px;"></div>
+  <div class="divider" style="top: 35px; left: 410px;"></div>
+  <div class="divider" style="top: 35px; left: 484px;"></div>
+  <div class="divider" style="top: 35px; left: 795px;"></div>
+  
 
 </div>
 
