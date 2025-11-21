@@ -22,108 +22,6 @@
         box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
       }
 
-      .module {
-        position: absolute;
-        border: 2px solid #000000;
-        background: rgba(138, 130, 130, 0.7);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #ffffff;
-        font-size: 14px;
-        text-align: center;
-        font-weight: bold;
-      }
-
-      /* Individual Grid Lines matching SVG coordinates (178x79) */
-      .grid-line {
-        position: absolute;
-        pointer-events: none;
-        background-color: rgba(0, 255, 255, 0.8);
-        box-shadow: 0 0 2px rgba(0, 255, 255, 0.5);
-      }
-
-      /* Vertical lines at SVG coordinate intervals */
-      .vertical-line {
-        width: 1px;
-        height: 100%;
-        top: 0;
-      }
-
-      /* Horizontal lines at SVG coordinate intervals */
-      .horizontal-line {
-        width: 100%;
-        height: 1px;
-        left: 0;
-      }
-
-      /* Coordinate-based Grid System */
-      .coordinate-grid {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-      }
-
-      .grid-item {
-        position: absolute;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: rgba(144, 238, 144, 0.3);
-        border: 2px solid rgba(34, 139, 34, 0.6);
-        border-radius: 50%;
-        box-shadow: 0 0 8px rgba(144, 238, 144, 0.4), inset 0 0 4px rgba(255, 255, 255, 0.1);
-        font-size: 7px;
-        color: rgba(255, 255, 255, 0.8);
-        text-align: center;
-        pointer-events: auto;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        font-weight: bold;
-        /* Smaller size to fit within 50px grid cells */
-        width: 30px;
-        height: 30px;
-      }
-
-      .grid-item:hover {
-        background-color: rgba(144, 238, 144, 0.5);
-        border-color: rgba(34, 139, 34, 0.8);
-        box-shadow: 0 0 12px rgba(144, 238, 144, 0.6), inset 0 0 6px rgba(255, 255, 255, 0.2);
-        transform: scale(1.05);
-      }
-
-      /* Grid overlay helper lines */
-      .grid-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        opacity: 0.1;
-        z-index: -1;
-      }
-
-      .grid-line-x,
-      .grid-line-y {
-        position: absolute;
-        background: rgba(255, 255, 0, 0.5);
-        pointer-events: none;
-      }
-
-      .grid-line-x {
-        width: 100%;
-        height: 1px;
-      }
-
-      .grid-line-y {
-        width: 1px;
-        height: 100%;
-      }
-
       /* Background toggle button */
       .bg-toggle {
         position: fixed;
@@ -149,132 +47,57 @@
         border-color: #666;
         color: #666;
       }
+.container {
+  position: relative;
+  height: 60px; /* enough to fit all vertical offsets */
+  width: 700px; /* adjust based on total horizontal spread */
+  border: 1px solid #ccc; /* optional, to visualize container */
+}
 
-      .knob {
-        border-radius: 50%;
-        position: absolute;
-        width: 35px;
-        height: 35px;
-      }
+.circle {
+  width: 30px;
+  height: 30px;
+  background-color: blue;
+  border-radius: 50%;
+  position: absolute; /* allows individual positioning */
+}
 
-      .knob-volume {
-        background-color: #00ffff;
-        top: 49px;
-        left: 60px;
-      }
 
-      .knob-drive {
-        background-color: chartreuse;
-      }
-
-      .knob-tempo {
-        background-color: #00ffff;
-        top: 48px;
-        left: 802.3px;
-
-      }
-
-      .knob-vco-filter-resonance {
-        background-color: #ff6b6b;
-      }
-
-      .knob-vco-wave {
-        background-color: #4ecdc4;
-      }
+/* Apply individual top offsets via inline style */
+.circle {
+  top: 0; /* default fallback */
+}
+      
     </style>
-  </head>
+  <!-- </head> -->
   <body>
     <!-- Background Toggle Button -->
     <button class="bg-toggle" id="bg-toggle" onclick="toggleBackground()">BG ON</button>
 
     <div
       id="synth-container"
-      style="background-image: url('knobs\ only.svg'); background-size: 100% 100%; background-repeat: no-repeat"
+      style="background-image: url('monologue.svg'); background-size: 100% 100%; background-repeat: no-repeat"
     >
+
+
+<div class="container">
+  <div class="circle" style="top: 50px; left: 60px;"></div>
+  <div class="circle" style="top: 50px; left: 284px;"></div>
+  <div class="circle" style="top: 50px; left: 358px;"></div>
+  <div class="circle" style="top: 50px; left: 433px;"></div>
+  <div class="circle" style="top: 50px; left: 545px;"></div>
+  <div class="circle" style="top: 50px; left: 618px;"></div>
+  <div class="circle" style="top: 50px; left: 693px;"></div>
+  <div class="circle" style="top: 50px; left: 805px;"></div>
+
+
+</div>
+
+
       <!-- Custom straight lines as requested -->
       <!-- First line: starting at x=11.7, y=7, width=0.2, length=27.7 -->
       <!-- Vertical guide lines -->
       <script>
-        // Single utility function to convert SVG coordinates to CSS percentages
-        function svgToPercent(coords) {
-          const result = {};
-
-          // Handle x coordinate
-          if (coords.x !== undefined) {
-            result.x = (coords.x / 178) * 100;
-          }
-
-          // Handle y coordinate
-          if (coords.y !== undefined) {
-            result.y = (coords.y / 79) * 100;
-          }
-
-          // Handle width
-          if (coords.width !== undefined) {
-            result.width = (coords.width / 178) * 100;
-          }
-
-          // Handle height
-          if (coords.height !== undefined) {
-            result.height = (coords.height / 79) * 100;
-          }
-
-          return result;
-        }
-
-        // Transform function to convert SVG circle coordinates to CSS positioning
-        function transformCirclePosition(svgX, svgY, radius = 3.5) {
-          // SVG dimensions
-          const SVG_WIDTH = 176;
-          const SVG_HEIGHT = 78;
-          
-          // Container dimensions
-          const CONTAINER_WIDTH = 900;
-          const CONTAINER_HEIGHT = 400;
-          
-          // Convert SVG coordinates to container pixels
-          const containerX = (svgX / SVG_WIDTH) * CONTAINER_WIDTH;
-          const containerY = (svgY / SVG_HEIGHT) * CONTAINER_HEIGHT;
-          
-          // Calculate CSS radius in pixels
-          const cssRadius = (radius / SVG_WIDTH) * CONTAINER_WIDTH;
-          
-          // Position is center-based, so subtract radius for top-left positioning
-          const cssLeft = containerX - cssRadius;
-          const cssTop = containerY - cssRadius;
-          
-          return {
-            left: Math.round(cssLeft),
-            top: Math.round(cssTop),
-            width: Math.round(cssRadius * 2),
-            height: Math.round(cssRadius * 2)
-          };
-        }
-
-        // Reusable function to create vertical guide lines
-        function createVerticalLine(x, y, width, length) {
-          const line = document.createElement("div");
-          const pos = svgToPercent({ x, y, width, height: length });
-
-          line.className = "grid-line";
-          line.style.left = `${pos.x}%`;
-          line.style.top = `${pos.y}%`;
-          line.style.width = `${pos.width}%`;
-          line.style.height = `${pos.height}%`;
-          line.style.backgroundColor = "rgba(0, 255, 255, 0.8)";
-          line.style.boxShadow = "0 0 2px rgba(0, 255, 255, 0.5)";
-          return line;
-        }
-
-        // X coordinates for vertical lines
-        const verticalLineX = [22.7, 37.3, 66.7, 81.3, 95.9, 157.2];
-        const container = document.getElementById("synth-container");
-
-        verticalLineX.forEach((x) => {
-          container.appendChild(createVerticalLine(x, 7, 0.2, 27.7));
-        });
-
-        // Background toggle functionality
         function toggleBackground() {
           const container = document.getElementById("synth-container");
           const button = document.getElementById("bg-toggle");
@@ -293,13 +116,6 @@
           }
         }
       </script>
-
-
-      <div class="knob knob-volume"></div>
-      <div class="knob knob-tempo"></div>
-      <div class="coordinate-grid" id="coordinate-grid">
-        <!-- Grid overlay for visual reference -->
-        <div class="grid-overlay" id="grid-overlay"></div>
       </div>
 
  
