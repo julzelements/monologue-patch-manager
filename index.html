@@ -114,6 +114,23 @@
   background-color: rgb(82, 150, 173);
   border: 1px solid #333;
 }
+
+.key-trig-hold {
+  position: absolute;
+top: 121px;
+    left: 801px;
+    width: 40px;
+    height: 37px;
+  background-color: red;
+  opacity: 50%;
+border-radius: 2px;
+}
+
+    .u-path {
+      stroke: blue;
+      stroke-width: 1;
+      fill: none;
+    }
       
     </style>
   <!-- </head> -->
@@ -144,7 +161,7 @@
   <div class="circle" style="top: 122px; left: 431px;"></div>
   <div class="circle" style="top: 122px; left: 616px;"></div>
   <div class="circle" style="top: 122px; left: 691px;"></div>
-  <div class="circle" style="top: 122px; left: 803px;"></div>
+  <!-- <div class="circle" style="top: 122px; left: 803px;"></div> -->
 
   <!-- Pill-shaped object -->
   <div class="pill" style="top: 38px; left: 139px;"></div>
@@ -167,7 +184,9 @@
   <div class="divider" style="top: 35px; left: 336px;"></div>
   <div class="divider" style="top: 35px; left: 410px;"></div>
   <div class="divider" style="top: 35px; left: 484px;"></div>
+
   <div class="divider" style="top: 35px; left: 795px;"></div>
+  <div class="key-trig-hold"></div>
 
   <div class="sequencer-container">
   <!-- 16 squares -->
@@ -191,6 +210,16 @@
   <div class="square"></div>
   <div class="square"></div>
 </div>
+
+    <svg width="100%" height="100%" viewBox="0 0 900 300">
+      <path
+        class="u-path"
+        d="M 237 164
+           H 230
+           V 249
+           H 240
+ " />
+    </svg>
 
   
 <!-- <div class="ruler"></div> -->
