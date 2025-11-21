@@ -47,211 +47,217 @@
         border-color: #666;
         color: #666;
       }
-.container {
-  position: relative;
-  height: 60px; /* enough to fit all vertical offsets */
-  width: 700px; /* adjust based on total horizontal spread */
-  border: 1px solid #ccc; /* optional, to visualize container */
-}
 
+      .container {
+        position: relative;
+        height: 60px;
+        width: 700px;
+        border: 1px solid #ccc;
+      }
 
-.circle {
-  width: 37px;
-  height: 37px;
-  background-color: blue;
-  border-radius: 50%;
-  position: absolute; /* allows individual positioning */
-  opacity: 50%;
-}
+      .circle {
+        width: 37px;
+        height: 37px;
+        background-color: blue;
+        border-radius: 50%;
+        position: absolute;
+        opacity: 50%;
+        top: 0;
+      }
 
+      .pill {
+        width: 21px;
+        height: 52px;
+        background-color: #00ffff;
+        border-radius: 10px;
+        position: absolute;
+      }
 
-/* Apply individual top offsets via inline style */
-.circle {
-  top: 0; /* default fallback */
-}
+      .divider {
+        position: absolute;
+        width: 1px;
+        height: 140px;
+        background-color: #78e484;
+        top: 50px;
+        left: 450px;
+      }
 
-.pill {
-  width: 21px;
-  height: 52px;
-  background-color: #00ffff;
-  border-radius: 10px;
-  position: absolute;
+      .ruler {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: 282px;
+        left: 246px;
+        background-color: #78e484;
+      }
 
-}
+      .sequencer-container {
+        display: grid;
+        grid-template-columns: repeat(16, 32px);
+        gap: 5.2px;
+        position: absolute;
+        left: 246px;
+        top: 282px;
+      }
 
+      .edit-menu-container {
+        display: grid;
+        grid-template-columns: repeat(3, 32px);
+        gap: 5px;
+        position: absolute;
+        left: 320px;
+        top: 206px;
+      }
 
+      .sequencer-menu-container {
+        display: grid;
+        grid-template-columns: repeat(4, 32px);
+        gap: 5px;
+        position: absolute;
+        left: 469px;
+        top: 206px;
+      }
 
-.divider {
-  position: absolute;
-  width: 1px;
-  height: 140px;
-  background-color: #78e484;
-  top: 50px;
-  left: 450px;
-}
+      .menu-button {
+        height: 15px;
+        width: 32px;
+        background-color: rgb(82, 150, 173);
+        border: 1px solid #333;
+        border-radius: 2px;
+      }
 
-.ruler {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  top: 282px;
-  left: 246px;
-  background-color: #78e484;
-}
+      .square {
+        width: 32px;
+        height: 30px;
+        background-color: rgb(82, 150, 173);
+        border: 1px solid #333;
+      }
 
-.sequencer-container {
-  display: grid;
-  grid-template-columns: repeat(16, 32px);
-  gap: 5.2px; /* spacing between squares */
-  position: absolute;
-  left: 246px;
-  top: 282px;
-}
+      .key-trig-hold {
+        position: absolute;
+        top: 121px;
+        left: 801px;
+        width: 40px;
+        height: 37px;
+        background-color: red;
+        opacity: 50%;
+        border-radius: 2px;
+      }
 
-.square {
-  width: 32px;
-  height: 30px;
-  background-color: rgb(82, 150, 173);
-  border: 1px solid #333;
-}
-
-.key-trig-hold {
-  position: absolute;
-top: 121px;
-    left: 801px;
-    width: 40px;
-    height: 37px;
-  background-color: red;
-  opacity: 50%;
-border-radius: 2px;
-}
-
-    .u-path {
-      stroke: blue;
-      stroke-width: 1;
-      fill: none;
-    }
-      
+      .u-path {
+        stroke: blue;
+        stroke-width: 1;
+        fill: none;
+      }
     </style>
-  <!-- </head> -->
+  </head>
+
   <body>
-    <!-- Background Toggle Button -->
     <button class="bg-toggle" id="bg-toggle" onclick="toggleBackground()">BG ON</button>
 
     <div
       id="synth-container"
       style="background-image: url('monologue.svg'); background-size: 100% 100%; background-repeat: no-repeat"
     >
+      <div class="circle" style="top: 48px; left: 58px"></div>
+      <div class="circle" style="top: 48px; left: 282px"></div>
+      <div class="circle" style="top: 48px; left: 356px"></div>
+      <div class="circle" style="top: 48px; left: 431px"></div>
+      <div class="circle" style="top: 48px; left: 543px"></div>
+      <div class="circle" style="top: 48px; left: 616px"></div>
+      <div class="circle" style="top: 48px; left: 691px"></div>
+      <div class="circle" style="top: 48px; left: 803px"></div>
 
+      <div class="circle" style="top: 122px; left: 58px"></div>
+      <div class="circle" style="top: 122px; left: 131px"></div>
+      <div class="circle" style="top: 122px; left: 282px"></div>
+      <div class="circle" style="top: 122px; left: 356px"></div>
+      <div class="circle" style="top: 122px; left: 431px"></div>
+      <div class="circle" style="top: 122px; left: 616px"></div>
+      <div class="circle" style="top: 122px; left: 691px"></div>
+      <!-- <div class="circle" style="top: 122px; left: 803px;"></div> -->
 
+      <!-- Pill-shaped object -->
+      <div class="pill" style="top: 38px; left: 139px"></div>
+      <div class="pill" style="top: 38px; left: 198px"></div>
+      <div class="pill" style="top: 38px; left: 495px"></div>
+      <div class="pill" style="top: 38px; left: 751px"></div>
 
-  <div class="circle" style="top: 48px; left: 58px;"></div>
-  <div class="circle" style="top: 48px; left: 282px;"></div>
-  <div class="circle" style="top: 48px; left: 356px;"></div>
-  <div class="circle" style="top: 48px; left: 431px;"></div>
-  <div class="circle" style="top: 48px; left: 543px;"></div>
-  <div class="circle" style="top: 48px; left: 616px;"></div>
-  <div class="circle" style="top: 48px; left: 691px;"></div>
-  <div class="circle" style="top: 48px; left: 803px;"></div>
+      <div class="pill" style="top: 113px; left: 198px"></div>
+      <div class="pill" style="top: 113px; left: 235px"></div>
+      <div class="pill" style="top: 113px; left: 495px"></div>
+      <div class="pill" style="top: 113px; left: 549px"></div>
+      <div class="pill" style="top: 113px; left: 751px"></div>
 
-  <div class="circle" style="top: 122px; left: 58px;"></div>
-  <div class="circle" style="top: 122px; left: 131px;"></div>
-  <div class="circle" style="top: 122px; left: 282px;"></div>
-  <div class="circle" style="top: 122px; left: 356px;"></div>
-  <div class="circle" style="top: 122px; left: 431px;"></div>
-  <div class="circle" style="top: 122px; left: 616px;"></div>
-  <div class="circle" style="top: 122px; left: 691px;"></div>
-  <!-- <div class="circle" style="top: 122px; left: 803px;"></div> -->
+      <div class="pill" style="top: 187px; left: 235px"></div>
 
-  <!-- Pill-shaped object -->
-  <div class="pill" style="top: 38px; left: 139px;"></div>
-  <div class="pill" style="top: 38px; left: 198px;"></div>
-  <div class="pill" style="top: 38px; left: 495px;"></div>
-  <div class="pill" style="top: 38px; left: 751px;"></div>
-  
-  
-  <div class="pill" style="top: 113px; left: 198px;"></div>
-  <div class="pill" style="top: 113px; left: 235px;"></div>
-  <div class="pill" style="top: 113px; left: 495px;"></div>
-  <div class="pill" style="top: 113px; left: 549px;"></div>
-  <div class="pill" style="top: 113px; left: 751px;"></div>
+      <!--Vertical Dividers-->
+      <div class="divider" style="top: 35px; left: 112px"></div>
+      <div class="divider" style="top: 35px; left: 186px"></div>
+      <div class="divider" style="top: 35px; left: 336px"></div>
+      <div class="divider" style="top: 35px; left: 410px"></div>
+      <div class="divider" style="top: 35px; left: 484px"></div>
 
-  <div class="pill" style="top: 187px; left: 235px;"></div>
-  
-  <!--Vertical Dividers-->
-  <div class="divider" style="top: 35px; left: 112px;"></div>
-  <div class="divider" style="top: 35px; left: 186px;"></div>
-  <div class="divider" style="top: 35px; left: 336px;"></div>
-  <div class="divider" style="top: 35px; left: 410px;"></div>
-  <div class="divider" style="top: 35px; left: 484px;"></div>
+      <div class="divider" style="top: 35px; left: 795px"></div>
 
-  <div class="divider" style="top: 35px; left: 795px;"></div>
-  <div class="key-trig-hold"></div>
+      <div class="key-trig-hold"></div>
 
-  <div class="sequencer-container">
-  <!-- 16 squares -->
-<div class="square"></div>
-  <div class="square"></div>
-  <div class="square"></div>
-  <div class="square"></div>
-
-  <div class="square"></div>
-  <div class="square"></div>
-  <div class="square"></div>
-  <div class="square"></div>
-
-  <div class="square"></div>
-  <div class="square"></div>
-  <div class="square"></div>
-  <div class="square"></div>
-
-  <div class="square"></div>
-  <div class="square"></div>
-  <div class="square"></div>
-  <div class="square"></div>
-</div>
-
-    <svg width="100%" height="100%" viewBox="0 0 900 300">
-      <path
-        class="u-path"
-        d="M 237 164
-           H 230
-           V 249
-           H 240
- " />
-    </svg>
-
-  
-<!-- <div class="ruler"></div> -->
-</div>
-
-
-      <!-- Custom straight lines as requested -->
-      <!-- First line: starting at x=11.7, y=7, width=0.2, length=27.7 -->
-      <!-- Vertical guide lines -->
-      <script>
-        function toggleBackground() {
-          const container = document.getElementById("synth-container");
-          const button = document.getElementById("bg-toggle");
-          const currentBg = container.style.backgroundImage;
-
-          if (currentBg && currentBg !== "none") {
-            // Turn off background
-            container.style.backgroundImage = "none";
-            button.textContent = "BG OFF";
-            button.classList.add("off");
-          } else {
-            // Turn on background
-            container.style.backgroundImage = "url('monologue.svg')";
-            button.textContent = "BG ON";
-            button.classList.remove("off");
-          }
-        }
-      </script>
+      <div class="edit-menu-container">
+        <div class="menu-button"></div>
+        <div class="menu-button"></div>
+        <div class="menu-button"></div>
+      </div>
+      <div class="sequencer-menu-container">
+        <div class="menu-button"></div>
+        <div class="menu-button"></div>
+        <div class="menu-button"></div>
+        <div class="menu-button"></div>
       </div>
 
- 
-      </script>
+      <div class="sequencer-container">
+        <!-- 16 squares -->
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+      </div>
+
+      <svg width="100%" height="100%" viewBox="0 0 900 300">
+        <path class="u-path" d="M 237 164 H 230 V 249 H 240" />
+      </svg>
     </div>
+
+    <script>
+      function toggleBackground() {
+        const container = document.getElementById("synth-container");
+        const button = document.getElementById("bg-toggle");
+        const currentBg = container.style.backgroundImage;
+
+        if (currentBg && currentBg !== "none") {
+          container.style.backgroundImage = "none";
+          button.textContent = "BG OFF";
+          button.classList.add("off");
+        } else {
+          container.style.backgroundImage = "url('monologue.svg')";
+          button.textContent = "BG ON";
+          button.classList.remove("off");
+        }
+      }
+    </script>
   </body>
 </html>
