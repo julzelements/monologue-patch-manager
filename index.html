@@ -162,6 +162,7 @@
       }
 
       .knob {
+        opacity: 50%;
         width: 35px;
         height: 35px;
         position: absolute;
@@ -282,7 +283,6 @@
       }
 
       .vertical-toggle {
-        opacity: 50%;
         border: 1px solid black;
         position: absolute;
         top: 50px; /* set vertical position */
@@ -325,8 +325,8 @@
 
       .vertical-knob::after {
         content: "";
-        width: 10px;
-        height: 10px;
+        width: 8px;
+        height: 8px;
         background: #ddd;
         border-radius: 50%;
         border: 1px solid #999;
@@ -348,7 +348,7 @@
 
     <div
       id="synth-container"
-      style="background-image: url('monologue-nokeys.svg'); background-size: 100% 100%; background-repeat: no-repeat"
+      style="background-image: url('mono-bare.svg'); background-size: 100% 100%; background-repeat: no-repeat"
     >
       <div class="knob" id="master">
         <div class="knob-dial">
