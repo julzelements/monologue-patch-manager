@@ -128,10 +128,10 @@
 
       .key-trig-hold {
         position: absolute;
-        top: 123px;
-        left: 804px;
+        top: 125px;
+        left: 803px;
         width: 32px;
-        height: 30px;
+        height: 28px;
         background-color: rgb(82, 150, 173);
         border: 1px solid #333;
       }
@@ -143,7 +143,6 @@
       }
 
       .knob {
-        opacity: 50%;
         width: 35px;
         height: 35px;
         position: absolute;
@@ -319,7 +318,7 @@
 
     <div
       id="synth-container"
-      style="background-image: url('mono-bare.svg'); background-size: 100% 100%; background-repeat: no-repeat"
+      style="background-image: url('assets/mono-bare.svg'); background-size: 100% 100%; background-repeat: no-repeat"
     >
       <div class="knob" id="master">
         <div class="knob-dial">
@@ -331,22 +330,6 @@
           <div class="knob-pointer"></div>
         </div>
       </div>
-
-      <div id="master-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
-      <div id="vco2Pitch-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
-      <div id="vco1Mixer-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
-      <div id="cutoff-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
-      <div id="egAttack-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
-      <div id="egDecay-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
-      <div id="egInt-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
-      <div id="tempo-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
-      <div id="drive-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
-      <div id="vco1Shape-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
-      <div id="vco2Shape-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
-      <div id="vco2Mixer-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
-      <div id="resonance-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
-      <div id="lfoRate-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
-      <div id="lfoInt-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
 
       <div class="knob" id="cutoff">
         <div class="knob-dial">
@@ -487,15 +470,6 @@
         <div class="vertical-zone" data-pos="2"></div>
       </div>
 
-      <!--Vertical Dividers-->
-      <div class="divider" style="top: 35px; left: 112px"></div>
-      <div class="divider" style="top: 35px; left: 186px"></div>
-      <div class="divider" style="top: 35px; left: 336px"></div>
-      <div class="divider" style="top: 35px; left: 410px"></div>
-      <div class="divider" style="top: 35px; left: 484px"></div>
-
-      <div class="divider" style="top: 35px; left: 795px"></div>
-
       <div class="key-trig-hold"></div>
 
       <div class="edit-menu-container">
@@ -616,24 +590,20 @@
           button.textContent = "BG OFF";
           button.classList.add("off");
         } else {
-          container.style.backgroundImage = "url('mono-bare.svg')";
+          container.style.backgroundImage = "url('assets/mono-bare.svg')";
           button.textContent = "BG ON";
           button.classList.remove("off");
         }
       }
       class Knob {
-        constructor(knobId, displayId, options = {}) {
+        constructor(knobId, options = {}) {
           this.knob = document.querySelector(`#${knobId} .knob-dial`);
-          this.display = document.getElementById(displayId);
 
           this.maxRot = options.maxRot || 160; // rotation degrees
           this.speed = options.speed || 1.5; // drag sensitivity
 
           this.currentRot = 0; // initialize at 0
           this.lastRot = 0;
-
-          // initialize display
-          this.updateDisplay();
 
           // bind events
           this.knob.onpointerdown = this.onPointerDown.bind(this);
@@ -653,20 +623,12 @@
           if (this.currentRot < -this.maxRot) this.currentRot = -this.maxRot;
 
           this.knob.style.transform = `rotate(${this.currentRot}deg)`;
-          this.updateDisplay();
         }
 
         onPointerUp(event) {
           this.lastRot = this.currentRot;
           document.removeEventListener("pointermove", this.onPointerMoveBound);
           document.removeEventListener("pointerup", this.onPointerUpBound);
-        }
-
-        // map rotation (-maxRot to +maxRot) to 0–1023
-        updateDisplay() {
-          let value = Math.round(((this.currentRot + this.maxRot) / (this.maxRot * 2)) * 1023);
-          value = Math.min(Math.max(value, 0), 1023);
-          this.display.textContent = `${value}`;
         }
       }
 
@@ -675,9 +637,8 @@
         // Create all knob instances
         Object.keys(knobsConfig).forEach((knobKey) => {
           const knobElement = document.getElementById(knobKey);
-          const valueElement = document.getElementById(`${knobKey}-value`);
-          if (knobElement && valueElement) {
-            new Knob(knobKey, `${knobKey}-value`);
+          if (knobElement) {
+            new Knob(knobKey);
           }
         });
 
