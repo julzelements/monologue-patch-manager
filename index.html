@@ -223,6 +223,110 @@
         text-align: center;
         white-space: nowrap;
       }
+
+      .toggle-label {
+        position: absolute;
+        color: #fff;
+        font-family: monospace;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .toggle-container {
+        border: 1px solid black;
+        position: absolute;
+        top: 50px; /* set vertical position */
+        left: 50px; /* set horizontal position */
+        width: 52px;
+        height: 21px;
+        background: #ddd;
+        border-radius: 21px;
+        padding: 2px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .toggle-zone {
+        flex: 1;
+        height: 100%;
+        cursor: pointer;
+        z-index: 1;
+      }
+
+      .toggle-knob {
+        border: 1px solid black;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 17px;
+        height: 17px;
+        background: white;
+        border-radius: 50%;
+        transition: transform 0.15s ease;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      .pos-0 {
+        transform: translateX(0);
+      }
+      .pos-1 {
+        transform: translateX(17px);
+      }
+      .pos-2 {
+        transform: translateX(34px);
+      }
+
+      .vertical-toggle {
+        border: 1px solid black;
+        position: absolute;
+        top: 50px; /* set vertical position */
+        left: 150px; /* set horizontal position */
+        width: 21px;
+        height: 52px;
+        background: #ddd;
+        border-radius: 21px;
+        padding: 2px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .vertical-zone {
+        flex: 1;
+        width: 100%;
+        cursor: pointer;
+        z-index: 1;
+      }
+
+      .vertical-knob {
+        border: 1px solid black;
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 17px;
+        height: 17px;
+        background: white;
+        border-radius: 50%;
+        transition: transform 0.15s ease;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        pointer-events: none;
+        z-index: 2;
+      }
+      .v-pos-0 {
+        transform: translateY(0px);
+      }
+      .v-pos-1 {
+        transform: translateY(17px);
+      }
+      .v-pos-2 {
+        transform: translateY(31px);
+      }
     </style>
   </head>
 
@@ -275,6 +379,8 @@
       <div id="resonance-label" class="knob-label"></div>
       <div id="lfoRate-label" class="knob-label"></div>
       <div id="lfoInt-label" class="knob-label"></div>
+
+      <div id="wave1-label" class="toggle-label"></div>
       <div class="knob" id="cutoff">
         <div class="knob-dial">
           <div class="knob-pointer"></div>
@@ -344,8 +450,14 @@
       <!-- <div class="circle" style="top: 122px; left: 803px;"></div> -->
       <!-- this is the key trig hold -->
 
-      <!-- Pill-shaped object -->
-      <div class="pill" style="top: 38px; left: 139px"></div>
+      <div class="vertical-toggle" id="wave1">
+        <div id="wave1-knob" class="vertical-knob v-pos-0"></div>
+        <div class="vertical-zone" data-pos="0"></div>
+        <div class="vertical-zone" data-pos="1"></div>
+        <div class="vertical-zone" data-pos="2"></div>
+      </div>
+
+      <!-- <div class="pill" style="top: 38px; left: 139px"></div> -->
       <div class="pill" style="top: 38px; left: 198px"></div>
       <div class="pill" style="top: 38px; left: 495px"></div>
       <div class="pill" style="top: 38px; left: 751px"></div>
@@ -414,6 +526,7 @@
     <script>
       // Load knobs configuration
       let knobsConfig = {};
+      let togglesConfig = {};
 
       async function loadKnobsConfig() {
         try {
@@ -425,6 +538,35 @@
         }
       }
 
+      async function loadTogglesConfig() {
+        try {
+          const response = await fetch("toggles.json");
+          togglesConfig = await response.json();
+          positionToggles();
+        } catch (error) {
+          console.error("Error loading toggles.json:", error);
+        }
+      }
+
+      function positionToggles() {
+        // Position all toggles based on JSON config
+        Object.keys(togglesConfig).forEach((toggleKey) => {
+          const toggleElement = document.getElementById(toggleKey);
+          const labelElement = document.getElementById(`${toggleKey}-label`);
+
+          if (toggleElement && togglesConfig[toggleKey]) {
+            toggleElement.style.top = togglesConfig[toggleKey].top + "px";
+            toggleElement.style.left = togglesConfig[toggleKey].left + "px";
+
+            if (labelElement && togglesConfig[toggleKey].name) {
+              labelElement.textContent = togglesConfig[toggleKey].name;
+              labelElement.style.top = togglesConfig[toggleKey].top - 15 + "px";
+              labelElement.style.left = togglesConfig[toggleKey].left - 10 + "px";
+              labelElement.style.width = "40px";
+            }
+          }
+        });
+      }
       function positionKnobs() {
         // Position all knobs based on JSON config
         Object.keys(knobsConfig).forEach((knobKey) => {
@@ -466,7 +608,7 @@
           button.classList.remove("off");
         }
       }
-      class SimpleKnob {
+      class Knob {
         constructor(knobId, displayId, options = {}) {
           this.knob = document.querySelector(`#${knobId} .knob-dial`);
           this.display = document.getElementById(displayId);
@@ -515,15 +657,46 @@
         }
       }
 
-      // Load configuration and initialize knobs
-      loadKnobsConfig().then(() => {
+      // Load configuration and initialize controls
+      Promise.all([loadKnobsConfig(), loadTogglesConfig()]).then(() => {
         // Create all knob instances
         Object.keys(knobsConfig).forEach((knobKey) => {
           const knobElement = document.getElementById(knobKey);
           const valueElement = document.getElementById(`${knobKey}-value`);
           if (knobElement && valueElement) {
-            new SimpleKnob(knobKey, `${knobKey}-value`);
+            new Knob(knobKey, `${knobKey}-value`);
           }
+        });
+
+        // Initialize wave1 toggle
+        const wave1Knob = document.getElementById("wave1-knob");
+        const wave1Zones = document.querySelectorAll("#wave1 .vertical-zone");
+        wave1Zones.forEach((zone) => {
+          zone.addEventListener("click", () => {
+            const pos = zone.getAttribute("data-pos");
+            wave1Knob.className = `vertical-knob v-pos-${pos}`;
+            console.log("Wave1 position:", pos);
+          });
+        });
+      });
+
+      const hKnob = document.getElementById("h-knob");
+      const hZones = document.querySelectorAll(".toggle-zone");
+      hZones.forEach((zone) => {
+        zone.addEventListener("click", () => {
+          const pos = zone.getAttribute("data-pos");
+          hKnob.className = `toggle-knob pos-${pos}`;
+          console.log("Horizontal position:", pos);
+        });
+      });
+
+      const vKnob = document.getElementById("v-knob");
+      const vZones = document.querySelectorAll(".vertical-zone");
+      vZones.forEach((zone) => {
+        zone.addEventListener("click", () => {
+          const pos = zone.getAttribute("data-pos");
+          vKnob.className = `vertical-knob v-pos-${pos}`;
+          console.log("Vertical position:", pos);
         });
       });
     </script>
