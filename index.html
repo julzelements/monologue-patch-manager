@@ -595,9 +595,20 @@
           button.classList.remove("off");
         }
       }
+      function updateDisplay(paramName, value) {
+        const lcdScreen = document.querySelector('.lcd-screen');
+        if (lcdScreen) {
+          lcdScreen.innerHTML = `<div style="color: #0f0; font-family: monospace; font-size: 10px; padding: 5px; text-align: center;">
+            <div style="font-weight: bold;">${paramName}</div>
+            <div>${value}</div>
+          </div>`;
+        }
+      }
+
       class Knob {
         constructor(knobId, options = {}) {
           this.knob = document.querySelector(`#${knobId} .knob-dial`);
+          this.knobId = knobId;
 
           this.maxRot = options.maxRot || 160; // rotation degrees
           this.speed = options.speed || 1.5; // drag sensitivity
@@ -623,6 +634,12 @@
           if (this.currentRot < -this.maxRot) this.currentRot = -this.maxRot;
 
           this.knob.style.transform = `rotate(${this.currentRot}deg)`;
+          
+          // Update display with parameter info
+          const value = Math.round(((this.currentRot + this.maxRot) / (this.maxRot * 2)) * 1023);
+          const clampedValue = Math.min(Math.max(value, 0), 1023);
+          const paramName = knobsConfig[this.knobId]?.name || this.knobId.toUpperCase();
+          updateDisplay(paramName, clampedValue);
         }
 
         onPointerUp(event) {
@@ -654,6 +671,13 @@
                 zone.addEventListener("click", () => {
                   const pos = zone.getAttribute("data-pos");
                   toggleKnob.className = `vertical-knob v-pos-${pos}`;
+                  
+                  // Update display with toggle info
+                  const paramName = togglesConfig[toggleKey]?.name || toggleKey.toUpperCase();
+                  const positionNames = ['LOW', 'MID', 'HIGH'];
+                  const positionName = positionNames[parseInt(pos)] || pos;
+                  updateDisplay(paramName, positionName);
+                  
                   console.log(`${toggleKey} position:`, pos);
                 });
               });
