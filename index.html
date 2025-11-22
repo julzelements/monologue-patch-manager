@@ -240,7 +240,7 @@
         top: 50px; /* set vertical position */
         left: 50px; /* set horizontal position */
         width: 52px;
-        height: 21px;
+        height: 15px;
         background: #ddd;
         border-radius: 21px;
         padding: 2px;
@@ -261,7 +261,7 @@
         position: absolute;
         top: 2px;
         left: 2px;
-        width: 17px;
+        width: 15px;
         height: 17px;
         background: white;
         border-radius: 50%;
@@ -282,12 +282,13 @@
       }
 
       .vertical-toggle {
+        opacity: 50%;
         border: 1px solid black;
         position: absolute;
         top: 50px; /* set vertical position */
         left: 150px; /* set horizontal position */
-        width: 21px;
-        height: 52px;
+        width: 14px;
+        height: 46px;
         background: #ddd;
         border-radius: 21px;
         padding: 2px;
@@ -309,14 +310,26 @@
         position: absolute;
         top: 3px;
         left: 3px;
-        width: 17px;
-        height: 17px;
+        width: 11px;
+        height: 11px;
         background: white;
         border-radius: 50%;
         transition: transform 0.15s ease;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         pointer-events: none;
         z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .vertical-knob::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        background: #ddd;
+        border-radius: 50%;
+        border: 1px solid #999;
       }
       .v-pos-0 {
         transform: translateY(0px);
@@ -335,7 +348,7 @@
 
     <div
       id="synth-container"
-      style="background-image: url('monologue.svg'); background-size: 100% 100%; background-repeat: no-repeat"
+      style="background-image: url('monologue-nokeys.svg'); background-size: 100% 100%; background-repeat: no-repeat"
     >
       <div class="knob" id="master">
         <div class="knob-dial">
@@ -381,6 +394,15 @@
       <div id="lfoInt-label" class="knob-label"></div>
 
       <div id="wave1-label" class="toggle-label"></div>
+      <div id="octave1-label" class="toggle-label"></div>
+      <div id="sync-label" class="toggle-label"></div>
+      <div id="egTarget-label" class="toggle-label"></div>
+      <div id="ring-label" class="toggle-label"></div>
+      <div id="wave2-label" class="toggle-label"></div>
+      <div id="lfoTarget-label" class="toggle-label"></div>
+      <div id="lfoWave-label" class="toggle-label"></div>
+      <div id="seqTarget-label" class="toggle-label"></div>
+      <div id="motion-label" class="toggle-label"></div>
       <div class="knob" id="cutoff">
         <div class="knob-dial">
           <div class="knob-pointer"></div>
@@ -457,18 +479,68 @@
         <div class="vertical-zone" data-pos="2"></div>
       </div>
 
-      <!-- <div class="pill" style="top: 38px; left: 139px"></div> -->
-      <div class="pill" style="top: 38px; left: 198px"></div>
-      <div class="pill" style="top: 38px; left: 495px"></div>
-      <div class="pill" style="top: 38px; left: 751px"></div>
+      <div class="vertical-toggle" id="octave1">
+        <div id="octave1-knob" class="vertical-knob v-pos-0"></div>
+        <div class="vertical-zone" data-pos="0"></div>
+        <div class="vertical-zone" data-pos="1"></div>
+        <div class="vertical-zone" data-pos="2"></div>
+      </div>
 
-      <div class="pill" style="top: 113px; left: 198px"></div>
-      <div class="pill" style="top: 113px; left: 235px"></div>
-      <div class="pill" style="top: 113px; left: 495px"></div>
-      <div class="pill" style="top: 113px; left: 549px"></div>
-      <div class="pill" style="top: 113px; left: 751px"></div>
+      <div class="vertical-toggle" id="sync">
+        <div id="sync-knob" class="vertical-knob v-pos-0"></div>
+        <div class="vertical-zone" data-pos="0"></div>
+        <div class="vertical-zone" data-pos="1"></div>
+        <div class="vertical-zone" data-pos="2"></div>
+      </div>
 
-      <div class="pill" style="top: 187px; left: 235px"></div>
+      <div class="vertical-toggle" id="egTarget">
+        <div id="egTarget-knob" class="vertical-knob v-pos-0"></div>
+        <div class="vertical-zone" data-pos="0"></div>
+        <div class="vertical-zone" data-pos="1"></div>
+        <div class="vertical-zone" data-pos="2"></div>
+      </div>
+
+      <div class="vertical-toggle" id="ring">
+        <div id="ring-knob" class="vertical-knob v-pos-0"></div>
+        <div class="vertical-zone" data-pos="0"></div>
+        <div class="vertical-zone" data-pos="1"></div>
+        <div class="vertical-zone" data-pos="2"></div>
+      </div>
+
+      <div class="vertical-toggle" id="wave2">
+        <div id="wave2-knob" class="vertical-knob v-pos-0"></div>
+        <div class="vertical-zone" data-pos="0"></div>
+        <div class="vertical-zone" data-pos="1"></div>
+        <div class="vertical-zone" data-pos="2"></div>
+      </div>
+
+      <div class="vertical-toggle" id="lfoTarget">
+        <div id="lfoTarget-knob" class="vertical-knob v-pos-0"></div>
+        <div class="vertical-zone" data-pos="0"></div>
+        <div class="vertical-zone" data-pos="1"></div>
+        <div class="vertical-zone" data-pos="2"></div>
+      </div>
+
+      <div class="vertical-toggle" id="lfoWave">
+        <div id="lfoWave-knob" class="vertical-knob v-pos-0"></div>
+        <div class="vertical-zone" data-pos="0"></div>
+        <div class="vertical-zone" data-pos="1"></div>
+        <div class="vertical-zone" data-pos="2"></div>
+      </div>
+
+      <div class="vertical-toggle" id="seqTarget">
+        <div id="seqTarget-knob" class="vertical-knob v-pos-0"></div>
+        <div class="vertical-zone" data-pos="0"></div>
+        <div class="vertical-zone" data-pos="1"></div>
+        <div class="vertical-zone" data-pos="2"></div>
+      </div>
+
+      <div class="vertical-toggle" id="motion">
+        <div id="motion-knob" class="vertical-knob v-pos-0"></div>
+        <div class="vertical-zone" data-pos="0"></div>
+        <div class="vertical-zone" data-pos="1"></div>
+        <div class="vertical-zone" data-pos="2"></div>
+      </div>
 
       <!--Vertical Dividers-->
       <div class="divider" style="top: 35px; left: 112px"></div>
@@ -603,7 +675,7 @@
           button.textContent = "BG OFF";
           button.classList.add("off");
         } else {
-          container.style.backgroundImage = "url('monologue.svg')";
+          container.style.backgroundImage = "url('monologue-full-panel-svg.svg')";
           button.textContent = "BG ON";
           button.classList.remove("off");
         }
@@ -668,15 +740,23 @@
           }
         });
 
-        // Initialize wave1 toggle
-        const wave1Knob = document.getElementById("wave1-knob");
-        const wave1Zones = document.querySelectorAll("#wave1 .vertical-zone");
-        wave1Zones.forEach((zone) => {
-          zone.addEventListener("click", () => {
-            const pos = zone.getAttribute("data-pos");
-            wave1Knob.className = `vertical-knob v-pos-${pos}`;
-            console.log("Wave1 position:", pos);
-          });
+        // Initialize all toggles
+        Object.keys(togglesConfig).forEach((toggleKey) => {
+          const toggleElement = document.getElementById(toggleKey);
+          if (toggleElement && togglesConfig[toggleKey].type === "vertical") {
+            const toggleKnob = document.getElementById(`${toggleKey}-knob`);
+            const toggleZones = document.querySelectorAll(`#${toggleKey} .vertical-zone`);
+
+            if (toggleKnob && toggleZones.length > 0) {
+              toggleZones.forEach((zone) => {
+                zone.addEventListener("click", () => {
+                  const pos = zone.getAttribute("data-pos");
+                  toggleKnob.className = `vertical-knob v-pos-${pos}`;
+                  console.log(`${toggleKey} position:`, pos);
+                });
+              });
+            }
+          }
         });
       });
 
