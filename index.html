@@ -162,8 +162,8 @@
       }
 
       .knob {
-        width: 37px;
-        height: 37px;
+        width: 35px;
+        height: 35px;
         position: absolute;
         top: 100px;
         left: 100px;
@@ -193,6 +193,36 @@
         left: 50%;
         transform: translateX(-50%);
       }
+
+      .knob-label {
+        position: absolute;
+        color: #fff;
+        font-family: monospace;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .knob-label {
+        position: absolute;
+        color: #fff;
+        font-family: monospace;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .knob-label {
+        position: absolute;
+        color: #fff;
+        font-family: monospace;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        white-space: nowrap;
+      }
     </style>
   </head>
 
@@ -203,40 +233,114 @@
       id="synth-container"
       style="background-image: url('monologue.svg'); background-size: 100% 100%; background-repeat: no-repeat"
     >
-      <div class="knob" style="top: 48px; left: 58px" id="master">
+      <div class="knob" id="master">
         <div class="knob-dial">
           <div class="knob-pointer"></div>
         </div>
       </div>
-      <div class="knob" style="top: 48px; left: 282px" id="vco2Pitch">
+      <div class="knob" id="vco2Pitch">
         <div class="knob-dial">
           <div class="knob-pointer"></div>
         </div>
       </div>
 
-      <div id="master-value" style="position: absolute; top: 90px; left: 58px; color: #0ff; font-family: monospace">
-        Value: 0
+      <div id="master-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
+      <div id="vco2Pitch-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
+      <div id="vco1Mixer-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
+      <div id="cutoff-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
+      <div id="egAttack-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
+      <div id="egDecay-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
+      <div id="egInt-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
+      <div id="tempo-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
+      <div id="drive-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
+      <div id="vco1Shape-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
+      <div id="vco2Shape-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
+      <div id="vco2Mixer-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
+      <div id="resonance-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
+      <div id="lfoRate-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
+      <div id="lfoInt-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
+
+      <div id="master-label" class="knob-label"></div>
+      <div id="vco2Pitch-label" class="knob-label"></div>
+      <div id="vco1Mixer-label" class="knob-label"></div>
+      <div id="cutoff-label" class="knob-label"></div>
+      <div id="egAttack-label" class="knob-label"></div>
+      <div id="egDecay-label" class="knob-label"></div>
+      <div id="egInt-label" class="knob-label"></div>
+      <div id="tempo-label" class="knob-label"></div>
+      <div id="drive-label" class="knob-label"></div>
+      <div id="vco1Shape-label" class="knob-label"></div>
+      <div id="vco2Shape-label" class="knob-label"></div>
+      <div id="vco2Mixer-label" class="knob-label"></div>
+      <div id="resonance-label" class="knob-label"></div>
+      <div id="lfoRate-label" class="knob-label"></div>
+      <div id="lfoInt-label" class="knob-label"></div>
+      <div class="knob" id="cutoff">
+        <div class="knob-dial">
+          <div class="knob-pointer"></div>
+        </div>
       </div>
-      <div id="vco2Pitch-value" style="position: absolute; top: 90px; left: 282px; color: #0ff; font-family: monospace">
-        Value: 0
+      <div class="knob" id="vco1Mixer">
+        <div class="knob-dial">
+          <div class="knob-pointer"></div>
+        </div>
+      </div>
+      <div class="knob" id="egAttack">
+        <div class="knob-dial">
+          <div class="knob-pointer"></div>
+        </div>
+      </div>
+      <div class="knob" id="egDecay">
+        <div class="knob-dial">
+          <div class="knob-pointer"></div>
+        </div>
+      </div>
+      <div class="knob" id="egInt">
+        <div class="knob-dial">
+          <div class="knob-pointer"></div>
+        </div>
+      </div>
+      <div class="knob" id="tempo">
+        <div class="knob-dial">
+          <div class="knob-pointer"></div>
+        </div>
       </div>
 
-      <div class="circle" style="top: 48px; left: 58px"></div>
-      <div class="circle" style="top: 48px; left: 282px"></div>
-      <div class="circle" style="top: 48px; left: 356px"></div>
-      <div class="circle" style="top: 48px; left: 431px"></div>
-      <div class="circle" style="top: 48px; left: 543px"></div>
-      <div class="circle" style="top: 48px; left: 616px"></div>
-      <div class="circle" style="top: 48px; left: 691px"></div>
-      <div class="circle" style="top: 48px; left: 803px"></div>
-
-      <div class="circle" style="top: 122px; left: 58px"></div>
-      <div class="circle" style="top: 122px; left: 131px"></div>
-      <div class="circle" style="top: 122px; left: 282px"></div>
-      <div class="circle" style="top: 122px; left: 356px"></div>
-      <div class="circle" style="top: 122px; left: 431px"></div>
-      <div class="circle" style="top: 122px; left: 616px"></div>
-      <div class="circle" style="top: 122px; left: 691px"></div>
+      <div class="knob" id="drive">
+        <div class="knob-dial">
+          <div class="knob-pointer"></div>
+        </div>
+      </div>
+      <div class="knob" id="vco1Shape">
+        <div class="knob-dial">
+          <div class="knob-pointer"></div>
+        </div>
+      </div>
+      <div class="knob" id="vco2Shape">
+        <div class="knob-dial">
+          <div class="knob-pointer"></div>
+        </div>
+      </div>
+      <div class="knob" id="vco2Mixer">
+        <div class="knob-dial">
+          <div class="knob-pointer"></div>
+        </div>
+      </div>
+      <div class="knob" id="resonance">
+        <div class="knob-dial">
+          <div class="knob-pointer"></div>
+        </div>
+      </div>
+      <div class="knob" id="lfoRate">
+        <div class="knob-dial">
+          <div class="knob-pointer"></div>
+        </div>
+      </div>
+      <div class="knob" id="lfoInt">
+        <div class="knob-dial">
+          <div class="knob-pointer"></div>
+        </div>
+      </div>
       <!-- <div class="circle" style="top: 122px; left: 803px;"></div> -->
       <!-- this is the key trig hold -->
 
@@ -308,6 +412,45 @@
     </div>
 
     <script>
+      // Load knobs configuration
+      let knobsConfig = {};
+
+      async function loadKnobsConfig() {
+        try {
+          const response = await fetch("knobs.json");
+          knobsConfig = await response.json();
+          positionKnobs();
+        } catch (error) {
+          console.error("Error loading knobs.json:", error);
+        }
+      }
+
+      function positionKnobs() {
+        // Position all knobs based on JSON config
+        Object.keys(knobsConfig).forEach((knobKey) => {
+          const knobElement = document.getElementById(knobKey);
+          const valueElement = document.getElementById(`${knobKey}-value`);
+          const labelElement = document.getElementById(`${knobKey}-label`);
+
+          if (knobElement && knobsConfig[knobKey]) {
+            knobElement.style.top = knobsConfig[knobKey].top + "px";
+            knobElement.style.left = knobsConfig[knobKey].left + "px";
+
+            if (valueElement) {
+              valueElement.style.top = knobsConfig[knobKey].top + 42 + "px";
+              valueElement.style.left = knobsConfig[knobKey].left + "px";
+            }
+
+            if (labelElement && knobsConfig[knobKey].name) {
+              labelElement.textContent = knobsConfig[knobKey].name;
+              labelElement.style.top = knobsConfig[knobKey].top - 15 + "px";
+              labelElement.style.left = knobsConfig[knobKey].left - 10 + "px";
+              labelElement.style.width = "55px";
+            }
+          }
+        });
+      }
+
       function toggleBackground() {
         const container = document.getElementById("synth-container");
         const button = document.getElementById("bg-toggle");
@@ -368,12 +511,21 @@
         updateDisplay() {
           let value = Math.round(((this.currentRot + this.maxRot) / (this.maxRot * 2)) * 1023);
           value = Math.min(Math.max(value, 0), 1023);
-          this.display.textContent = `Value: ${value}`;
+          this.display.textContent = `${value}`;
         }
       }
 
-      const masterKnob = new SimpleKnob("master", "master-value");
-      const vco2PitchKnob = new SimpleKnob("vco2Pitch", "vco2Pitch-value");
+      // Load configuration and initialize knobs
+      loadKnobsConfig().then(() => {
+        // Create all knob instances
+        Object.keys(knobsConfig).forEach((knobKey) => {
+          const knobElement = document.getElementById(knobKey);
+          const valueElement = document.getElementById(`${knobKey}-value`);
+          if (knobElement && valueElement) {
+            new SimpleKnob(knobKey, `${knobKey}-value`);
+          }
+        });
+      });
     </script>
   </body>
 </html>
