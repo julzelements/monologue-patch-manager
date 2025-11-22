@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -318,7 +318,11 @@
 
     <div
       id="synth-container"
-      style="background-image: url('assets/mono-bare.svg'); background-size: 100% 100%; background-repeat: no-repeat"
+      style="
+        background-image: url(&quot;assets/mono-bare.svg&quot;);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+      "
     >
       <div class="knob" id="master">
         <div class="knob-dial">
@@ -408,6 +412,7 @@
       </div>
 
       <div class="vertical-toggle" id="octave1">
+        <!-- TODO: make the leds as well -->
         <div id="octave1-knob" class="vertical-knob v-pos-0"></div>
         <div class="vertical-zone" data-pos="0"></div>
         <div class="vertical-zone" data-pos="1"></div>
@@ -470,6 +475,7 @@
         <div class="vertical-zone" data-pos="2"></div>
       </div>
 
+      <!-- TODO: make an octave switch -->
       <div class="key-trig-hold"></div>
 
       <div class="edit-menu-container">
