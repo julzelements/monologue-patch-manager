@@ -63,6 +63,7 @@
         position: absolute;
         opacity: 50%;
         top: 0;
+        pointer-events: none; /* Allow clicks to pass through to knobs underneath */
       }
 
       .pill {
@@ -159,6 +160,39 @@
         stroke-width: 1;
         fill: none;
       }
+
+      .knob {
+        width: 37px;
+        height: 37px;
+        position: absolute;
+        top: 100px;
+        left: 100px;
+      }
+
+      .knob-dial {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: #444;
+        border: 2px solid #222; /* scaled down border */
+        position: relative;
+        display: flex;
+        justify-content: center;
+        transform-origin: center center;
+        align-items: center;
+        touch-action: none; /* ensures smooth dragging */
+      }
+
+      .knob-pointer {
+        width: 3px;
+        height: 15px;
+        background: #ffcc00;
+        border-radius: 2px;
+        position: absolute;
+        top: 3px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
     </style>
   </head>
 
@@ -169,6 +203,24 @@
       id="synth-container"
       style="background-image: url('monologue.svg'); background-size: 100% 100%; background-repeat: no-repeat"
     >
+      <div class="knob" style="top: 48px; left: 58px" id="master">
+        <div class="knob-dial">
+          <div class="knob-pointer"></div>
+        </div>
+      </div>
+      <div class="knob" style="top: 48px; left: 282px" id="vco2Pitch">
+        <div class="knob-dial">
+          <div class="knob-pointer"></div>
+        </div>
+      </div>
+
+      <div id="master-value" style="position: absolute; top: 90px; left: 58px; color: #0ff; font-family: monospace">
+        Value: 0
+      </div>
+      <div id="vco2Pitch-value" style="position: absolute; top: 90px; left: 282px; color: #0ff; font-family: monospace">
+        Value: 0
+      </div>
+
       <div class="circle" style="top: 48px; left: 58px"></div>
       <div class="circle" style="top: 48px; left: 282px"></div>
       <div class="circle" style="top: 48px; left: 356px"></div>
@@ -186,6 +238,7 @@
       <div class="circle" style="top: 122px; left: 616px"></div>
       <div class="circle" style="top: 122px; left: 691px"></div>
       <!-- <div class="circle" style="top: 122px; left: 803px;"></div> -->
+      <!-- this is the key trig hold -->
 
       <!-- Pill-shaped object -->
       <div class="pill" style="top: 38px; left: 139px"></div>
@@ -270,6 +323,57 @@
           button.classList.remove("off");
         }
       }
+      class SimpleKnob {
+        constructor(knobId, displayId, options = {}) {
+          this.knob = document.querySelector(`#${knobId} .knob-dial`);
+          this.display = document.getElementById(displayId);
+
+          this.maxRot = options.maxRot || 160; // rotation degrees
+          this.speed = options.speed || 1.5; // drag sensitivity
+
+          this.currentRot = 0; // initialize at 0
+          this.lastRot = 0;
+
+          // initialize display
+          this.updateDisplay();
+
+          // bind events
+          this.knob.onpointerdown = this.onPointerDown.bind(this);
+        }
+
+        onPointerDown(event) {
+          this.startY = event.clientY;
+          document.addEventListener("pointermove", (this.onPointerMoveBound = this.onPointerMove.bind(this)));
+          document.addEventListener("pointerup", (this.onPointerUpBound = this.onPointerUp.bind(this)));
+        }
+
+        onPointerMove(event) {
+          let delta = this.startY - event.clientY;
+          this.currentRot = this.lastRot + delta * this.speed;
+
+          if (this.currentRot > this.maxRot) this.currentRot = this.maxRot;
+          if (this.currentRot < -this.maxRot) this.currentRot = -this.maxRot;
+
+          this.knob.style.transform = `rotate(${this.currentRot}deg)`;
+          this.updateDisplay();
+        }
+
+        onPointerUp(event) {
+          this.lastRot = this.currentRot;
+          document.removeEventListener("pointermove", this.onPointerMoveBound);
+          document.removeEventListener("pointerup", this.onPointerUpBound);
+        }
+
+        // map rotation (-maxRot to +maxRot) to 0–1023
+        updateDisplay() {
+          let value = Math.round(((this.currentRot + this.maxRot) / (this.maxRot * 2)) * 1023);
+          value = Math.min(Math.max(value, 0), 1023);
+          this.display.textContent = `Value: ${value}`;
+        }
+      }
+
+      const masterKnob = new SimpleKnob("master", "master-value");
+      const vco2PitchKnob = new SimpleKnob("vco2Pitch", "vco2Pitch-value");
     </script>
   </body>
 </html>

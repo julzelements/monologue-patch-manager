@@ -1,0 +1,17 @@
+{
+  "master": { "name": "MASTER", "top": 48, "left": 58 },
+  "vco2Pitch": { "name": "PITCH", "top": 48, "left": 282 },
+  "vco1Mixer": { "name": "VCO 1", "top": 48, "left": 356 },
+  "cutoff": { "name": "CUTOFF", "top": 48, "left": 431 },
+  "egAttack": { "name": "ATTACK", "top": 48, "left": 543 },
+  "egDecay": { "name": "DECAY", "top": 48, "left": 616 },
+  "egInt": { "name": "INT", "top": 48, "left": 691 },
+  "tempo": { "name": "TEMPO", "top": 48, "left": 803 },
+  "drive": { "name": "DRIVE", "top": 122, "left": 58 },
+  "vco1Shape": { "name": "SHAPE", "top": 122, "left": 131 },
+  "vco2Shape": { "name": "SHAPE", "top": 122, "left": 282 },
+  "vco2Mixer": { "name": "VCO 2", "top": 122, "left": 356 },
+  "resonance": { "name": "RESONANCE", "top": 122, "left": 431 },
+  "lfoRate": { "name": "RATE", "top": 122, "left": 616 },
+  "lfoInt": { "name": "INT", "top": 122, "left": 691 }
+}
