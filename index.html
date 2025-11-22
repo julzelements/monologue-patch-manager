@@ -55,25 +55,6 @@
         border: 1px solid #ccc;
       }
 
-      .circle {
-        width: 37px;
-        height: 37px;
-        background-color: blue;
-        border-radius: 50%;
-        position: absolute;
-        opacity: 50%;
-        top: 0;
-        pointer-events: none; /* Allow clicks to pass through to knobs underneath */
-      }
-
-      .pill {
-        width: 21px;
-        height: 52px;
-        background-color: #00ffff;
-        border-radius: 10px;
-        position: absolute;
-      }
-
       .divider {
         position: absolute;
         width: 1px;
@@ -215,17 +196,7 @@
         white-space: nowrap;
       }
 
-      .knob-label {
-        position: absolute;
-        color: #fff;
-        font-family: monospace;
-        font-size: 10px;
-        font-weight: bold;
-        text-align: center;
-        white-space: nowrap;
-      }
-
-      .toggle-label {
+      .toggle-container {
         position: absolute;
         color: #fff;
         font-family: monospace;
@@ -377,32 +348,6 @@
       <div id="lfoRate-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
       <div id="lfoInt-value" style="position: absolute; color: #0ff; font-family: monospace">0</div>
 
-      <div id="master-label" class="knob-label"></div>
-      <div id="vco2Pitch-label" class="knob-label"></div>
-      <div id="vco1Mixer-label" class="knob-label"></div>
-      <div id="cutoff-label" class="knob-label"></div>
-      <div id="egAttack-label" class="knob-label"></div>
-      <div id="egDecay-label" class="knob-label"></div>
-      <div id="egInt-label" class="knob-label"></div>
-      <div id="tempo-label" class="knob-label"></div>
-      <div id="drive-label" class="knob-label"></div>
-      <div id="vco1Shape-label" class="knob-label"></div>
-      <div id="vco2Shape-label" class="knob-label"></div>
-      <div id="vco2Mixer-label" class="knob-label"></div>
-      <div id="resonance-label" class="knob-label"></div>
-      <div id="lfoRate-label" class="knob-label"></div>
-      <div id="lfoInt-label" class="knob-label"></div>
-
-      <div id="wave1-label" class="toggle-label"></div>
-      <div id="octave1-label" class="toggle-label"></div>
-      <div id="sync-label" class="toggle-label"></div>
-      <div id="egTarget-label" class="toggle-label"></div>
-      <div id="ring-label" class="toggle-label"></div>
-      <div id="wave2-label" class="toggle-label"></div>
-      <div id="lfoTarget-label" class="toggle-label"></div>
-      <div id="lfoWave-label" class="toggle-label"></div>
-      <div id="seqTarget-label" class="toggle-label"></div>
-      <div id="motion-label" class="toggle-label"></div>
       <div class="knob" id="cutoff">
         <div class="knob-dial">
           <div class="knob-pointer"></div>
@@ -587,10 +532,6 @@
         <div class="square"></div>
         <div class="square"></div>
       </div>
-
-      <svg width="100%" height="100%" viewBox="0 0 900 300">
-        <path class="u-path" d="M 237 164 H 230 V 249 H 240" />
-      </svg>
 
       <div class="lcd-screen"></div>
     </div>
