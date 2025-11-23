@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let id: string;
+  export let knobId: string;
   export let name: string;
   export let top: number;
   export let left: number;
@@ -21,7 +21,7 @@
     currentRot = normalized * maxRot * 2 - maxRot; // Convert to -160 to 160 range
     lastRot = currentRot;
     initializedValue = initialValue;
-    console.log(`Knob ${id} initialized to ${initialValue}, rotation: ${currentRot}`);
+    console.log(`Knob ${knobId} initialized to ${initialValue}, rotation: ${currentRot}`);
   }
 
   function handlePointerDown(event: PointerEvent) {
@@ -51,7 +51,7 @@
 
 <svelte:window on:pointermove={handlePointerMove} on:pointerup={handlePointerUp} />
 
-<div class="knob" style="top: {top}px; left: {left}px;" {id}>
+<div class="knob" style="top: {top}px; left: {left}px;" id={knobId}>
   <div
     class="knob-dial"
     style="transform: rotate({currentRot}deg);"

@@ -40,6 +40,35 @@
   function toggleBackground() {
     showBackground = !showBackground;
   }
+
+  // Map knob IDs to their corresponding patch values
+  function getKnobInitialValue(knobId: string): number | undefined {
+    if (!patch?.panelSettings) {
+      console.log("No patch.panelSettings", patch);
+      return undefined;
+    }
+
+    const mapping: Record<string, number | undefined> = {
+      cutoff: patch.panelSettings.filter?.cutoff?.value,
+      resonance: patch.panelSettings.filter?.resonance?.value,
+      vco1Mixer: patch.panelSettings.oscilators?.vco1?.level?.value,
+      vco1Shape: patch.panelSettings.oscilators?.vco1?.shape?.value,
+      vco2Pitch: patch.panelSettings.oscilators?.vco2?.pitch?.value,
+      vco2Mixer: patch.panelSettings.oscilators?.vco2?.level?.value,
+      vco2Shape: patch.panelSettings.oscilators?.vco2?.shape?.value,
+      egAttack: patch.panelSettings.envelope?.attack?.value,
+      egDecay: patch.panelSettings.envelope?.decay?.value,
+      egInt: patch.panelSettings.envelope?.intensity?.value,
+      lfoRate: patch.panelSettings.lfo?.rate?.value,
+      lfoInt: patch.panelSettings.lfo?.intensity?.value,
+      drive: patch.panelSettings.drive?.value,
+      tempo: patch.sequencerSettings?.bpm?.value,
+      master: 0,
+    };
+
+    console.log(`getKnobInitialValue(${knobId}) = ${mapping[knobId]}`);
+    return mapping[knobId];
+  }
 </script>
 
 <button class="bg-toggle" class:off={!showBackground} on:click={toggleBackground}>
@@ -48,16 +77,29 @@
 
 <div id="synth-container" class:show-bg={showBackground}>
   <!-- Knobs -->
-  {#each Object.entries(knobsConfig) as [id, config]}
-    <Knob
-      {id}
-      name={config.name}
-      top={config.top}
-      left={config.left}
-      initialValue={id === "cutoff" ? patch?.panelSettings?.filter?.cutoff?.value : undefined}
-      onValueChange={handleKnobChange}
-    />
-  {/each}
+  {#if patch}
+    {#each Object.entries(knobsConfig) as [knobId, config]}
+      <Knob
+        {knobId}
+        name={config.name}
+        top={config.top}
+        left={config.left}
+        initialValue={getKnobInitialValue(knobId)}
+        onValueChange={handleKnobChange}
+      />
+    {/each}
+  {:else}
+    {#each Object.entries(knobsConfig) as [knobId, config]}
+      <Knob
+        {knobId}
+        name={config.name}
+        top={config.top}
+        left={config.left}
+        initialValue={undefined}
+        onValueChange={handleKnobChange}
+      />
+    {/each}
+  {/if}
 
   <!-- Toggles -->
   {#each Object.entries(togglesConfig).filter(([_, cfg]) => cfg.type === "vertical") as [id, config]}
