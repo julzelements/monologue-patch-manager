@@ -10,12 +10,18 @@
   let showBackground = true;
   let currentParamName = "";
   let currentValue: string | number = "";
+  let patch: any;
 
   onMount(async () => {
     try {
-      const [knobsRes, togglesRes] = await Promise.all([fetch("/knobs.json"), fetch("/toggles.json")]);
+      const [knobsRes, togglesRes, initialPatch] = await Promise.all([
+        fetch("/knobs.json"),
+        fetch("/toggles.json"),
+        fetch("/patches/<afx_acid3>.json"),
+      ]);
       knobsConfig = await knobsRes.json();
       togglesConfig = await togglesRes.json();
+      patch = await initialPatch.json();
     } catch (error) {
       console.error("Error loading configuration:", error);
     }
@@ -43,7 +49,14 @@
 <div id="synth-container" class:show-bg={showBackground}>
   <!-- Knobs -->
   {#each Object.entries(knobsConfig) as [id, config]}
-    <Knob {id} name={config.name} top={config.top} left={config.left} onValueChange={handleKnobChange} />
+    <Knob
+      {id}
+      name={config.name}
+      top={config.top}
+      left={config.left}
+      initialValue={id === "cutoff" ? patch?.panelSettings?.filter?.cutoff?.value : undefined}
+      onValueChange={handleKnobChange}
+    />
   {/each}
 
   <!-- Toggles -->

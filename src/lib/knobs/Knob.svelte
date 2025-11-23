@@ -3,15 +3,26 @@
   export let name: string;
   export let top: number;
   export let left: number;
+  export let initialValue: number | undefined = undefined;
   export let onValueChange: (name: string, value: number) => void;
 
   let currentRot = 0;
   let lastRot = 0;
   let isPointerDown = false;
   let startY = 0;
+  let initializedValue: number | undefined = undefined;
 
   const maxRot = 160;
   const speed = 1.5;
+
+  // Initialize rotation from initialValue (0-1023 range)
+  $: if (initialValue !== undefined && initialValue !== initializedValue) {
+    const normalized = initialValue / 1023; // Convert to 0-1 range
+    currentRot = normalized * maxRot * 2 - maxRot; // Convert to -160 to 160 range
+    lastRot = currentRot;
+    initializedValue = initialValue;
+    console.log(`Knob ${id} initialized to ${initialValue}, rotation: ${currentRot}`);
+  }
 
   function handlePointerDown(event: PointerEvent) {
     isPointerDown = true;
@@ -48,7 +59,7 @@
     role="slider"
     tabindex="0"
     aria-label={name}
-    aria-valuenow={(((currentRot + maxRot) / (maxRot * 2)) * 1023).toFixed(0)}
+    aria-valuenow={Math.round(((currentRot + maxRot) / (maxRot * 2)) * 1023)}
     aria-valuemin="0"
     aria-valuemax="1023"
   >
