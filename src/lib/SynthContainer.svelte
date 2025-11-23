@@ -2,10 +2,11 @@
   import { onMount } from 'svelte';
   import Knob from './knobs/Knob.svelte';
   import VerticalToggle from './toggles/VerticalToggle.svelte';
+  import HorizontalToggle from './toggles/HorizontalToggle.svelte';
   import LcdScreen from './LcdScreen.svelte';
 
   let knobsConfig: Record<string, { name: string; top: number; left: number }> = {};
-  let togglesConfig: Record<string, { name: string; top: number; left: number; type: string }> = {};
+  let togglesConfig: Record<string, { name: string; top: number; left: number; type: string; poles?: number }> = {};
   let showBackground = true;
   let currentParamName = '';
   let currentValue: string | number = '';
@@ -64,6 +65,19 @@
       name={config.name}
       top={config.top}
       left={config.left}
+      poles={config.poles || 3}
+      onValueChange={handleToggleChange}
+    />
+  {/each}
+
+  <!-- Horizontal Toggles -->
+  {#each Object.entries(togglesConfig).filter(([_, cfg]) => cfg.type === 'horizontal') as [id, config]}
+    <HorizontalToggle
+      {id}
+      name={config.name}
+      top={config.top}
+      left={config.left}
+      poles={config.poles || 3}
       onValueChange={handleToggleChange}
     />
   {/each}

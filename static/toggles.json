@@ -1,6 +1,7 @@
 {
   "wave1": { "name": "WAVE", "top": 40, "left": 143.5, "type": "vertical" },
-  "octave1": { "name": "OCTAVE", "top": 40, "left": 202, "type": "vertical" },
+  "octave1": { "name": "OCTAVE", "top": 40, "left": 202, "type": "vertical", "poles": 4 },
+  "keyboardOctave": { "name": "OCTAVE", "top": 212.5, "left": 51, "type": "horizontal", "poles": 5 },
   "sync": { "name": "SYNC", "top": 40, "left": 497.5, "type": "vertical" },
   "egTarget": { "name": "EG TARGET", "top": 39, "left": 752.3, "type": "vertical" },
   "ring": { "name": "RING", "top": 114, "left": 202, "type": "vertical" },

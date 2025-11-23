@@ -3,15 +3,17 @@
   export let name: string;
   export let top: number;
   export let left: number;
-  export let poles: number = 3; // Default to 3 poles for backward compatibility
+  export let poles: number = 3; // Default to 3 poles
   export let onValueChange: (name: string, value: string) => void;
 
   let position = 0;
   
   // Generate position names based on number of poles
-  $: positionNames = poles === 4 
-    ? ['1', '2', '3', '4'] 
-    : ['LOW', 'MID', 'HIGH'];
+  $: positionNames = poles === 2 
+    ? ['OFF', 'ON'] 
+    : poles === 3
+    ? ['LEFT', 'MID', 'RIGHT']
+    : Array.from({ length: poles }, (_, i) => String(i + 1));
 
   function handleClick(pos: number) {
     position = pos;
@@ -19,11 +21,11 @@
   }
 </script>
 
-<div class="vertical-toggle" class:four-pole={poles === 4} style="top: {top}px; left: {left}px;" {id}>
-  <div class="vertical-knob v-pos-{position} poles-{poles}"></div>
+<div class="horizontal-toggle" class:two-pole={poles === 2} style="top: {top}px; left: {left}px;" {id}>
+  <div class="horizontal-knob h-pos-{position} poles-{poles}"></div>
   {#each Array(poles) as _, i}
     <div 
-      class="vertical-zone" 
+      class="horizontal-zone" 
       role="button" 
       tabindex="0" 
       aria-label="{name} {positionNames[i]}" 
@@ -34,28 +36,32 @@
 </div>
 
 <style>
-  .vertical-toggle {
+  .horizontal-toggle {
     border: 1px solid black;
     position: absolute;
-    width: 14px;
-    height: 46px;
+    width: 46px;
+    height: 14px;
     background: #ddd;
     border-radius: 21px;
     padding: 2px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
   }
 
-  .vertical-zone {
+  .horizontal-toggle.two-pole {
+    width: 31px;
+  }
+
+  .horizontal-zone {
     flex: 1;
-    width: 100%;
+    height: 100%;
     cursor: pointer;
     z-index: 1;
   }
 
-  .vertical-knob {
+  .horizontal-knob {
     border: 1px solid black;
     position: absolute;
     top: 3px;
@@ -73,7 +79,7 @@
     justify-content: center;
   }
 
-  .vertical-knob::after {
+  .horizontal-knob::after {
     content: '';
     width: 8px;
     height: 8px;
@@ -82,33 +88,63 @@
     border: 1px solid #999;
   }
 
+  /* 2-pole positions */
+  .h-pos-0.poles-2 {
+    transform: translateX(0px);
+  }
+
+  .h-pos-1.poles-2 {
+    transform: translateX(17px);
+  }
+
   /* 3-pole positions */
-  .v-pos-0.poles-3 {
-    transform: translateY(0px);
+  .h-pos-0.poles-3 {
+    transform: translateX(0px);
   }
 
-  .v-pos-1.poles-3 {
-    transform: translateY(17px);
+  .h-pos-1.poles-3 {
+    transform: translateX(17px);
   }
 
-  .v-pos-2.poles-3 {
-    transform: translateY(31px);
+  .h-pos-2.poles-3 {
+    transform: translateX(31px);
   }
 
   /* 4-pole positions */
-  .v-pos-0.poles-4 {
-    transform: translateY(0px);
+  .h-pos-0.poles-4 {
+    transform: translateX(0px);
   }
 
-  .v-pos-1.poles-4 {
-    transform: translateY(10px);
+  .h-pos-1.poles-4 {
+    transform: translateX(10px);
   }
 
-  .v-pos-2.poles-4 {
-    transform: translateY(21px);
+  .h-pos-2.poles-4 {
+    transform: translateX(21px);
   }
 
-  .v-pos-3.poles-4 {
-    transform: translateY(31px);
+  .h-pos-3.poles-4 {
+    transform: translateX(31px);
+  }
+
+  /* 5-pole positions */
+  .h-pos-0.poles-5 {
+    transform: translateX(0px);
+  }
+
+  .h-pos-1.poles-5 {
+    transform: translateX(8px);
+  }
+
+  .h-pos-2.poles-5 {
+    transform: translateX(16px);
+  }
+
+  .h-pos-3.poles-5 {
+    transform: translateX(23px);
+  }
+
+  .h-pos-4.poles-5 {
+    transform: translateX(31px);
   }
 </style>
