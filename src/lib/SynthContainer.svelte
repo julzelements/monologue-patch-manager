@@ -1,26 +1,23 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import Knob from './knobs/Knob.svelte';
-  import VerticalToggle from './toggles/VerticalToggle.svelte';
-  import HorizontalToggle from './toggles/HorizontalToggle.svelte';
-  import LcdScreen from './LcdScreen.svelte';
+  import { onMount } from "svelte";
+  import Knob from "./knobs/Knob.svelte";
+  import VerticalToggle from "./toggles/VerticalToggle.svelte";
+  import HorizontalToggle from "./toggles/HorizontalToggle.svelte";
+  import LcdScreen from "./LcdScreen.svelte";
 
   let knobsConfig: Record<string, { name: string; top: number; left: number }> = {};
   let togglesConfig: Record<string, { name: string; top: number; left: number; type: string; poles?: number }> = {};
   let showBackground = true;
-  let currentParamName = '';
-  let currentValue: string | number = '';
+  let currentParamName = "";
+  let currentValue: string | number = "";
 
   onMount(async () => {
     try {
-      const [knobsRes, togglesRes] = await Promise.all([
-        fetch('/knobs.json'),
-        fetch('/toggles.json')
-      ]);
+      const [knobsRes, togglesRes] = await Promise.all([fetch("/knobs.json"), fetch("/toggles.json")]);
       knobsConfig = await knobsRes.json();
       togglesConfig = await togglesRes.json();
     } catch (error) {
-      console.error('Error loading configuration:', error);
+      console.error("Error loading configuration:", error);
     }
   });
 
@@ -40,26 +37,17 @@
 </script>
 
 <button class="bg-toggle" class:off={!showBackground} on:click={toggleBackground}>
-  {showBackground ? 'BG ON' : 'BG OFF'}
+  {showBackground ? "BG ON" : "BG OFF"}
 </button>
 
-<div
-  id="synth-container"
-  class:show-bg={showBackground}
->
+<div id="synth-container" class:show-bg={showBackground}>
   <!-- Knobs -->
   {#each Object.entries(knobsConfig) as [id, config]}
-    <Knob
-      {id}
-      name={config.name}
-      top={config.top}
-      left={config.left}
-      onValueChange={handleKnobChange}
-    />
+    <Knob {id} name={config.name} top={config.top} left={config.left} onValueChange={handleKnobChange} />
   {/each}
 
   <!-- Toggles -->
-  {#each Object.entries(togglesConfig).filter(([_, cfg]) => cfg.type === 'vertical') as [id, config]}
+  {#each Object.entries(togglesConfig).filter(([_, cfg]) => cfg.type === "vertical") as [id, config]}
     <VerticalToggle
       {id}
       name={config.name}
@@ -71,7 +59,7 @@
   {/each}
 
   <!-- Horizontal Toggles -->
-  {#each Object.entries(togglesConfig).filter(([_, cfg]) => cfg.type === 'horizontal') as [id, config]}
+  {#each Object.entries(togglesConfig).filter(([_, cfg]) => cfg.type === "horizontal") as [id, config]}
     <HorizontalToggle
       {id}
       name={config.name}
@@ -154,7 +142,7 @@
   }
 
   #synth-container.show-bg {
-    background-image: url('/assets/mono-bare.svg');
+    background-image: url("/assets/mono-bare.svg");
     background-size: 100% 100%;
     background-repeat: no-repeat;
   }
@@ -167,24 +155,25 @@
     height: 28px;
     background-color: rgb(82, 150, 173);
     border: 1px solid #333;
+    border-radius: 2px;
   }
 
   .edit-menu-container {
     display: grid;
     grid-template-columns: repeat(3, 32px);
-    gap: 5px;
+    gap: 4.6px;
     position: absolute;
-    left: 320px;
-    top: 206px;
+    left: 322px;
+    top: 205.2px;
   }
 
   .sequencer-menu-container {
     display: grid;
     grid-template-columns: repeat(4, 32px);
-    gap: 5px;
+    gap: 4.6px;
     position: absolute;
-    left: 469px;
-    top: 206px;
+    left: 470.2px;
+    top: 205.2px;
   }
 
   .menu-button {
@@ -198,16 +187,17 @@
   .sequencer-container {
     display: grid;
     grid-template-columns: repeat(16, 32px);
-    gap: 5.2px;
+    gap: 5px;
     position: absolute;
-    left: 246px;
+    left: 248.5px;
     top: 282px;
   }
 
   .square {
-    width: 32px;
-    height: 30px;
+    width: 31px;
+    height: 28px;
     background-color: rgb(82, 150, 173);
     border: 1px solid #333;
+    border-radius: 2px;
   }
 </style>
