@@ -4,24 +4,36 @@
   import VerticalToggle from "./toggles/VerticalToggle.svelte";
   import HorizontalToggle from "./toggles/HorizontalToggle.svelte";
   import LcdScreen from "./LcdScreen.svelte";
+  import { prettyPanelSettings, type MonologueParameters } from "@julzelements/monologue-midi";
+
+  type PrettyPanelSettings = ReturnType<typeof prettyPanelSettings>;
 
   let knobsConfig: Record<string, { name: string; top: number; left: number }> = {};
   let togglesConfig: Record<string, { name: string; top: number; left: number; type: string; poles?: number }> = {};
   let showBackground = true;
   let currentParamName = "";
   let currentValue: string | number = "";
-  let patch: any;
+  let rawPatch: MonologueParameters | null = null;
+  let prettyPatch: PrettyPanelSettings | null = null;
 
   onMount(async () => {
     try {
-      const [knobsRes, togglesRes, initialPatch] = await Promise.all([
+      const [knobsRes, togglesRes, patchRes] = await Promise.all([
         fetch("/knobs.json"),
         fetch("/toggles.json"),
         fetch("/patches/<afx_acid3>.json"),
       ]);
+
       knobsConfig = await knobsRes.json();
       togglesConfig = await togglesRes.json();
-      patch = await initialPatch.json();
+      rawPatch = await patchRes.json();
+
+      // Use prettyPanelSettings to validate and format the patch
+      if (rawPatch) {
+        prettyPatch = prettyPanelSettings(rawPatch);
+        console.log("Raw patch:", rawPatch);
+        console.log("Pretty patch:", prettyPatch);
+      }
     } catch (error) {
       console.error("Error loading configuration:", error);
     }
@@ -43,31 +55,74 @@
 
   // Map knob IDs to their corresponding patch values
   function getKnobInitialValue(knobId: string): number | undefined {
-    if (!patch?.panelSettings) {
-      console.log("No patch.panelSettings", patch);
+    if (!rawPatch?.panelSettings) {
       return undefined;
     }
 
     const mapping: Record<string, number | undefined> = {
-      cutoff: patch.panelSettings.filter?.cutoff?.value,
-      resonance: patch.panelSettings.filter?.resonance?.value,
-      vco1Mixer: patch.panelSettings.oscilators?.vco1?.level?.value,
-      vco1Shape: patch.panelSettings.oscilators?.vco1?.shape?.value,
-      vco2Pitch: patch.panelSettings.oscilators?.vco2?.pitch?.value,
-      vco2Mixer: patch.panelSettings.oscilators?.vco2?.level?.value,
-      vco2Shape: patch.panelSettings.oscilators?.vco2?.shape?.value,
-      egAttack: patch.panelSettings.envelope?.attack?.value,
-      egDecay: patch.panelSettings.envelope?.decay?.value,
-      egInt: patch.panelSettings.envelope?.intensity?.value,
-      lfoRate: patch.panelSettings.lfo?.rate?.value,
-      lfoInt: patch.panelSettings.lfo?.intensity?.value,
-      drive: patch.panelSettings.drive?.value,
-      tempo: patch.sequencerSettings?.bpm?.value,
+      cutoff: rawPatch.panelSettings.filter?.cutoff?.value,
+      resonance: rawPatch.panelSettings.filter?.resonance?.value,
+      vco1Mixer: rawPatch.panelSettings.oscilators?.vco1?.level?.value,
+      vco1Shape: rawPatch.panelSettings.oscilators?.vco1?.shape?.value,
+      vco2Pitch: rawPatch.panelSettings.oscilators?.vco2?.pitch?.value,
+      vco2Mixer: rawPatch.panelSettings.oscilators?.vco2?.level?.value,
+      vco2Shape: rawPatch.panelSettings.oscilators?.vco2?.shape?.value,
+      egAttack: rawPatch.panelSettings.envelope?.attack?.value,
+      egDecay: rawPatch.panelSettings.envelope?.decay?.value,
+      egInt: rawPatch.panelSettings.envelope?.intensity?.value,
+      lfoRate: rawPatch.panelSettings.lfo?.rate?.value,
+      lfoInt: rawPatch.panelSettings.lfo?.intensity?.value,
+      drive: rawPatch.panelSettings.drive?.value,
+      tempo: rawPatch.sequencerSettings?.bpm?.value,
       master: 0,
     };
 
-    console.log(`getKnobInitialValue(${knobId}) = ${mapping[knobId]}`);
     return mapping[knobId];
+  }
+
+  // Map toggle IDs to their corresponding patch values
+  function getToggleInitialValue(toggleId: string): number | undefined {
+    if (!rawPatch?.panelSettings) {
+      return undefined;
+    }
+
+    const mapping: Record<string, number | undefined> = {
+      wave1: rawPatch.panelSettings.oscilators?.vco1?.wave?.value,
+      octave1: rawPatch.panelSettings.oscilators?.vco1?.octave?.value,
+      sync: rawPatch.panelSettings.syncRing?.value,
+      egTarget: rawPatch.panelSettings.envelope?.target?.value,
+      ring: rawPatch.panelSettings.syncRing?.value,
+      wave2: rawPatch.panelSettings.oscilators?.vco2?.wave?.value,
+      lfoTarget: rawPatch.panelSettings.lfo?.target?.value,
+      lfoWave: rawPatch.panelSettings.lfo?.type?.value,
+      seqTarget: rawPatch.panelSettings.seqTrig?.value,
+      motion: 0,
+      keyboardOctave: rawPatch.panelSettings.keyboardOctave?.value,
+    };
+
+    return mapping[toggleId];
+  }
+
+  // Get formatted position names for toggles from prettified patch
+  function getTogglePositionNames(toggleId: string): string[] | undefined {
+    if (!prettyPatch) {
+      return undefined;
+    }
+
+    const formattedMapping: Record<string, string[] | undefined> = {
+      wave1: ["SQR", "TRI", "SAW"], // VCO1 wave
+      octave1: ["16'", "8'", "4'", "2'"], // VCO1 octave
+      sync: ["RING", "OFF", "SYNC"], // Sync/Ring
+      egTarget: ["CUTOFF", "PITCH 2", "PITCH"], // EG Target
+      ring: ["RING", "OFF", "SYNC"], // Same as sync
+      wave2: ["NOISE", "TRI", "SAW"], // VCO2 wave
+      lfoTarget: ["CUTOFF", "SHAPE", "PITCH"], // LFO Target
+      lfoWave: ["SQR", "TRI", "SAW"], // LFO wave
+      seqTarget: ["OFF", "ON"], // Seq Trig
+      keyboardOctave: ["-2", "-1", "0", "+1", "+2"], // Keyboard octave
+    };
+
+    return formattedMapping[toggleId];
   }
 </script>
 
@@ -77,7 +132,7 @@
 
 <div id="synth-container" class:show-bg={showBackground}>
   <!-- Knobs -->
-  {#if patch}
+  {#if rawPatch}
     {#each Object.entries(knobsConfig) as [knobId, config]}
       <Knob
         {knobId}
@@ -102,28 +157,34 @@
   {/if}
 
   <!-- Toggles -->
-  {#each Object.entries(togglesConfig).filter(([_, cfg]) => cfg.type === "vertical") as [id, config]}
-    <VerticalToggle
-      {id}
-      name={config.name}
-      top={config.top}
-      left={config.left}
-      poles={config.poles || 3}
-      onValueChange={handleToggleChange}
-    />
-  {/each}
+  {#if rawPatch}
+    {#each Object.entries(togglesConfig).filter(([_, cfg]) => cfg.type === "vertical") as [id, config]}
+      <VerticalToggle
+        {id}
+        name={config.name}
+        top={config.top}
+        left={config.left}
+        poles={config.poles || 3}
+        positionNames={getTogglePositionNames(id)}
+        initialValue={getToggleInitialValue(id)}
+        onValueChange={handleToggleChange}
+      />
+    {/each}
 
-  <!-- Horizontal Toggles -->
-  {#each Object.entries(togglesConfig).filter(([_, cfg]) => cfg.type === "horizontal") as [id, config]}
-    <HorizontalToggle
-      {id}
-      name={config.name}
-      top={config.top}
-      left={config.left}
-      poles={config.poles || 3}
-      onValueChange={handleToggleChange}
-    />
-  {/each}
+    <!-- Horizontal Toggles -->
+    {#each Object.entries(togglesConfig).filter(([_, cfg]) => cfg.type === "horizontal") as [id, config]}
+      <HorizontalToggle
+        {id}
+        name={config.name}
+        top={config.top}
+        left={config.left}
+        poles={config.poles || 3}
+        positionNames={getTogglePositionNames(id)}
+        initialValue={getToggleInitialValue(id)}
+        onValueChange={handleToggleChange}
+      />
+    {/each}
+  {/if}
 
   <!-- LCD Screen -->
   <LcdScreen paramName={currentParamName} value={currentValue} />

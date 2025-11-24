@@ -4,33 +4,45 @@
   export let top: number;
   export let left: number;
   export let poles: number = 3; // Default to 3 poles
+  export let positionNames: string[] | undefined = undefined;
+  export let initialValue: number | undefined = undefined;
   export let onValueChange: (name: string, value: string) => void;
 
   let position = 0;
-  
-  // Generate position names based on number of poles
-  $: positionNames = poles === 2 
-    ? ['OFF', 'ON'] 
-    : poles === 3
-    ? ['LEFT', 'MID', 'RIGHT']
-    : Array.from({ length: poles }, (_, i) => String(i + 1));
+  let initializedValue: number | undefined = undefined;
+
+  // Generate position names based on number of poles (fallback if not provided)
+  $: defaultPositionNames =
+    poles === 2
+      ? ["OFF", "ON"]
+      : poles === 3
+        ? ["LEFT", "MID", "RIGHT"]
+        : Array.from({ length: poles }, (_, i) => String(i + 1));
+  $: names = positionNames || defaultPositionNames;
+
+  // Initialize position from initialValue
+  $: if (initialValue !== undefined && initialValue !== initializedValue) {
+    // Invert the position: 0 should be at left, max at right
+    position = poles - 1 - Math.min(Math.max(initialValue, 0), poles - 1);
+    initializedValue = initialValue;
+  }
 
   function handleClick(pos: number) {
     position = pos;
-    onValueChange(name, positionNames[pos]);
+    onValueChange(name, names[pos]);
   }
 </script>
 
 <div class="horizontal-toggle" class:two-pole={poles === 2} style="top: {top}px; left: {left}px;" {id}>
   <div class="horizontal-knob h-pos-{position} poles-{poles}"></div>
   {#each Array(poles) as _, i}
-    <div 
-      class="horizontal-zone" 
-      role="button" 
-      tabindex="0" 
-      aria-label="{name} {positionNames[i]}" 
-      on:click={() => handleClick(i)} 
-      on:keydown={(e) => e.key === 'Enter' && handleClick(i)}
+    <div
+      class="horizontal-zone"
+      role="button"
+      tabindex="0"
+      aria-label="{name} {names[i]}"
+      on:click={() => handleClick(i)}
+      on:keydown={(e) => e.key === "Enter" && handleClick(i)}
     ></div>
   {/each}
 </div>
@@ -80,7 +92,7 @@
   }
 
   .horizontal-knob::after {
-    content: '';
+    content: "";
     width: 8px;
     height: 8px;
     background: #ddd;

@@ -4,15 +4,17 @@ Recieve CC messages
 
 ## Issues
 
-- Use the test dump and load a few parameters
-- Use the test dump and load all parameters into memory
+- ~~Use the test dump and load a all the knobs~~
+- Use the test dump and load all the toggles
+- Add the octave toggles
+- Design a clever way to show extra parameters
 - Fix the toggles to use 0, 1, 2
-- Fix the octave toggle
 - Add the led operation for the octave toggle
 
 ## Refactoring
 
-- move the absolute positioning to relative positioning with proper containers.
+- ~~move the absolute positioning to relative positioning with proper containers.~~~~
+  Won't do.
 
 ## Features
 
@@ -24,5 +26,6 @@ Recieve CC messages
 
 ## Educational Patch teacher
 
+- Explore hiding and higlighing areas of the synth.
 - teach how to make a laser zap
 - teach how to make a bass growl

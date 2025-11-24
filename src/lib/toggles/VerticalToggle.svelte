@@ -4,31 +4,40 @@
   export let top: number;
   export let left: number;
   export let poles: number = 3; // Default to 3 poles for backward compatibility
+  export let positionNames: string[] | undefined = undefined;
+  export let initialValue: number | undefined = undefined;
   export let onValueChange: (name: string, value: string) => void;
 
   let position = 0;
-  
-  // Generate position names based on number of poles
-  $: positionNames = poles === 4 
-    ? ['1', '2', '3', '4'] 
-    : ['LOW', 'MID', 'HIGH'];
+  let initializedValue: number | undefined = undefined;
+
+  // Generate position names based on number of poles (fallback if not provided)
+  $: defaultPositionNames = poles === 4 ? ["1", "2", "3", "4"] : ["LOW", "MID", "HIGH"];
+  $: names = positionNames || defaultPositionNames;
+
+  // Initialize position from initialValue
+  $: if (initialValue !== undefined && initialValue !== initializedValue) {
+    // Invert the position: 0 should be at bottom, max at top
+    position = poles - 1 - Math.min(Math.max(initialValue, 0), poles - 1);
+    initializedValue = initialValue;
+  }
 
   function handleClick(pos: number) {
     position = pos;
-    onValueChange(name, positionNames[pos]);
+    onValueChange(name, names[pos]);
   }
 </script>
 
 <div class="vertical-toggle" class:four-pole={poles === 4} style="top: {top}px; left: {left}px;" {id}>
   <div class="vertical-knob v-pos-{position} poles-{poles}"></div>
   {#each Array(poles) as _, i}
-    <div 
-      class="vertical-zone" 
-      role="button" 
-      tabindex="0" 
-      aria-label="{name} {positionNames[i]}" 
-      on:click={() => handleClick(i)} 
-      on:keydown={(e) => e.key === 'Enter' && handleClick(i)}
+    <div
+      class="vertical-zone"
+      role="button"
+      tabindex="0"
+      aria-label="{name} {names[i]}"
+      on:click={() => handleClick(i)}
+      on:keydown={(e) => e.key === "Enter" && handleClick(i)}
     ></div>
   {/each}
 </div>
@@ -74,7 +83,7 @@
   }
 
   .vertical-knob::after {
-    content: '';
+    content: "";
     width: 8px;
     height: 8px;
     background: #ddd;
