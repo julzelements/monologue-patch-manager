@@ -6,6 +6,7 @@
   import KeyboardOctaveToggle from "./toggles/KeyboardOctaveToggle.svelte";
   import LcdScreen from "./LcdScreen.svelte";
   import GlobalSection from "./sections/GlobalSection.svelte";
+  import OscillatorOne from "./sections/OscillatorOne.svelte";
   import { CC_NAMES, prettyPanelSettings, type MonologueParameters, LABELS } from "@julzelements/monologue-midi";
 
   type PrettyPanelSettings = ReturnType<typeof prettyPanelSettings>;
@@ -61,15 +62,15 @@
     onToggleChange={handleToggleChange}
   />
 
-  <!-- Knobs -->
-  <Knob
-    knobId={CC_NAMES.vco1Shape}
-    name={"VCO 1 SHAPE"}
-    top={120}
-    left={133}
-    initialValue={rawPatch?.panelSettings.oscilators.vco1.shape.value}
+  <!-- Oscillator One -->
+  <OscillatorOne
+    shapeValue={rawPatch?.panelSettings.oscilators.vco1.shape.value}
+    waveValue={rawPatch?.panelSettings.oscilators.vco1.wave.value}
     onValueChange={handleKnobChange}
+    onToggleChange={handleToggleChange}
   />
+
+  <!-- Knobs -->
   <Knob
     knobId={CC_NAMES.vco2Pitch}
     name={"VCO 2 PITCH"}
@@ -167,21 +168,12 @@
     onValueChange={handleKnobChange}
   />
   <!-- Toggles -->
-  <VerticalToggle
-    id={CC_NAMES.vco1Wave}
-    name={"VCO 1 WAVE"}
-    top={40}
-    left={143.5}
-    positionNames={[...LABELS.VCO1_WAVE_LABELS].reverse()}
-    initialValue={rawPatch?.panelSettings.oscilators.vco1.wave.value ?? 0}
-    onValueChange={handleToggleChange}
-  />
   <Vco2Toggle
     id={CC_NAMES.vco1Octave}
     name={"VCO 1 OCTAVE"}
     top={40}
     left={202}
-    positionNames={[...LABELS.OCTAVE_LABELS].reverse()}
+    positionNames={[...LABELS.OCTAVE_LABELS]}
     initialValue={rawPatch?.panelSettings.oscilators.vco1.octave.value ?? 0}
     onValueChange={handleToggleChange}
   />
@@ -190,7 +182,7 @@
     name={"VCO 2 WAVE"}
     top={114}
     left={202}
-    positionNames={[...LABELS.VCO2_WAVE_LABELS].reverse()}
+    positionNames={[...LABELS.VCO2_WAVE_LABELS]}
     initialValue={rawPatch?.panelSettings.oscilators.vco2.wave.value ?? 0}
     onValueChange={handleToggleChange}
   />
@@ -199,7 +191,7 @@
     name={"SYNC"}
     top={114}
     left={238.5}
-    positionNames={[...LABELS.SYNC_RING_LABELS].reverse()}
+    positionNames={[...LABELS.SYNC_RING_LABELS]}
     initialValue={rawPatch?.panelSettings.syncRing.value ?? 0}
     onValueChange={handleToggleChange}
   />
@@ -208,7 +200,7 @@
     name={"EG TARGET"}
     top={39}
     left={752.3}
-    positionNames={[...LABELS.EG_TARGET_LABELS].reverse()}
+    positionNames={[...LABELS.EG_TARGET_LABELS]}
     initialValue={rawPatch?.panelSettings.envelope.target.value ?? 0}
     onValueChange={handleToggleChange}
   />
@@ -217,7 +209,7 @@
     name={"EG TYPE"}
     top={40}
     left={497.5}
-    positionNames={[...LABELS.EG_TYPE_LABELS].reverse()}
+    positionNames={[...LABELS.EG_TYPE_LABELS]}
     initialValue={rawPatch?.panelSettings.envelope.type.value ?? 0}
     onValueChange={handleToggleChange}
   />
