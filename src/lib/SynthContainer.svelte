@@ -270,7 +270,7 @@
     top={187.5}
     left={238.5}
     poles={3}
-    positionNames={["NOTE", "SLIDE", "MOTION"]}
+    positionNames={["NOTE", "MOTION", "SLIDE"]}
     initialValue={0}
     onValueChange={handleToggleChange}
   />

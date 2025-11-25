@@ -17,8 +17,7 @@
 
   // Initialize position from initialValue
   $: if (initialValue !== undefined && initialValue !== initializedValue) {
-    // Invert the position: 0 should be at bottom, max at top
-    position = poles - 1 - Math.min(Math.max(initialValue, 0), poles - 1);
+    position = Math.min(Math.max(initialValue, 0), poles - 1);
     initializedValue = initialValue;
   }
 
