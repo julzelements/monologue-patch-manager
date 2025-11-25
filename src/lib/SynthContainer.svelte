@@ -5,12 +5,11 @@
   import Vco2Toggle from "./toggles/Vco2Toggle.svelte";
   import KeyboardOctaveToggle from "./toggles/KeyboardOctaveToggle.svelte";
   import LcdScreen from "./LcdScreen.svelte";
+  import GlobalSection from "./sections/GlobalSection.svelte";
   import { CC_NAMES, prettyPanelSettings, type MonologueParameters, LABELS } from "@julzelements/monologue-midi";
 
   type PrettyPanelSettings = ReturnType<typeof prettyPanelSettings>;
 
-  let knobsConfig: Record<string, { name: string; top: number; left: number }> = {};
-  let togglesConfig: Record<string, { name: string; top: number; left: number; type: string; poles?: number }> = {};
   let showBackground = true;
   let currentParamName = "";
   let currentValue: string | number = "";
@@ -19,14 +18,7 @@
 
   onMount(async () => {
     try {
-      const [knobsRes, togglesRes, patchRes] = await Promise.all([
-        fetch("/knobs.json"),
-        fetch("/toggles.json"),
-        fetch("/patches/<afx_acid3>.json"),
-      ]);
-
-      knobsConfig = await knobsRes.json();
-      togglesConfig = await togglesRes.json();
+      const patchRes = await fetch("/patches/<afx_acid3>.json");
       rawPatch = await patchRes.json();
 
       // Use prettyPanelSettings to validate and format the patch
@@ -60,16 +52,16 @@
 </button>
 
 <div id="synth-container" class:show-bg={showBackground}>
-  <!-- Knobs -->
-  <Knob knobId={"master"} name={"MASTER"} top={47} left={60} initialValue={0} onValueChange={handleKnobChange} />
-  <Knob
-    knobId={CC_NAMES.drive}
-    name={"DRIVE"}
-    top={120}
-    left={60}
-    initialValue={rawPatch?.panelSettings.drive.value}
+  <!-- Global Section -->
+  <GlobalSection
+    driveValue={rawPatch?.panelSettings.drive.value}
+    keyboardOctaveValue={rawPatch?.panelSettings.keyboardOctave.value}
+    sequencerModeValue={0}
     onValueChange={handleKnobChange}
+    onToggleChange={handleToggleChange}
   />
+
+  <!-- Knobs -->
   <Knob
     knobId={CC_NAMES.vco1Shape}
     name={"VCO 1 SHAPE"}
@@ -254,25 +246,6 @@
     left={752.3}
     positionNames={[...LABELS.BOOLEAN_LABELS].reverse()}
     initialValue={rawPatch?.panelSettings.seqTrig.value ?? 0}
-    onValueChange={handleToggleChange}
-  />
-  <VerticalToggle
-    id={"sequencerMode"}
-    name={"SEQ MODE"}
-    top={187.5}
-    left={238.5}
-    positionNames={["MOTION", "SLIDE", "NOTE"]}
-    initialValue={0}
-    onValueChange={handleToggleChange}
-  />
-
-  <KeyboardOctaveToggle
-    id={"keyboardOctave"}
-    name={"KEYBOARD OCTAVE"}
-    top={212.5}
-    left={51}
-    positionNames={[...LABELS.KEYBOARD_OCTAVE_LABELS]}
-    initialValue={rawPatch?.panelSettings.keyboardOctave.value ?? 0}
     onValueChange={handleToggleChange}
   />
 
