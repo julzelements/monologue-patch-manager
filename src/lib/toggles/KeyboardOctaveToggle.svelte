@@ -3,7 +3,6 @@
   export let name: string;
   export let top: number;
   export let left: number;
-  export let poles: number = 3; // Default to 3 poles
   export let positionNames: string[] | undefined = undefined;
   export let initialValue: number | undefined = undefined;
   export let onValueChange: (name: string, value: string) => void;
@@ -11,19 +10,13 @@
   let position = 0;
   let initializedValue: number | undefined = undefined;
 
-  // Generate position names based on number of poles (fallback if not provided)
-  $: defaultPositionNames =
-    poles === 2
-      ? ["OFF", "ON"]
-      : poles === 3
-        ? ["LEFT", "MID", "RIGHT"]
-        : Array.from({ length: poles }, (_, i) => String(i + 1));
+  // 5-pole toggle for keyboard octave
+  $: defaultPositionNames = ["-2", "-1", "0", "+1", "+2"];
   $: names = positionNames || defaultPositionNames;
 
   // Initialize position from initialValue
   $: if (initialValue !== undefined && initialValue !== initializedValue) {
-    // Invert the position: 0 should be at left, max at right
-    position = poles - 1 - Math.min(Math.max(initialValue, 0), poles - 1);
+    position = Math.min(Math.max(initialValue, 0), 4);
     initializedValue = initialValue;
   }
 
@@ -33,11 +26,11 @@
   }
 </script>
 
-<div class="horizontal-toggle" class:two-pole={poles === 2} style="top: {top}px; left: {left}px;" {id}>
-  <div class="horizontal-knob h-pos-{position} poles-{poles}"></div>
-  {#each Array(poles) as _, i}
+<div class="keyboard-octave-toggle" style="top: {top}px; left: {left}px;" {id}>
+  <div class="keyboard-octave-knob h-pos-{position}"></div>
+  {#each Array(5) as _, i}
     <div
-      class="horizontal-zone"
+      class="keyboard-octave-zone"
       role="button"
       tabindex="0"
       aria-label="{name} {names[i]}"
@@ -48,7 +41,7 @@
 </div>
 
 <style>
-  .horizontal-toggle {
+  .keyboard-octave-toggle {
     border: 1px solid black;
     position: absolute;
     width: 46px;
@@ -62,18 +55,14 @@
     align-items: center;
   }
 
-  .horizontal-toggle.two-pole {
-    width: 31px;
-  }
-
-  .horizontal-zone {
+  .keyboard-octave-zone {
     flex: 1;
     height: 100%;
     cursor: pointer;
     z-index: 1;
   }
 
-  .horizontal-knob {
+  .keyboard-octave-knob {
     border: 1px solid black;
     position: absolute;
     top: 3px;
@@ -91,7 +80,7 @@
     justify-content: center;
   }
 
-  .horizontal-knob::after {
+  .keyboard-octave-knob::after {
     content: "";
     width: 8px;
     height: 8px;
@@ -100,63 +89,24 @@
     border: 1px solid #999;
   }
 
-  /* 2-pole positions */
-  .h-pos-0.poles-2 {
-    transform: translateX(0px);
-  }
-
-  .h-pos-1.poles-2 {
-    transform: translateX(17px);
-  }
-
-  /* 3-pole positions */
-  .h-pos-0.poles-3 {
-    transform: translateX(0px);
-  }
-
-  .h-pos-1.poles-3 {
-    transform: translateX(17px);
-  }
-
-  .h-pos-2.poles-3 {
-    transform: translateX(31px);
-  }
-
-  /* 4-pole positions */
-  .h-pos-0.poles-4 {
-    transform: translateX(0px);
-  }
-
-  .h-pos-1.poles-4 {
-    transform: translateX(10px);
-  }
-
-  .h-pos-2.poles-4 {
-    transform: translateX(21px);
-  }
-
-  .h-pos-3.poles-4 {
-    transform: translateX(31px);
-  }
-
   /* 5-pole positions */
-  .h-pos-0.poles-5 {
+  .h-pos-0 {
     transform: translateX(0px);
   }
 
-  .h-pos-1.poles-5 {
+  .h-pos-1 {
     transform: translateX(8px);
   }
 
-  .h-pos-2.poles-5 {
+  .h-pos-2 {
     transform: translateX(16px);
   }
 
-  .h-pos-3.poles-5 {
+  .h-pos-3 {
     transform: translateX(23px);
   }
 
-  .h-pos-4.poles-5 {
+  .h-pos-4 {
     transform: translateX(31px);
   }
 </style>

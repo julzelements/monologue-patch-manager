@@ -3,7 +3,7 @@
   import Knob from "./knobs/Knob.svelte";
   import VerticalToggle from "./toggles/VerticalToggle.svelte";
   import Vco2Toggle from "./toggles/Vco2Toggle.svelte";
-  import HorizontalToggle from "./toggles/HorizontalToggle.svelte";
+  import KeyboardOctaveToggle from "./toggles/KeyboardOctaveToggle.svelte";
   import LcdScreen from "./LcdScreen.svelte";
   import { CC_NAMES, prettyPanelSettings, type MonologueParameters, LABELS } from "@julzelements/monologue-midi";
 
@@ -266,7 +266,7 @@
     onValueChange={handleToggleChange}
   />
 
-  <HorizontalToggle
+  <KeyboardOctaveToggle
     id={"keyboardOctave"}
     name={"KEYBOARD OCTAVE"}
     top={212.5}
