@@ -4,6 +4,8 @@
   export let top: number;
   export let left: number;
   export let positionNames: string[] | undefined = undefined;
+  export let knobPositions: number[] = [0.9, 8, 16, 23, 31]; // X offsets for the knob
+  export let indicatorPositions: number[] = [-6.5, 7.8, 22, 36.3, 50.7]; // X offsets for the indicator
   export let initialValue: number | undefined = undefined;
   export let onValueChange: (name: string, value: string) => void;
 
@@ -27,7 +29,8 @@
 </script>
 
 <div class="keyboard-octave-toggle" style="top: {top}px; left: {left}px;" {id}>
-  <div class="keyboard-octave-knob h-pos-{position}"></div>
+  <div class="keyboard-octave-indicator" style="transform: translateX({indicatorPositions[position]}px);"></div>
+  <div class="keyboard-octave-knob" style="transform: translateX({knobPositions[position]}px);"></div>
   {#each Array(5) as _, i}
     <div
       class="keyboard-octave-zone"
@@ -89,24 +92,18 @@
     border: 1px solid #999;
   }
 
-  /* 5-pole positions */
-  .h-pos-0 {
-    transform: translateX(0px);
-  }
-
-  .h-pos-1 {
-    transform: translateX(8px);
-  }
-
-  .h-pos-2 {
-    transform: translateX(16px);
-  }
-
-  .h-pos-3 {
-    transform: translateX(23px);
-  }
-
-  .h-pos-4 {
-    transform: translateX(31px);
+  .keyboard-octave-indicator {
+    position: absolute;
+    top: -23.3px;
+    width: 7px;
+    height: 7px;
+    background: red;
+    border-radius: 50%;
+    /* transition: transform 0.15s ease; */
+    pointer-events: none;
+    z-index: 3;
+    box-shadow:
+      0 0 4px rgba(255, 0, 0, 0.8),
+      0 0 8px rgba(255, 0, 0, 0.4);
   }
 </style>
