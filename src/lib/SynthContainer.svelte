@@ -1,10 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Knob from "./knobs/Knob.svelte";
   import VerticalToggle from "./toggles/VerticalToggle.svelte";
-  import Vco2Toggle from "./toggles/Vco2Toggle.svelte";
-  import KeyboardOctaveToggle from "./toggles/KeyboardOctaveToggle.svelte";
-  import LcdScreen from "./LcdScreen.svelte";
+  import LcdScreen from "./menu/LcdScreen.svelte";
   import GlobalSection from "./sections/GlobalSection.svelte";
   import OscillatorOne from "./sections/OscillatorOne.svelte";
   import OscillatorTwo from "./sections/OscillatorTwo.svelte";
@@ -12,7 +9,10 @@
   import Envelope from "./sections/Envelope.svelte";
   import Lfo from "./sections/Lfo.svelte";
   import Sequencer from "./sections/Sequencer.svelte";
-  import { CC_NAMES, prettyPanelSettings, type MonologueParameters, LABELS } from "@julzelements/monologue-midi";
+  import EditMenu from "./menu/EditMenu.svelte";
+  import SequencerMenu from "./menu/SequencerMenu.svelte";
+  import SequencerGrid from "./menu/SequencerGrid.svelte";
+  import { prettyPanelSettings, type MonologueParameters, LABELS } from "@julzelements/monologue-midi";
 
   type PrettyPanelSettings = ReturnType<typeof prettyPanelSettings>;
 
@@ -124,30 +124,14 @@
   <!-- LCD Screen -->
   <LcdScreen paramName={currentParamName} value={currentValue} />
 
-  <!-- Key Trig Hold -->
-  <div class="key-trig-hold"></div>
-
   <!-- Edit Menu -->
-  <div class="edit-menu-container">
-    <div class="menu-button"></div>
-    <div class="menu-button"></div>
-    <div class="menu-button"></div>
-  </div>
+  <EditMenu />
 
   <!-- Sequencer Menu -->
-  <div class="sequencer-menu-container">
-    <div class="menu-button"></div>
-    <div class="menu-button"></div>
-    <div class="menu-button"></div>
-    <div class="menu-button"></div>
-  </div>
+  <SequencerMenu />
 
   <!-- Sequencer Grid -->
-  <div class="sequencer-container">
-    {#each Array(16) as _, i}
-      <div class="square"></div>
-    {/each}
-  </div>
+  <SequencerGrid />
 </div>
 
 <style>
@@ -171,48 +155,5 @@
     background-image: url("/assets/mono-bare.svg");
     background-size: 100% 100%;
     background-repeat: no-repeat;
-  }
-
-  .edit-menu-container {
-    display: grid;
-    grid-template-columns: repeat(3, 32px);
-    gap: 4.6px;
-    position: absolute;
-    left: 322px;
-    top: 205.2px;
-  }
-
-  .sequencer-menu-container {
-    display: grid;
-    grid-template-columns: repeat(4, 32px);
-    gap: 4.6px;
-    position: absolute;
-    left: 470.2px;
-    top: 205.2px;
-  }
-
-  .menu-button {
-    height: 15px;
-    width: 32px;
-    background-color: rgb(82, 150, 173);
-    border: 1px solid #333;
-    border-radius: 2px;
-  }
-
-  .sequencer-container {
-    display: grid;
-    grid-template-columns: repeat(16, 32px);
-    gap: 5px;
-    position: absolute;
-    left: 248.5px;
-    top: 282px;
-  }
-
-  .square {
-    width: 31px;
-    height: 28px;
-    background-color: rgb(82, 150, 173);
-    border: 1px solid #333;
-    border-radius: 2px;
   }
 </style>

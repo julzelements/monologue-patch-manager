@@ -7,7 +7,7 @@
 
 <Knob knobId={"tempo"} name={"TEMPO"} top={47} left={801} initialValue={tempoValue} {onValueChange} />
 
-<!-- Key Trig Hold -->
+<!-- Key Trig Hold  TODO-->
 <div class="key-trig-hold"></div>
 
 <style>
