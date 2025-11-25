@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import Knob from "./knobs/Knob.svelte";
   import VerticalToggle from "./toggles/VerticalToggle.svelte";
+  import Vco2Toggle from "./toggles/Vco2Toggle.svelte";
   import HorizontalToggle from "./toggles/HorizontalToggle.svelte";
   import LcdScreen from "./LcdScreen.svelte";
   import { CC_NAMES, prettyPanelSettings, type MonologueParameters, LABELS } from "@julzelements/monologue-midi";
@@ -179,17 +180,15 @@
     name={"VCO 1 WAVE"}
     top={40}
     left={143.5}
-    poles={3}
     positionNames={[...LABELS.VCO1_WAVE_LABELS].reverse()}
     initialValue={rawPatch?.panelSettings.oscilators.vco1.wave.value ?? 0}
     onValueChange={handleToggleChange}
   />
-  <VerticalToggle
+  <Vco2Toggle
     id={CC_NAMES.vco1Octave}
     name={"VCO 1 OCTAVE"}
     top={40}
     left={202}
-    poles={4}
     positionNames={[...LABELS.OCTAVE_LABELS].reverse()}
     initialValue={rawPatch?.panelSettings.oscilators.vco1.octave.value ?? 0}
     onValueChange={handleToggleChange}
@@ -199,7 +198,6 @@
     name={"VCO 2 WAVE"}
     top={114}
     left={202}
-    poles={3}
     positionNames={[...LABELS.VCO2_WAVE_LABELS].reverse()}
     initialValue={rawPatch?.panelSettings.oscilators.vco2.wave.value ?? 0}
     onValueChange={handleToggleChange}
@@ -209,7 +207,6 @@
     name={"SYNC"}
     top={114}
     left={238.5}
-    poles={3}
     positionNames={[...LABELS.SYNC_RING_LABELS].reverse()}
     initialValue={rawPatch?.panelSettings.syncRing.value ?? 0}
     onValueChange={handleToggleChange}
@@ -219,7 +216,6 @@
     name={"EG TARGET"}
     top={39}
     left={752.3}
-    poles={3}
     positionNames={[...LABELS.EG_TARGET_LABELS].reverse()}
     initialValue={rawPatch?.panelSettings.envelope.target.value ?? 0}
     onValueChange={handleToggleChange}
@@ -229,7 +225,6 @@
     name={"EG TYPE"}
     top={40}
     left={497.5}
-    poles={3}
     positionNames={[...LABELS.EG_TYPE_LABELS].reverse()}
     initialValue={rawPatch?.panelSettings.envelope.type.value ?? 0}
     onValueChange={handleToggleChange}
@@ -239,7 +234,6 @@
     name={"LFO MODE"}
     top={114}
     left={551}
-    poles={3}
     positionNames={[...LABELS.LFO_MODE_LABELS].reverse()}
     initialValue={rawPatch?.panelSettings.lfo.type.value ?? 0}
     onValueChange={handleToggleChange}
@@ -249,7 +243,6 @@
     name={"LFO WAVE"}
     top={114}
     left={497.5}
-    poles={3}
     positionNames={[...LABELS.LFO_TYPE_LABELS].reverse()}
     initialValue={rawPatch?.panelSettings.lfo.type.value ?? 0}
     onValueChange={handleToggleChange}
@@ -259,7 +252,6 @@
     name={"SEQ TARGET"}
     top={113}
     left={752.3}
-    poles={2}
     positionNames={[...LABELS.BOOLEAN_LABELS].reverse()}
     initialValue={rawPatch?.panelSettings.seqTrig.value ?? 0}
     onValueChange={handleToggleChange}
@@ -269,8 +261,7 @@
     name={"SEQ MODE"}
     top={187.5}
     left={238.5}
-    poles={3}
-    positionNames={["NOTE", "MOTION", "SLIDE"]}
+    positionNames={["MOTION", "SLIDE", "NOTE"]}
     initialValue={0}
     onValueChange={handleToggleChange}
   />
@@ -280,7 +271,6 @@
     name={"KEYBOARD OCTAVE"}
     top={212.5}
     left={51}
-    poles={5}
     positionNames={[...LABELS.KEYBOARD_OCTAVE_LABELS]}
     initialValue={rawPatch?.panelSettings.keyboardOctave.value ?? 0}
     onValueChange={handleToggleChange}

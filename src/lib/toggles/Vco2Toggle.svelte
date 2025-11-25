@@ -10,13 +10,13 @@
   let position = 0;
   let initializedValue: number | undefined = undefined;
 
-  // 3-pole toggle always has 3 positions
-  $: defaultPositionNames = ["HIGH", "MID", "LOW"];
+  // 4-pole toggle always has 4 positions
+  $: defaultPositionNames = ["1", "2", "3", "4"];
   $: names = positionNames || defaultPositionNames;
 
   // Initialize position from initialValue
   $: if (initialValue !== undefined && initialValue !== initializedValue) {
-    position = Math.min(Math.max(initialValue, 0), 2);
+    position = Math.min(Math.max(initialValue, 0), 3);
     initializedValue = initialValue;
   }
 
@@ -26,11 +26,11 @@
   }
 </script>
 
-<div class="vertical-toggle" style="top: {top}px; left: {left}px;" {id}>
-  <div class="vertical-knob v-pos-{position}"></div>
-  {#each Array(3) as _, i}
+<div class="vco2-toggle" style="top: {top}px; left: {left}px;" {id}>
+  <div class="vco2-knob v-pos-{position}"></div>
+  {#each Array(4) as _, i}
     <div
-      class="vertical-zone"
+      class="vco2-zone"
       role="button"
       tabindex="0"
       aria-label="{name} {names[i]}"
@@ -41,7 +41,7 @@
 </div>
 
 <style>
-  .vertical-toggle {
+  .vco2-toggle {
     border: 1px solid black;
     position: absolute;
     width: 14px;
@@ -55,14 +55,14 @@
     align-items: center;
   }
 
-  .vertical-zone {
+  .vco2-zone {
     flex: 1;
     width: 100%;
     cursor: pointer;
     z-index: 1;
   }
 
-  .vertical-knob {
+  .vco2-knob {
     border: 1px solid black;
     position: absolute;
     top: 3px;
@@ -80,7 +80,7 @@
     justify-content: center;
   }
 
-  .vertical-knob::after {
+  .vco2-knob::after {
     content: "";
     width: 8px;
     height: 8px;
@@ -89,16 +89,20 @@
     border: 1px solid #999;
   }
 
-  /* 3-pole positions */
+  /* 4-pole positions */
   .v-pos-0 {
     transform: translateY(0px);
   }
 
   .v-pos-1 {
-    transform: translateY(17px);
+    transform: translateY(10px);
   }
 
   .v-pos-2 {
+    transform: translateY(21px);
+  }
+
+  .v-pos-3 {
     transform: translateY(31px);
   }
 </style>
