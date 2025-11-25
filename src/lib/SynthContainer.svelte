@@ -11,11 +11,11 @@
   import Filter from "./sections/Filter.svelte";
   import Envelope from "./sections/Envelope.svelte";
   import Lfo from "./sections/Lfo.svelte";
+  import Sequencer from "./sections/Sequencer.svelte";
   import { CC_NAMES, prettyPanelSettings, type MonologueParameters, LABELS } from "@julzelements/monologue-midi";
 
   type PrettyPanelSettings = ReturnType<typeof prettyPanelSettings>;
 
-  let showBackground = true;
   let currentParamName = "";
   let currentValue: string | number = "";
   let rawPatch: MonologueParameters | null = null;
@@ -46,17 +46,9 @@
     currentParamName = name;
     currentValue = value;
   }
-
-  function toggleBackground() {
-    showBackground = !showBackground;
-  }
 </script>
 
-<button class="bg-toggle" class:off={!showBackground} on:click={toggleBackground}>
-  {showBackground ? "BG ON" : "BG OFF"}
-</button>
-
-<div id="synth-container" class:show-bg={showBackground}>
+<div id="synth-container" class="show-bg">
   <!-- Global Section -->
   <GlobalSection
     driveValue={rawPatch?.panelSettings.drive.value}
@@ -97,6 +89,7 @@
   <!-- Envelope -->
   <Envelope
     typeValue={rawPatch?.panelSettings.envelope.type.value}
+    targetValue={rawPatch?.panelSettings.envelope.target.value}
     attackValue={rawPatch?.panelSettings.envelope.attack.value}
     decayValue={rawPatch?.panelSettings.envelope.decay.value}
     intensityValue={rawPatch?.panelSettings.envelope.intensity.value}
@@ -114,15 +107,9 @@
     onToggleChange={handleToggleChange}
   />
 
-  <!-- Knobs -->
-  <Knob
-    knobId={"tempo"}
-    name={"TEMPO"}
-    top={47}
-    left={801}
-    initialValue={rawPatch?.sequencerSettings.bpm.value}
-    onValueChange={handleKnobChange}
-  />
+  <!-- Sequencer -->
+  <Sequencer tempoValue={rawPatch?.sequencerSettings.bpm.value} onValueChange={handleKnobChange} />
+
   <!-- Toggles -->
   <VerticalToggle
     id={"seqTarget"}
@@ -170,31 +157,6 @@
     font-family: sans-serif;
   }
 
-  .bg-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(40, 40, 40, 0.9);
-    border: 2px solid #00ffff;
-    border-radius: 6px;
-    color: #00ffff;
-    padding: 8px 12px;
-    font-size: 12px;
-    cursor: pointer;
-    z-index: 1000;
-    transition: all 0.2s ease;
-  }
-
-  .bg-toggle:hover {
-    background: rgba(60, 60, 60, 0.9);
-    box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
-  }
-
-  .bg-toggle.off {
-    border-color: #666;
-    color: #666;
-  }
-
   #synth-container {
     position: relative;
     width: 900px;
@@ -209,17 +171,6 @@
     background-image: url("/assets/mono-bare.svg");
     background-size: 100% 100%;
     background-repeat: no-repeat;
-  }
-
-  .key-trig-hold {
-    position: absolute;
-    top: 125px;
-    left: 803px;
-    width: 32px;
-    height: 28px;
-    background-color: rgb(82, 150, 173);
-    border: 1px solid #333;
-    border-radius: 2px;
   }
 
   .edit-menu-container {
