@@ -5,7 +5,9 @@ Recieve CC messages
 ## Issues
 
 - ~~Use the test dump and load a all the knobs~~
-- Use the test dump and load all the toggles
+- ~~Use the test dump and load all the toggles~~
+- Fix the mapping issues. Some knobs and toggles don't align correctly
+- Need a unique name for each parameter
 - Add the octave toggles
 - Design a clever way to show extra parameters
 - Fix the toggles to use 0, 1, 2

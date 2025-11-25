@@ -4,7 +4,7 @@
   import VerticalToggle from "./toggles/VerticalToggle.svelte";
   import HorizontalToggle from "./toggles/HorizontalToggle.svelte";
   import LcdScreen from "./LcdScreen.svelte";
-  import { prettyPanelSettings, type MonologueParameters } from "@julzelements/monologue-midi";
+  import { CC_NAMES, prettyPanelSettings, type MonologueParameters, LABELS } from "@julzelements/monologue-midi";
 
   type PrettyPanelSettings = ReturnType<typeof prettyPanelSettings>;
 
@@ -52,78 +52,6 @@
   function toggleBackground() {
     showBackground = !showBackground;
   }
-
-  // Map knob IDs to their corresponding patch values
-  function getKnobInitialValue(knobId: string): number | undefined {
-    if (!rawPatch?.panelSettings) {
-      return undefined;
-    }
-
-    const mapping: Record<string, number | undefined> = {
-      cutoff: rawPatch.panelSettings.filter?.cutoff?.value,
-      resonance: rawPatch.panelSettings.filter?.resonance?.value,
-      vco1Mixer: rawPatch.panelSettings.oscilators?.vco1?.level?.value,
-      vco1Shape: rawPatch.panelSettings.oscilators?.vco1?.shape?.value,
-      vco2Pitch: rawPatch.panelSettings.oscilators?.vco2?.pitch?.value,
-      vco2Mixer: rawPatch.panelSettings.oscilators?.vco2?.level?.value,
-      vco2Shape: rawPatch.panelSettings.oscilators?.vco2?.shape?.value,
-      egAttack: rawPatch.panelSettings.envelope?.attack?.value,
-      egDecay: rawPatch.panelSettings.envelope?.decay?.value,
-      egInt: rawPatch.panelSettings.envelope?.intensity?.value,
-      lfoRate: rawPatch.panelSettings.lfo?.rate?.value,
-      lfoInt: rawPatch.panelSettings.lfo?.intensity?.value,
-      drive: rawPatch.panelSettings.drive?.value,
-      tempo: rawPatch.sequencerSettings?.bpm?.value,
-      master: 0,
-    };
-
-    return mapping[knobId];
-  }
-
-  // Map toggle IDs to their corresponding patch values
-  function getToggleInitialValue(toggleId: string): number | undefined {
-    if (!rawPatch?.panelSettings) {
-      return undefined;
-    }
-
-    const mapping: Record<string, number | undefined> = {
-      wave1: rawPatch.panelSettings.oscilators?.vco1?.wave?.value,
-      octave1: rawPatch.panelSettings.oscilators?.vco1?.octave?.value,
-      sync: rawPatch.panelSettings.syncRing?.value,
-      egTarget: rawPatch.panelSettings.envelope?.target?.value,
-      ring: rawPatch.panelSettings.syncRing?.value,
-      wave2: rawPatch.panelSettings.oscilators?.vco2?.wave?.value,
-      lfoTarget: rawPatch.panelSettings.lfo?.target?.value,
-      lfoWave: rawPatch.panelSettings.lfo?.type?.value,
-      seqTarget: rawPatch.panelSettings.seqTrig?.value,
-      motion: 0,
-      keyboardOctave: rawPatch.panelSettings.keyboardOctave?.value,
-    };
-
-    return mapping[toggleId];
-  }
-
-  // Get formatted position names for toggles from prettified patch
-  function getTogglePositionNames(toggleId: string): string[] | undefined {
-    if (!prettyPatch) {
-      return undefined;
-    }
-
-    const formattedMapping: Record<string, string[] | undefined> = {
-      wave1: ["SQR", "TRI", "SAW"], // VCO1 wave
-      octave1: ["16'", "8'", "4'", "2'"], // VCO1 octave
-      sync: ["RING", "OFF", "SYNC"], // Sync/Ring
-      egTarget: ["CUTOFF", "PITCH 2", "PITCH"], // EG Target
-      ring: ["RING", "OFF", "SYNC"], // Same as sync
-      wave2: ["NOISE", "TRI", "SAW"], // VCO2 wave
-      lfoTarget: ["CUTOFF", "SHAPE", "PITCH"], // LFO Target
-      lfoWave: ["SQR", "TRI", "SAW"], // LFO wave
-      seqTarget: ["OFF", "ON"], // Seq Trig
-      keyboardOctave: ["-2", "-1", "0", "+1", "+2"], // Keyboard octave
-    };
-
-    return formattedMapping[toggleId];
-  }
 </script>
 
 <button class="bg-toggle" class:off={!showBackground} on:click={toggleBackground}>
@@ -132,59 +60,231 @@
 
 <div id="synth-container" class:show-bg={showBackground}>
   <!-- Knobs -->
-  {#if rawPatch}
-    {#each Object.entries(knobsConfig) as [knobId, config]}
-      <Knob
-        {knobId}
-        name={config.name}
-        top={config.top}
-        left={config.left}
-        initialValue={getKnobInitialValue(knobId)}
-        onValueChange={handleKnobChange}
-      />
-    {/each}
-  {:else}
-    {#each Object.entries(knobsConfig) as [knobId, config]}
-      <Knob
-        {knobId}
-        name={config.name}
-        top={config.top}
-        left={config.left}
-        initialValue={undefined}
-        onValueChange={handleKnobChange}
-      />
-    {/each}
-  {/if}
-
+  <Knob knobId={"master"} name={"MASTER"} top={47} left={60} initialValue={0} onValueChange={handleKnobChange} />
+  <Knob
+    knobId={CC_NAMES.drive}
+    name={"DRIVE"}
+    top={120}
+    left={60}
+    initialValue={rawPatch?.panelSettings.drive.value}
+    onValueChange={handleKnobChange}
+  />
+  <Knob
+    knobId={CC_NAMES.vco1Shape}
+    name={"VCO 1 SHAPE"}
+    top={120}
+    left={133}
+    initialValue={rawPatch?.panelSettings.oscilators.vco1.shape.value}
+    onValueChange={handleKnobChange}
+  />
+  <Knob
+    knobId={CC_NAMES.vco2Pitch}
+    name={"VCO 2 PITCH"}
+    top={47}
+    left={282.5}
+    initialValue={rawPatch?.panelSettings.oscilators.vco2.pitch.value}
+    onValueChange={handleKnobChange}
+  />
+  <Knob
+    knobId={CC_NAMES.vco2Shape}
+    name={"VCO 2 SHAPE"}
+    top={120}
+    left={282.5}
+    initialValue={rawPatch?.panelSettings.oscilators.vco2.shape.value}
+    onValueChange={handleKnobChange}
+  />
+  <Knob
+    knobId={CC_NAMES.vco1Level}
+    name={"VCO 1 MIX"}
+    top={47}
+    left={356}
+    initialValue={rawPatch?.panelSettings.oscilators.vco1.level.value}
+    onValueChange={handleKnobChange}
+  />
+  <Knob
+    knobId={CC_NAMES.vco2Level}
+    name={"VCO 2 MIX"}
+    top={120}
+    left={356}
+    initialValue={rawPatch?.panelSettings.oscilators.vco2.level.value}
+    onValueChange={handleKnobChange}
+  />
+  <Knob
+    knobId={CC_NAMES.cutoff}
+    name={"CUTOFF"}
+    top={47}
+    left={430}
+    initialValue={rawPatch?.panelSettings.filter.cutoff.value}
+    onValueChange={handleKnobChange}
+  />
+  <Knob
+    knobId={CC_NAMES.resonance}
+    name={"RESONANCE"}
+    top={120}
+    left={430}
+    initialValue={rawPatch?.panelSettings.filter.resonance.value}
+    onValueChange={handleKnobChange}
+  />
+  <Knob
+    knobId={CC_NAMES.ampEgAttack}
+    name={"ATTACK"}
+    top={47}
+    left={541}
+    initialValue={rawPatch?.panelSettings.envelope.attack.value}
+    onValueChange={handleKnobChange}
+  />
+  <Knob
+    knobId={CC_NAMES.ampEgDecay}
+    name={"DECAY"}
+    top={47}
+    left={615.5}
+    initialValue={rawPatch?.panelSettings.envelope.decay.value}
+    onValueChange={handleKnobChange}
+  />
+  <Knob
+    knobId={CC_NAMES.lfoRate}
+    name={"LFO RATE"}
+    top={120}
+    left={615.5}
+    initialValue={rawPatch?.panelSettings.lfo.rate.value}
+    onValueChange={handleKnobChange}
+  />
+  <Knob
+    knobId={CC_NAMES.egInt}
+    name={"EG INT"}
+    top={47}
+    left={689}
+    initialValue={rawPatch?.panelSettings.envelope.intensity.value}
+    onValueChange={handleKnobChange}
+  />
+  <Knob
+    knobId={CC_NAMES.lfoInt}
+    name={"LFO INT"}
+    top={120}
+    left={689}
+    initialValue={rawPatch?.panelSettings.lfo.intensity.value}
+    onValueChange={handleKnobChange}
+  />
+  <Knob
+    knobId={"tempo"}
+    name={"TEMPO"}
+    top={47}
+    left={801}
+    initialValue={rawPatch?.sequencerSettings.bpm.value}
+    onValueChange={handleKnobChange}
+  />
   <!-- Toggles -->
-  {#if rawPatch}
-    {#each Object.entries(togglesConfig).filter(([_, cfg]) => cfg.type === "vertical") as [id, config]}
-      <VerticalToggle
-        {id}
-        name={config.name}
-        top={config.top}
-        left={config.left}
-        poles={config.poles || 3}
-        positionNames={getTogglePositionNames(id)}
-        initialValue={getToggleInitialValue(id)}
-        onValueChange={handleToggleChange}
-      />
-    {/each}
+  <VerticalToggle
+    id={CC_NAMES.vco1Wave}
+    name={"VCO 1 WAVE"}
+    top={40}
+    left={143.5}
+    poles={3}
+    positionNames={[...LABELS.VCO1_WAVE_LABELS].reverse()}
+    initialValue={rawPatch?.panelSettings.oscilators.vco1.wave.value ?? 0}
+    onValueChange={handleToggleChange}
+  />
+  <VerticalToggle
+    id={CC_NAMES.vco1Octave}
+    name={"VCO 1 OCTAVE"}
+    top={40}
+    left={202}
+    poles={4}
+    positionNames={[...LABELS.OCTAVE_LABELS].reverse()}
+    initialValue={rawPatch?.panelSettings.oscilators.vco1.octave.value ?? 0}
+    onValueChange={handleToggleChange}
+  />
+  <VerticalToggle
+    id={CC_NAMES.vco2Wave}
+    name={"VCO 2 WAVE"}
+    top={114}
+    left={202}
+    poles={3}
+    positionNames={[...LABELS.VCO2_WAVE_LABELS].reverse()}
+    initialValue={rawPatch?.panelSettings.oscilators.vco2.wave.value ?? 0}
+    onValueChange={handleToggleChange}
+  />
+  <VerticalToggle
+    id={CC_NAMES.syncRing}
+    name={"SYNC"}
+    top={114}
+    left={238.5}
+    poles={3}
+    positionNames={[...LABELS.SYNC_RING_LABELS].reverse()}
+    initialValue={rawPatch?.panelSettings.syncRing.value ?? 0}
+    onValueChange={handleToggleChange}
+  />
+  <VerticalToggle
+    id={CC_NAMES.egTarget}
+    name={"EG TARGET"}
+    top={39}
+    left={752.3}
+    poles={3}
+    positionNames={[...LABELS.EG_TARGET_LABELS].reverse()}
+    initialValue={rawPatch?.panelSettings.envelope.target.value ?? 0}
+    onValueChange={handleToggleChange}
+  />
+  <VerticalToggle
+    id={CC_NAMES.vco2Wave}
+    name={"EG TYPE"}
+    top={40}
+    left={497.5}
+    poles={3}
+    positionNames={[...LABELS.EG_TYPE_LABELS].reverse()}
+    initialValue={rawPatch?.panelSettings.envelope.type.value ?? 0}
+    onValueChange={handleToggleChange}
+  />
+  <VerticalToggle
+    id={CC_NAMES.lfoTarget}
+    name={"LFO MODE"}
+    top={114}
+    left={551}
+    poles={3}
+    positionNames={[...LABELS.LFO_MODE_LABELS].reverse()}
+    initialValue={rawPatch?.panelSettings.lfo.type.value ?? 0}
+    onValueChange={handleToggleChange}
+  />
+  <VerticalToggle
+    id={CC_NAMES.lfoWave}
+    name={"LFO WAVE"}
+    top={114}
+    left={497.5}
+    poles={3}
+    positionNames={[...LABELS.LFO_TYPE_LABELS].reverse()}
+    initialValue={rawPatch?.panelSettings.lfo.type.value ?? 0}
+    onValueChange={handleToggleChange}
+  />
+  <VerticalToggle
+    id={"seqTarget"}
+    name={"SEQ TARGET"}
+    top={113}
+    left={752.3}
+    poles={2}
+    positionNames={[...LABELS.BOOLEAN_LABELS].reverse()}
+    initialValue={rawPatch?.panelSettings.seqTrig.value ?? 0}
+    onValueChange={handleToggleChange}
+  />
+  <VerticalToggle
+    id={"sequencerMode"}
+    name={"SEQ MODE"}
+    top={187.5}
+    left={238.5}
+    poles={3}
+    positionNames={["NOTE", "SLIDE", "MOTION"]}
+    initialValue={0}
+    onValueChange={handleToggleChange}
+  />
 
-    <!-- Horizontal Toggles -->
-    {#each Object.entries(togglesConfig).filter(([_, cfg]) => cfg.type === "horizontal") as [id, config]}
-      <HorizontalToggle
-        {id}
-        name={config.name}
-        top={config.top}
-        left={config.left}
-        poles={config.poles || 3}
-        positionNames={getTogglePositionNames(id)}
-        initialValue={getToggleInitialValue(id)}
-        onValueChange={handleToggleChange}
-      />
-    {/each}
-  {/if}
+  <HorizontalToggle
+    id={"keyboardOctave"}
+    name={"KEYBOARD OCTAVE"}
+    top={212.5}
+    left={51}
+    poles={5}
+    positionNames={[...LABELS.KEYBOARD_OCTAVE_LABELS]}
+    initialValue={rawPatch?.panelSettings.keyboardOctave.value ?? 0}
+    onValueChange={handleToggleChange}
+  />
 
   <!-- LCD Screen -->
   <LcdScreen paramName={currentParamName} value={currentValue} />
