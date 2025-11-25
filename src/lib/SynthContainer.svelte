@@ -10,6 +10,7 @@
   import OscillatorTwo from "./sections/OscillatorTwo.svelte";
   import Filter from "./sections/Filter.svelte";
   import Envelope from "./sections/Envelope.svelte";
+  import Lfo from "./sections/Lfo.svelte";
   import { CC_NAMES, prettyPanelSettings, type MonologueParameters, LABELS } from "@julzelements/monologue-midi";
 
   type PrettyPanelSettings = ReturnType<typeof prettyPanelSettings>;
@@ -103,23 +104,17 @@
     onToggleChange={handleToggleChange}
   />
 
+  <!-- LFO -->
+  <Lfo
+    rateValue={rawPatch?.panelSettings.lfo.rate.value}
+    intensityValue={rawPatch?.panelSettings.lfo.intensity.value}
+    modeValue={rawPatch?.panelSettings.lfo.type.value}
+    waveValue={rawPatch?.panelSettings.lfo.type.value}
+    onValueChange={handleKnobChange}
+    onToggleChange={handleToggleChange}
+  />
+
   <!-- Knobs -->
-  <Knob
-    knobId={CC_NAMES.lfoRate}
-    name={"LFO RATE"}
-    top={120}
-    left={615.5}
-    initialValue={rawPatch?.panelSettings.lfo.rate.value}
-    onValueChange={handleKnobChange}
-  />
-  <Knob
-    knobId={CC_NAMES.lfoInt}
-    name={"LFO INT"}
-    top={120}
-    left={689}
-    initialValue={rawPatch?.panelSettings.lfo.intensity.value}
-    onValueChange={handleKnobChange}
-  />
   <Knob
     knobId={"tempo"}
     name={"TEMPO"}
@@ -129,24 +124,6 @@
     onValueChange={handleKnobChange}
   />
   <!-- Toggles -->
-  <VerticalToggle
-    id={CC_NAMES.lfoTarget}
-    name={"LFO MODE"}
-    top={114}
-    left={551}
-    positionNames={[...LABELS.LFO_MODE_LABELS].reverse()}
-    initialValue={rawPatch?.panelSettings.lfo.type.value ?? 0}
-    onValueChange={handleToggleChange}
-  />
-  <VerticalToggle
-    id={CC_NAMES.lfoWave}
-    name={"LFO WAVE"}
-    top={114}
-    left={497.5}
-    positionNames={[...LABELS.LFO_TYPE_LABELS].reverse()}
-    initialValue={rawPatch?.panelSettings.lfo.type.value ?? 0}
-    onValueChange={handleToggleChange}
-  />
   <VerticalToggle
     id={"seqTarget"}
     name={"SEQ TARGET"}
