@@ -6,6 +6,7 @@
 
   export let pitchValue: number | undefined = undefined;
   export let shapeValue: number | undefined = undefined;
+  export let levelValue: number | undefined = undefined;
   export let waveValue: number | undefined = undefined;
   export let octaveValue: number | undefined = undefined;
   export let syncRingValue: number | undefined = undefined;
@@ -29,6 +30,7 @@
   initialValue={shapeValue}
   {onValueChange}
 />
+<Knob knobId={CC_NAMES.vco2Level} name={"VCO 2 MIX"} top={120} left={356} initialValue={levelValue} {onValueChange} />
 <Vco2Toggle
   id={CC_NAMES.vco1Octave}
   name={"VCO 1 OCTAVE"}

@@ -66,6 +66,7 @@
   <!-- Oscillator One -->
   <OscillatorOne
     shapeValue={rawPatch?.panelSettings.oscilators.vco1.shape.value}
+    levelValue={rawPatch?.panelSettings.oscilators.vco1.level.value}
     waveValue={rawPatch?.panelSettings.oscilators.vco1.wave.value}
     onValueChange={handleKnobChange}
     onToggleChange={handleToggleChange}
@@ -75,6 +76,7 @@
   <OscillatorTwo
     pitchValue={rawPatch?.panelSettings.oscilators.vco2.pitch.value}
     shapeValue={rawPatch?.panelSettings.oscilators.vco2.shape.value}
+    levelValue={rawPatch?.panelSettings.oscilators.vco2.level.value}
     waveValue={rawPatch?.panelSettings.oscilators.vco2.wave.value}
     octaveValue={rawPatch?.panelSettings.oscilators.vco1.octave.value}
     syncRingValue={rawPatch?.panelSettings.syncRing.value}
@@ -83,22 +85,6 @@
   />
 
   <!-- Knobs -->
-  <Knob
-    knobId={CC_NAMES.vco1Level}
-    name={"VCO 1 MIX"}
-    top={47}
-    left={356}
-    initialValue={rawPatch?.panelSettings.oscilators.vco1.level.value}
-    onValueChange={handleKnobChange}
-  />
-  <Knob
-    knobId={CC_NAMES.vco2Level}
-    name={"VCO 2 MIX"}
-    top={120}
-    left={356}
-    initialValue={rawPatch?.panelSettings.oscilators.vco2.level.value}
-    onValueChange={handleKnobChange}
-  />
   <Knob
     knobId={CC_NAMES.cutoff}
     name={"CUTOFF"}
