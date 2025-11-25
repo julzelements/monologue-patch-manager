@@ -4,6 +4,8 @@
   export let top: number;
   export let left: number;
   export let positionNames: string[] | undefined = undefined;
+  export let knobPositions: number[] = [0, 10, 21, 31]; // Y offsets for the knob
+  export let indicatorPositions: number[] = [-8.4, 5.9, 20.3, 34.5]; // Y offsets for the indicator
   export let initialValue: number | undefined = undefined;
   export let onValueChange: (name: string, value: string) => void;
 
@@ -27,7 +29,8 @@
 </script>
 
 <div class="vco2-toggle" style="top: {top}px; left: {left}px;" {id}>
-  <div class="vco2-knob v-pos-{position}"></div>
+  <div class="vco2-indicator" style="transform: translateY({indicatorPositions[position]}px);"></div>
+  <div class="vco2-knob" style="transform: translateY({knobPositions[position]}px);"></div>
   {#each Array(4) as _, i}
     <div
       class="vco2-zone"
@@ -89,20 +92,18 @@
     border: 1px solid #999;
   }
 
-  /* 4-pole positions */
-  .v-pos-0 {
-    transform: translateY(0px);
-  }
-
-  .v-pos-1 {
-    transform: translateY(10px);
-  }
-
-  .v-pos-2 {
-    transform: translateY(21px);
-  }
-
-  .v-pos-3 {
-    transform: translateY(31px);
+  .vco2-indicator {
+    position: absolute;
+    left: 36.7px;
+    top: 8px;
+    width: 7px;
+    height: 7px;
+    background: red;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 3;
+    box-shadow:
+      0 0 4px rgba(255, 0, 0, 0.8),
+      0 0 8px rgba(255, 0, 0, 0.4);
   }
 </style>
