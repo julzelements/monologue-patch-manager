@@ -4,6 +4,7 @@
   import { CC_NAMES, LABELS } from "@julzelements/monologue-midi";
 
   export let typeValue: number | undefined = undefined;
+  export let targetValue: number | undefined = undefined;
   export let attackValue: number | undefined = undefined;
   export let decayValue: number | undefined = undefined;
   export let intensityValue: number | undefined = undefined;
@@ -21,5 +22,14 @@
   left={497.5}
   positionNames={[...LABELS.EG_TYPE_LABELS].reverse()}
   initialValue={typeValue ?? 0}
+  onValueChange={onToggleChange}
+/>
+<VerticalToggle
+  id={CC_NAMES.egTarget}
+  name={"EG TARGET"}
+  top={39}
+  left={752.3}
+  positionNames={[...LABELS.EG_TARGET_LABELS].reverse()}
+  initialValue={targetValue ?? 0}
   onValueChange={onToggleChange}
 />
