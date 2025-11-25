@@ -7,14 +7,14 @@
     "seqTrig": { "name": "Seq Trig", "value": 0 },
     "oscilators": {
       "vco1": {
-        "wave": { "name": "Wave", "value": 2 },
+        "wave": { "name": "Wave", "value": 0 },
         "shape": { "name": "Shape", "value": 0 },
         "level": { "name": "Level", "value": 1023 },
         "pitch": { "name": "Pitch", "value": 512 },
         "octave": { "name": "Octave", "value": 1 }
       },
       "vco2": {
-        "wave": { "name": "Wave", "value": 2 },
+        "wave": { "name": "Wave", "value": 0 },
         "shape": { "name": "Shape", "value": 0 },
         "level": { "name": "Level", "value": 1023 },
         "pitch": { "name": "Pitch", "value": 1023 },

@@ -7,6 +7,7 @@
   import LcdScreen from "./LcdScreen.svelte";
   import GlobalSection from "./sections/GlobalSection.svelte";
   import OscillatorOne from "./sections/OscillatorOne.svelte";
+  import OscillatorTwo from "./sections/OscillatorTwo.svelte";
   import { CC_NAMES, prettyPanelSettings, type MonologueParameters, LABELS } from "@julzelements/monologue-midi";
 
   type PrettyPanelSettings = ReturnType<typeof prettyPanelSettings>;
@@ -70,23 +71,18 @@
     onToggleChange={handleToggleChange}
   />
 
+  <!-- Oscillator Two -->
+  <OscillatorTwo
+    pitchValue={rawPatch?.panelSettings.oscilators.vco2.pitch.value}
+    shapeValue={rawPatch?.panelSettings.oscilators.vco2.shape.value}
+    waveValue={rawPatch?.panelSettings.oscilators.vco2.wave.value}
+    octaveValue={rawPatch?.panelSettings.oscilators.vco1.octave.value}
+    syncRingValue={rawPatch?.panelSettings.syncRing.value}
+    onValueChange={handleKnobChange}
+    onToggleChange={handleToggleChange}
+  />
+
   <!-- Knobs -->
-  <Knob
-    knobId={CC_NAMES.vco2Pitch}
-    name={"VCO 2 PITCH"}
-    top={47}
-    left={282.5}
-    initialValue={rawPatch?.panelSettings.oscilators.vco2.pitch.value}
-    onValueChange={handleKnobChange}
-  />
-  <Knob
-    knobId={CC_NAMES.vco2Shape}
-    name={"VCO 2 SHAPE"}
-    top={120}
-    left={282.5}
-    initialValue={rawPatch?.panelSettings.oscilators.vco2.shape.value}
-    onValueChange={handleKnobChange}
-  />
   <Knob
     knobId={CC_NAMES.vco1Level}
     name={"VCO 1 MIX"}
@@ -168,33 +164,6 @@
     onValueChange={handleKnobChange}
   />
   <!-- Toggles -->
-  <Vco2Toggle
-    id={CC_NAMES.vco1Octave}
-    name={"VCO 1 OCTAVE"}
-    top={40}
-    left={202}
-    positionNames={[...LABELS.OCTAVE_LABELS]}
-    initialValue={rawPatch?.panelSettings.oscilators.vco1.octave.value ?? 0}
-    onValueChange={handleToggleChange}
-  />
-  <VerticalToggle
-    id={CC_NAMES.vco2Wave}
-    name={"VCO 2 WAVE"}
-    top={114}
-    left={202}
-    positionNames={[...LABELS.VCO2_WAVE_LABELS]}
-    initialValue={rawPatch?.panelSettings.oscilators.vco2.wave.value ?? 0}
-    onValueChange={handleToggleChange}
-  />
-  <VerticalToggle
-    id={CC_NAMES.syncRing}
-    name={"SYNC"}
-    top={114}
-    left={238.5}
-    positionNames={[...LABELS.SYNC_RING_LABELS]}
-    initialValue={rawPatch?.panelSettings.syncRing.value ?? 0}
-    onValueChange={handleToggleChange}
-  />
   <VerticalToggle
     id={CC_NAMES.egTarget}
     name={"EG TARGET"}
