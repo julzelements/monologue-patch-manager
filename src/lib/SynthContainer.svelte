@@ -8,6 +8,7 @@
   import GlobalSection from "./sections/GlobalSection.svelte";
   import OscillatorOne from "./sections/OscillatorOne.svelte";
   import OscillatorTwo from "./sections/OscillatorTwo.svelte";
+  import Filter from "./sections/Filter.svelte";
   import { CC_NAMES, prettyPanelSettings, type MonologueParameters, LABELS } from "@julzelements/monologue-midi";
 
   type PrettyPanelSettings = ReturnType<typeof prettyPanelSettings>;
@@ -84,23 +85,14 @@
     onToggleChange={handleToggleChange}
   />
 
+  <!-- Filter -->
+  <Filter
+    cutoffValue={rawPatch?.panelSettings.filter.cutoff.value}
+    resonanceValue={rawPatch?.panelSettings.filter.resonance.value}
+    onValueChange={handleKnobChange}
+  />
+
   <!-- Knobs -->
-  <Knob
-    knobId={CC_NAMES.cutoff}
-    name={"CUTOFF"}
-    top={47}
-    left={430}
-    initialValue={rawPatch?.panelSettings.filter.cutoff.value}
-    onValueChange={handleKnobChange}
-  />
-  <Knob
-    knobId={CC_NAMES.resonance}
-    name={"RESONANCE"}
-    top={120}
-    left={430}
-    initialValue={rawPatch?.panelSettings.filter.resonance.value}
-    onValueChange={handleKnobChange}
-  />
   <Knob
     knobId={CC_NAMES.ampEgAttack}
     name={"ATTACK"}
