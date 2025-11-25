@@ -152,7 +152,7 @@
   }
 
   #synth-container.show-bg {
-    background-image: url("/assets/mono-bare.svg");
+    background-image: url("/assets/mono-very-bare.svg");
     background-size: 100% 100%;
     background-repeat: no-repeat;
   }
