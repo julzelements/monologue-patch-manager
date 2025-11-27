@@ -288,9 +288,28 @@ UI re-renders with hardware values
 
 ### Device Identification
 
-- Monologue identifies as "monologue" or "KORG monologue" in device name
-- Manufacturer: "KORG INC."
-- Use loose matching to handle different OS/driver variations
+The `@julzelements/monologue-midi` package exports `monologueConnectionStrings` with the exact device names:
+
+```typescript
+import { monologueConnectionStrings } from "@julzelements/monologue-midi";
+
+// monologueConnectionStrings = {
+//   input: "monologue KBD/KNOB",
+//   output: "monologue SOUND"
+// }
+```
+
+**Device Names:**
+
+- **Input Port:** `"monologue KBD/KNOB"` - Receives MIDI from computer (keyboard/knob control)
+- **Output Port:** `"monologue SOUND"` - Sends MIDI to computer (hardware state, SysEx dumps)
+
+**Matching Strategy:**
+
+- Use exact string matching with `monologueConnectionStrings.input` for output device (computer → hardware)
+- Use exact string matching with `monologueConnectionStrings.output` for input device (hardware → computer)
+- Note: WebMIDI.js "output" is where we send (input on hardware), "input" is where we receive (output from hardware)
+- Fallback: Case-insensitive search for "monologue" if exact match fails (cross-platform compatibility)
 
 ### MIDI Channel
 
