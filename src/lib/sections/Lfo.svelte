@@ -9,6 +9,7 @@
     intensityValue = undefined,
     modeValue = undefined,
     waveValue = undefined,
+    targetValue = undefined,
     onValueChange,
     onToggleChange,
   }: {
@@ -16,6 +17,7 @@
     intensityValue?: number;
     modeValue?: number;
     waveValue?: number;
+    targetValue?: number;
     onValueChange: (name: string, value: number) => void;
     onToggleChange: (name: string, value: string) => void;
   } = $props();
@@ -24,6 +26,7 @@
   let intensityRef = $state(intensityValue);
   let modeRef = $state(modeValue);
   let waveRef = $state(waveValue);
+  let targetRef = $state(targetValue);
 
   // Listen for MIDI parameter changes
   function handleParameterChange(event: CustomEvent) {
@@ -34,12 +37,11 @@
     } else if (parameterId === "lfoIntensity") {
       intensityRef = normalisedValue * 1023;
     } else if (parameterId === "lfoTarget") {
-      modeRef = normalisedValue * 1023;
+      targetRef = normalisedValue * 1023;
     } else if (parameterId === "lfoType") {
       waveRef = normalisedValue * 1023;
     } else if (parameterId === "lfoMode") {
-      // Note: lfoMode might be a separate parameter from lfoTarget
-      // Check which one corresponds to the MODE toggle
+      modeRef = normalisedValue * 1023;
     }
   }
 
@@ -74,5 +76,14 @@
   left={497.5}
   positionNames={[...LABELS.LFO_TYPE_LABELS].reverse()}
   initialValue={waveRef ?? 0}
+  onValueChange={onToggleChange}
+/>
+<VerticalToggle
+  id={"lfoTarget"}
+  name={"LFO TARGET"}
+  top={113}
+  left={752.3}
+  positionNames={[...LABELS.LFO_TARGET_LABELS].reverse()}
+  initialValue={targetRef ?? 0}
   onValueChange={onToggleChange}
 />

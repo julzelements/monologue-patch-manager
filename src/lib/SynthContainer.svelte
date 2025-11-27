@@ -118,17 +118,6 @@
   <!-- Sequencer -->
   <Sequencer tempoValue={rawPatch?.sequencerSettings.bpm.value} onValueChange={handleKnobChange} />
 
-  <!-- Toggles -->
-  <VerticalToggle
-    id={"seqTarget"}
-    name={"SEQ TARGET"}
-    top={113}
-    left={752.3}
-    positionNames={[...LABELS.BOOLEAN_LABELS].reverse()}
-    initialValue={rawPatch?.panelSettings.seqTrig.value ?? 0}
-    onValueChange={handleToggleChange}
-  />
-
   <!-- LCD Screen -->
   <LcdScreen paramName={currentParamName} value={currentValue} />
 
