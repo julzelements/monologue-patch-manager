@@ -14,6 +14,11 @@ class MonologueDevice {
     input.addListener("noteon", (event: any) => {
       console.log("🎹 Note ON:", event.note.name, event.note.number, "velocity:", event.note.rawAttack);
     });
+
+    // Set up control change listener
+    input.addListener("controlchange", (event: any) => {
+      console.log("🎛️ CC:", event.controller.number, "value:", event.value, "name:", event.controller.name);
+    });
   }
 }
 
