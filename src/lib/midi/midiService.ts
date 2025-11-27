@@ -126,27 +126,14 @@ class MidiService {
       }
 
       // Look for exact matches first
-      let input = WebMidi.getInputByName(monologueConnectionStrings.output); // Hardware output = our input
-      let output = WebMidi.getOutputByName(monologueConnectionStrings.input); // Hardware input = our output
+      let input = WebMidi.getInputByName(monologueConnectionStrings.input);
+      let output = WebMidi.getOutputByName(monologueConnectionStrings.output);
 
-      // Fallback: search for any device with "monologue" in the name
-      if (!input || !output) {
-        const allInputs = WebMidi.inputs;
-        const allOutputs = WebMidi.outputs;
-
-        for (const device of allInputs) {
-          if (this.isMonologueDevice(device.name)) {
-            input = device;
-            break;
-          }
-        }
-
-        for (const device of allOutputs) {
-          if (this.isMonologueDevice(device.name)) {
-            output = device;
-            break;
-          }
-        }
+      if (input) {
+        console.log(input);
+        input.addListener("noteon", (event) => {
+          console.log(event);
+        });
       }
 
       if (!input || !output) {
@@ -160,23 +147,7 @@ class MidiService {
         return;
       }
 
-      await this.connectToDevice(input, output);
-    } catch (error) {
-      console.error("Error finding Monologue:", error);
-      const midiError: MidiError = {
-        type: MidiErrorType.DEVICE_NOT_FOUND,
-        message: "Failed to connect to Monologue",
-        details: error instanceof Error ? error.message : String(error),
-      };
-      midiStore.setError(midiError);
-    }
-  }
-
-  /**
-   * Connect to a specific MIDI device
-   */
-  async connectToDevice(input: Input, output: Output): Promise<void> {
-    try {
+      // Connect to the device
       this.input = input;
       this.output = output;
 
@@ -185,21 +156,18 @@ class MidiService {
         id: input.id,
         name: input.name,
         manufacturer: input.manufacturer || "Unknown",
-        inputId: input.id,
-        outputId: output.id,
       };
 
       midiStore.setDevice(deviceInfo);
       console.log("Connected to:", deviceInfo.name);
     } catch (error) {
-      console.error("Error connecting to device:", error);
+      console.error("Error finding Monologue:", error);
       const midiError: MidiError = {
-        type: MidiErrorType.CONNECTION_FAILED,
-        message: "Failed to connect to device",
+        type: MidiErrorType.DEVICE_NOT_FOUND,
+        message: "Failed to connect to Monologue",
         details: error instanceof Error ? error.message : String(error),
       };
       midiStore.setError(midiError);
-      throw error;
     }
   }
 
