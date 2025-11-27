@@ -1,11 +1,16 @@
 <script lang="ts">
   import Knob from "../knobs/Knob.svelte";
 
-  export let tempoValue: number | undefined = undefined;
-  export let onValueChange: (name: string, value: number) => void;
+  let {
+    tempoValue = undefined,
+    onValueChange,
+  }: {
+    tempoValue?: number;
+    onValueChange: (name: string, value: number) => void;
+  } = $props();
 </script>
 
-<Knob knobId={"tempo"} name={"TEMPO"} top={47} left={801} initialValue={tempoValue} {onValueChange} />
+<Knob knobId={"tempo"} name={"TEMPO"} top={47} left={801} initialValue={tempoValue} maxValue={240} {onValueChange} />
 
 <!-- Key Trig Hold  TODO-->
 <div class="key-trig-hold"></div>

@@ -4,6 +4,7 @@
   export let top: number;
   export let left: number;
   export let initialValue: number | undefined = undefined;
+  export let maxValue: number = 1023;
   export let onValueChange: (name: string, value: number) => void;
 
   let currentRot = 0;
@@ -15,9 +16,9 @@
   const maxRot = 160;
   const speed = 1.5;
 
-  // Initialize rotation from initialValue (0-1023 range)
+  // Initialize rotation from initialValue (0-maxValue range)
   $: if (initialValue !== undefined && initialValue !== initializedValue) {
-    const normalized = initialValue / 1023; // Convert to 0-1 range
+    const normalized = initialValue / maxValue; // Convert to 0-1 range
     currentRot = normalized * maxRot * 2 - maxRot; // Convert to -160 to 160 range
     lastRot = currentRot;
     initializedValue = initialValue;
@@ -38,8 +39,8 @@
     if (currentRot > maxRot) currentRot = maxRot;
     if (currentRot < -maxRot) currentRot = -maxRot;
 
-    const value = Math.round(((currentRot + maxRot) / (maxRot * 2)) * 1023);
-    const clampedValue = Math.min(Math.max(value, 0), 1023);
+    const value = Math.round(((currentRot + maxRot) / (maxRot * 2)) * maxValue);
+    const clampedValue = Math.min(Math.max(value, 0), maxValue);
     onValueChange(name, clampedValue);
   }
 
@@ -59,9 +60,9 @@
     role="slider"
     tabindex="0"
     aria-label={name}
-    aria-valuenow={Math.round(((currentRot + maxRot) / (maxRot * 2)) * 1023)}
+    aria-valuenow={Math.round(((currentRot + maxRot) / (maxRot * 2)) * maxValue)}
     aria-valuemin="0"
-    aria-valuemax="1023"
+    aria-valuemax={maxValue}
   >
     <div class="knob-pointer"></div>
   </div>
