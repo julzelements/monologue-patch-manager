@@ -39,9 +39,9 @@
     } else if (parameterId === "envelopeIntensity") {
       intensityRef = normalisedValue * 1023;
     } else if (parameterId === "envelopeType") {
-      typeRef = normalisedValue * 1023;
+      typeRef = 2 - Math.round(normalisedValue * 2); // 0 -> 2 === top -> bottom
     } else if (parameterId === "envelopeTarget") {
-      targetRef = normalisedValue * 1023;
+      targetRef = 2 - Math.round(normalisedValue * 2); // 0 -> 2 === top -> bottom
     }
   }
 

@@ -37,11 +37,11 @@
     } else if (parameterId === "lfoIntensity") {
       intensityRef = normalisedValue * 1023;
     } else if (parameterId === "lfoTarget") {
-      targetRef = normalisedValue * 1023;
+      targetRef = 2 - Math.round(normalisedValue * 2); // 0 -> 2 === top -> bottom
     } else if (parameterId === "lfoType") {
-      waveRef = normalisedValue * 1023;
+      waveRef = 2 - Math.round(normalisedValue * 2); // 0 -> 2 === top -> bottom
     } else if (parameterId === "lfoMode") {
-      modeRef = normalisedValue * 1023;
+      modeRef = 2 - Math.round(normalisedValue * 2); // 0 -> 2 === top -> bottom
     }
   }
 

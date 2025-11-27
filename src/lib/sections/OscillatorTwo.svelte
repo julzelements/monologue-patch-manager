@@ -43,11 +43,11 @@
     } else if (parameterId === "vco2Level") {
       levelRef = normalisedValue * 1023;
     } else if (parameterId === "vco2Wave") {
-      waveRef = normalisedValue * 1023;
+      waveRef = 2 - Math.round(normalisedValue * 2); // 0 -> 2 === top -> bottom
     } else if (parameterId === "vco2Octave") {
-      octaveRef = normalisedValue * 1023;
+      octaveRef = 2 - Math.round(normalisedValue * 2); // 0 -> 2 === top -> bottom
     } else if (parameterId === "syncRing") {
-      syncRingRef = normalisedValue * 1023;
+      syncRingRef = 2 - Math.round(normalisedValue * 2); // 0 -> 2 === top -> bottom
     }
   }
 

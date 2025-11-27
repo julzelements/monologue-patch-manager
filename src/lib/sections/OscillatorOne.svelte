@@ -31,7 +31,7 @@
     } else if (parameterId === "vco1Level") {
       levelRef = normalisedValue * 1023;
     } else if (parameterId === "vco1Wave") {
-      waveRef = normalisedValue * 1023;
+      waveRef = 2 - Math.round(normalisedValue * 2); // 0 -> 2 === top -> bottom
     } else if (parameterId === "vco1Pitch") {
       // VCO1 Pitch parameter available but not in this component
     } else if (parameterId === "vco1Octave") {
