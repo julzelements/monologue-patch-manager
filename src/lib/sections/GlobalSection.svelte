@@ -1,18 +1,50 @@
 <script lang="ts">
+  import { onMount, onDestroy } from "svelte";
   import Knob from "../knobs/Knob.svelte";
   import KeyboardOctaveToggle from "../toggles/KeyboardOctaveToggle.svelte";
   import VerticalToggle from "../toggles/VerticalToggle.svelte";
   import { CC_NAMES, LABELS } from "@julzelements/monologue-midi";
 
-  export let driveValue: number | undefined = undefined;
-  export let keyboardOctaveValue: number | undefined = undefined;
-  export let sequencerModeValue: number | undefined = undefined;
-  export let onValueChange: (name: string, value: number) => void;
-  export let onToggleChange: (name: string, value: string) => void;
+  let {
+    driveValue = undefined,
+    keyboardOctaveValue = undefined,
+    sequencerModeValue = undefined,
+    onValueChange,
+    onToggleChange,
+  }: {
+    driveValue?: number;
+    keyboardOctaveValue?: number;
+    sequencerModeValue?: number;
+    onValueChange: (name: string, value: number) => void;
+    onToggleChange: (name: string, value: string) => void;
+  } = $props();
+
+  let driveRef = $state(driveValue);
+
+  // Listen for MIDI parameter changes
+  function handleParameterChange(event: CustomEvent) {
+    const { parameterId, normalisedValue } = event.detail;
+
+    if (parameterId === "drive") {
+      driveRef = normalisedValue * 1023;
+    }
+  }
+
+  onMount(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("midi:parameter" as any, handleParameterChange);
+    }
+  });
+
+  onDestroy(() => {
+    if (typeof window !== "undefined") {
+      window.removeEventListener("midi:parameter" as any, handleParameterChange);
+    }
+  });
 </script>
 
 <Knob knobId={"master"} name={"MASTER"} top={47} left={60} initialValue={0} {onValueChange} />
-<Knob knobId={CC_NAMES.drive} name={"DRIVE"} top={120} left={60} initialValue={driveValue} {onValueChange} />
+<Knob knobId={CC_NAMES.drive} name={"DRIVE"} top={120} left={60} initialValue={driveRef} {onValueChange} />
 <KeyboardOctaveToggle
   id={"keyboardOctave"}
   name={"KEYBOARD OCTAVE"}
