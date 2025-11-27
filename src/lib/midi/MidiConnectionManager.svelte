@@ -5,7 +5,7 @@
    */
 
   import { midiStore } from "$lib/stores/midiStore";
-  import { midiService } from "$lib/midi/midiService";
+  import { midiService } from "$lib/midi/midiConnectionService";
 
   let isConnecting = false;
 
