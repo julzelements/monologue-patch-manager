@@ -4,22 +4,31 @@
    * Displays incoming MIDI events in real-time
    */
 
-  import { onMount, onDestroy } from "svelte";
+  import { onMount } from "svelte";
+  import type { MonologueControlChangeDetail } from "$lib/midi/types";
 
-  type MidiEventType = "noteon" | "cc";
+  type MidiEventType = "noteon" | "controlchange";
+
+  interface NoteOnDetail {
+    name: string;
+    number: number;
+    velocity: number;
+  }
+
+  type MidiEventData = NoteOnDetail | MonologueControlChangeDetail;
 
   interface MidiUiEvent {
     id: number;
     type: MidiEventType;
     timestamp: Date;
-    data: any;
+    data: MidiEventData;
   }
 
   let events: MidiUiEvent[] = $state([]);
   let eventIdCounter = 0;
   const MAX_EVENTS = 50; // Keep only the last 50 events
 
-  function addEvent(type: MidiEventType, data: any) {
+  function addEvent(type: MidiEventType, data: MidiEventData) {
     const newEvent: MidiUiEvent = {
       id: eventIdCounter++,
       type,
@@ -30,15 +39,13 @@
     events = [newEvent, ...events].slice(0, MAX_EVENTS);
   }
 
-  // Subscribe to MIDI events
   onMount(() => {
-    // Listen for custom events dispatched from monologueDevice
-    const handleNoteOn = (e: CustomEvent) => {
+    const handleNoteOn = (e: CustomEvent<NoteOnDetail>) => {
       addEvent("noteon", e.detail);
     };
 
-    const handleCC = (e: CustomEvent) => {
-      addEvent("cc", e.detail);
+    const handleCC = (e: CustomEvent<MonologueControlChangeDetail>) => {
+      addEvent("controlchange", e.detail);
     };
 
     window.addEventListener("midi:noteon" as any, handleNoteOn);
@@ -76,17 +83,21 @@
       <div class="no-events">No events yet. Play notes or turn knobs on your Monologue.</div>
     {:else}
       {#each events as event (event.id)}
-        <div class="event-item" class:note={event.type === "noteon"} class:cc={event.type === "cc"}>
+        <div class="event-item" class:note={event.type === "noteon"} class:cc={event.type === "controlchange"}>
           <span class="event-time">{formatTime(event.timestamp)}</span>
           {#if event.type === "noteon"}
             <span class="event-icon">🎹</span>
             <span class="event-data">
-              {event.data.name} ({event.data.number}) vel: {event.data.velocity}
+              {(event.data as NoteOnDetail).name} ({(event.data as NoteOnDetail).number}) vel: {(
+                event.data as NoteOnDetail
+              ).velocity}
             </span>
-          {:else if event.type === "cc"}
+          {:else}
             <span class="event-icon">🎛️</span>
             <span class="event-data">
-              CC{event.data.ccNumber} → {event.data.parameterId} = {event.data.value}
+              CC {(event.data as MonologueControlChangeDetail).midiValue} → {(
+                event.data as MonologueControlChangeDetail
+              ).parameterId} = {(event.data as MonologueControlChangeDetail).normalisedValue.toFixed(5)}
             </span>
           {/if}
         </div>
@@ -97,29 +108,23 @@
 
 <style>
   .midi-event-monitor {
-    padding: 1rem;
+    padding: 0.75rem;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    min-height: 300px;
-    max-height: 300px;
+    /* visually constrain size */
+    min-height: 180px;
+    max-height: 220px;
   }
 
   .monitor-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.25rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  h3 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
   }
 
   .btn-clear {
@@ -130,7 +135,6 @@
     border-radius: 4px;
     font-size: 0.8rem;
     cursor: pointer;
-    transition: background 0.2s;
   }
 
   .btn-clear:hover {
@@ -141,25 +145,25 @@
     flex: 1;
     overflow-y: auto;
     display: flex;
-    flex-direction: column-reverse;
-    gap: 0.5rem;
+    flex-direction: column-reverse; /* newest at top; flip to column if you prefer bottom */
+    gap: 0.4rem;
   }
 
   .no-events {
     text-align: center;
-    padding: 2rem;
-    opacity: 0.5;
-    font-size: 0.9rem;
+    padding: 1.5rem;
+    opacity: 0.6;
+    font-size: 0.85rem;
   }
 
   .event-item {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.4rem 0.5rem;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 4px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-family: "Courier New", monospace;
   }
 
@@ -173,11 +177,11 @@
 
   .event-time {
     color: #888;
-    min-width: 100px;
+    min-width: 90px;
   }
 
   .event-icon {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .event-data {
@@ -185,7 +189,7 @@
     color: #fff;
   }
 
-  /* Custom scrollbar */
+  /* subtle scrollbar to show overflow */
   .event-list::-webkit-scrollbar {
     width: 6px;
   }
