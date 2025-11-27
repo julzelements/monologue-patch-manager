@@ -45,7 +45,7 @@
     } else if (parameterId === "vco2Wave") {
       waveRef = 2 - Math.round(normalisedValue * 2); // 0 -> 2 === top -> bottom
     } else if (parameterId === "vco2Octave") {
-      octaveRef = 2 - Math.round(normalisedValue * 2); // 0 -> 2 === top -> bottom
+      octaveRef = 3 - Math.round(normalisedValue * 3); // 0 -> 3 === top -> bottom
     } else if (parameterId === "syncRing") {
       syncRingRef = 2 - Math.round(normalisedValue * 2); // 0 -> 2 === top -> bottom
     }

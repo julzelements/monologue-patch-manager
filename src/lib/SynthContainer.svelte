@@ -3,8 +3,6 @@
   import VerticalToggle from "./toggles/VerticalToggle.svelte";
   import LcdScreen from "./menu/LcdScreen.svelte";
   import GlobalSection from "./sections/GlobalSection.svelte";
-  import OscillatorOne from "./sections/OscillatorOne.svelte";
-  import OscillatorTwo from "./sections/OscillatorTwo.svelte";
   import Filter from "./sections/Filter.svelte";
   import Envelope from "./sections/Envelope.svelte";
   import Lfo from "./sections/Lfo.svelte";
@@ -15,6 +13,8 @@
   import MidiConnectionManager from "./midi/MidiConnectionManager.svelte";
   import MidiEventMonitor from "./midi/MidiEventMonitor.svelte";
   import { prettyPanelSettings, type MonologueParameters, LABELS } from "@julzelements/monologue-midi";
+  import Vco1 from "./sections/Vco1.svelte";
+  import Vco2 from "./sections/Vco2.svelte";
 
   type PrettyPanelSettings = ReturnType<typeof prettyPanelSettings>;
 
@@ -67,7 +67,7 @@
   />
 
   <!-- Oscillator One -->
-  <OscillatorOne
+  <Vco1
     shapeValue={rawPatch?.panelSettings.oscilators.vco1.shape.value}
     levelValue={rawPatch?.panelSettings.oscilators.vco1.level.value}
     waveValue={rawPatch?.panelSettings.oscilators.vco1.wave.value}
@@ -76,7 +76,7 @@
   />
 
   <!-- Oscillator Two -->
-  <OscillatorTwo
+  <Vco2
     pitchValue={rawPatch?.panelSettings.oscilators.vco2.pitch.value}
     shapeValue={rawPatch?.panelSettings.oscilators.vco2.shape.value}
     levelValue={rawPatch?.panelSettings.oscilators.vco2.level.value}
