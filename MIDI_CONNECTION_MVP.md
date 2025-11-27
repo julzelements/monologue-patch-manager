@@ -98,6 +98,17 @@ Responsibilities:
 - Handle connection/disconnection events
 - Send/receive raw MIDI messages
 
+#### 2. MIDI Parameter Flow
+
+**Hardware → UI Data Flow:**
+
+1. **Hardware sends CC** (0-127) - Physical knob movement on Monologue
+2. **WebMIDI normalizes** to 0-1 - Browser API provides normalized value
+3. **monologueDevice dispatches event** with `normalisedValue` - Custom event with parameter ID
+4. **UI component multiplies by 1023** → Knob updates to match hardware position
+
+This flow ensures the UI stays in sync with the physical hardware state.
+
 ```typescript
 class MidiService {
   async initialize(): Promise<void>;

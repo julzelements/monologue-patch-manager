@@ -4,6 +4,7 @@
  */
 
 import { CC_TO_PARAMETER } from "@julzelements/monologue-midi";
+import type { ControlChangeMessageEvent } from "webmidi";
 
 class MonologueDevice {
   /**
@@ -25,27 +26,30 @@ class MonologueDevice {
     });
 
     // Set up control change listener
-    input.addListener("controlchange", (event: any) => {
+    input.addListener("controlchange", (event: ControlChangeMessageEvent) => {
       const ccNumber = event.controller.number;
-      const value = event.value;
+      const normalisedValue = event?.value as number;
+      const midiValue = event.dataBytes[1];
 
       // Decode CC using monologue-midi
       const parameterId = CC_TO_PARAMETER[ccNumber];
 
-      const eventData = {
-        ccNumber,
-        value,
-        parameterId: parameterId || "unknown",
-      };
+      if (parameterId && normalisedValue && midiValue) {
+        // Convert normalized value to parameter's native range (e.g., 0-1023 for continuous params)
 
-      if (parameterId) {
-        console.log("🎛️ CC:", ccNumber, "→", parameterId, "value:", value);
+        // Dispatch event with parameter value for UI updates
+        window.dispatchEvent(
+          new CustomEvent("midi:parameter", {
+            detail: {
+              parameterId,
+              normalisedValue,
+              midiValue,
+            },
+          })
+        );
       } else {
-        console.log("🎛️ CC:", ccNumber, "value:", value, "(unknown parameter)");
+        console.log("🎛️ CC:", ccNumber, "value:", midiValue, "(unknown parameter)");
       }
-
-      // Dispatch custom event for UI
-      window.dispatchEvent(new CustomEvent("midi:cc", { detail: eventData }));
     });
   }
 }
