@@ -50,6 +50,7 @@
     "vitest-browser-svelte": "^2.0.1"
   },
   "dependencies": {
-    "@julzelements/monologue-midi": "^0.2.0"
+    "@julzelements/monologue-midi": "^0.2.0",
+    "webmidi": "^3.1.14"
   }
 }

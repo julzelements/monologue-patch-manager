@@ -12,6 +12,7 @@
   import EditMenu from "./menu/EditMenu.svelte";
   import SequencerMenu from "./menu/SequencerMenu.svelte";
   import SequencerGrid from "./menu/SequencerGrid.svelte";
+  import MidiConnectionManager from "./midi/MidiConnectionManager.svelte";
   import { prettyPanelSettings, type MonologueParameters, LABELS } from "@julzelements/monologue-midi";
 
   type PrettyPanelSettings = ReturnType<typeof prettyPanelSettings>;
@@ -47,6 +48,11 @@
     currentValue = value;
   }
 </script>
+
+<!-- MIDI Connection Manager -->
+<div class="midi-controls">
+  <MidiConnectionManager />
+</div>
 
 <div id="synth-container" class="show-bg">
   <!-- Global Section -->
@@ -139,6 +145,11 @@
     margin: 0;
     background: #222;
     font-family: sans-serif;
+  }
+
+  .midi-controls {
+    max-width: 900px;
+    margin: 20px auto 10px;
   }
 
   #synth-container {
