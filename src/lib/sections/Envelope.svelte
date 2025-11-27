@@ -3,7 +3,7 @@
   import Knob from "../knobs/Knob.svelte";
   import VerticalToggle from "../toggles/VerticalToggle.svelte";
   import { CC_NAMES, LABELS } from "@julzelements/monologue-midi";
-  import type { MonologueParameterChangeEvent } from "$lib/midi/types";
+  import type { MonologueCCEvent } from "$lib/midi/types";
 
   let {
     typeValue = undefined,
@@ -30,7 +30,7 @@
   let intensityRef = $state(intensityValue);
 
   // Listen for MIDI parameter changes
-  function handleParameterChange(event: MonologueParameterChangeEvent) {
+  function handleParameterChange(event: MonologueCCEvent) {
     const { parameterId, normalisedValue } = event.detail;
 
     if (parameterId === "envelopeAttack") {

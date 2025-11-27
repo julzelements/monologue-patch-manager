@@ -4,7 +4,7 @@
   import VerticalToggle from "../toggles/VerticalToggle.svelte";
   import Vco2Toggle from "../toggles/Vco2Toggle.svelte";
   import { CC_NAMES, LABELS } from "@julzelements/monologue-midi";
-  import type { MonologueParameterChangeEvent } from "$lib/midi/types";
+  import type { MonologueCCEvent } from "$lib/midi/types";
 
   let {
     pitchValue = undefined,
@@ -34,7 +34,7 @@
   let syncRingRef = $state(syncRingValue);
 
   // Listen for MIDI parameter changes
-  function handleParameterChange(event: MonologueParameterChangeEvent) {
+  function handleParameterChange(event: MonologueCCEvent) {
     const { parameterId, normalisedValue } = event.detail;
 
     if (parameterId === "vco2Pitch") {

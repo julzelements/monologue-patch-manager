@@ -2,7 +2,7 @@
   import { onMount, onDestroy } from "svelte";
   import Knob from "../knobs/Knob.svelte";
   import { CC_NAMES } from "@julzelements/monologue-midi";
-  import type { MonologueParameterChangeEvent } from "$lib/midi/types";
+  import type { MonologueCCEvent } from "$lib/midi/types";
 
   let {
     cutoffValue = undefined,
@@ -18,7 +18,7 @@
   let resonanceRef = $state(resonanceValue);
 
   // Listen for MIDI parameter changes
-  function handleParameterChange(event: MonologueParameterChangeEvent) {
+  function handleParameterChange(event: MonologueCCEvent) {
     const { parameterId, normalisedValue } = event.detail;
 
     if (parameterId === "filterCutoff") {

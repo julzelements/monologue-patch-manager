@@ -48,10 +48,10 @@ export interface MidiError {
 /**
  * Custom event detail for parameter changes dispatched from monologueDevice
  */
-export interface MonologueParameterChangeDetail {
+export interface MonologueControlChangeDetail {
   parameterId: string;
   normalisedValue: number;
   midiValue: number;
 }
 
-export type MonologueParameterChangeEvent = CustomEvent<MonologueParameterChangeDetail>;
+export type MonologueCCEvent = CustomEvent<MonologueControlChangeDetail>;

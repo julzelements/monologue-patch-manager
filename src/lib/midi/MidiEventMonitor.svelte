@@ -5,7 +5,6 @@
    */
 
   import { onMount, onDestroy } from "svelte";
-  import { monologueDevice } from "$lib/midi/monologueDevice";
 
   type MidiEventType = "noteon" | "cc";
 

@@ -4,7 +4,7 @@
  */
 
 import { CC_TO_PARAMETER } from "@julzelements/monologue-midi";
-import type { MonologueParameterChangeEvent, MonologueParameterChangeDetail } from "$lib/midi/types";
+import type { MonologueCCEvent, MonologueControlChangeDetail } from "$lib/midi/types";
 import type { ControlChangeMessageEvent } from "webmidi";
 
 class MonologueDevice {
@@ -38,13 +38,13 @@ class MonologueDevice {
       // Allow 0 values; only require that we have a known parameterId
       if (parameterId !== undefined) {
         window.dispatchEvent(
-          new CustomEvent<MonologueParameterChangeDetail>("midi:parameter", {
+          new CustomEvent<MonologueControlChangeDetail>("midi:parameter", {
             detail: {
               parameterId,
               normalisedValue,
               midiValue,
             },
-          }) as MonologueParameterChangeEvent
+          }) as MonologueCCEvent
         );
       } else {
         console.log("🎛️ CC:", ccNumber, "value:", midiValue, "(unknown parameter)");
