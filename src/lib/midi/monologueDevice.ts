@@ -3,7 +3,7 @@
  * Handles Monologue-specific MIDI communication using @julzelements/monologue-midi
  */
 
-import { midiService } from "./midiService";
+import { CC_TO_PARAMETER } from "@julzelements/monologue-midi";
 
 class MonologueDevice {
   /**
@@ -12,12 +12,40 @@ class MonologueDevice {
   setupListeners(input: any): void {
     // Set up note event listener
     input.addListener("noteon", (event: any) => {
-      console.log("🎹 Note ON:", event.note.name, event.note.number, "velocity:", event.note.rawAttack);
+      const eventData = {
+        name: event.note.name,
+        number: event.note.number,
+        velocity: event.note.rawAttack,
+      };
+
+      console.log("🎹 Note ON:", eventData.name, eventData.number, "velocity:", eventData.velocity);
+
+      // Dispatch custom event for UI
+      window.dispatchEvent(new CustomEvent("midi:noteon", { detail: eventData }));
     });
 
     // Set up control change listener
     input.addListener("controlchange", (event: any) => {
-      console.log("🎛️ CC:", event.controller.number, "value:", event.value, "name:", event.controller.name);
+      const ccNumber = event.controller.number;
+      const value = event.value;
+
+      // Decode CC using monologue-midi
+      const parameterId = CC_TO_PARAMETER[ccNumber];
+
+      const eventData = {
+        ccNumber,
+        value,
+        parameterId: parameterId || "unknown",
+      };
+
+      if (parameterId) {
+        console.log("🎛️ CC:", ccNumber, "→", parameterId, "value:", value);
+      } else {
+        console.log("🎛️ CC:", ccNumber, "value:", value, "(unknown parameter)");
+      }
+
+      // Dispatch custom event for UI
+      window.dispatchEvent(new CustomEvent("midi:cc", { detail: eventData }));
     });
   }
 }
