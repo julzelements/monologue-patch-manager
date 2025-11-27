@@ -7,19 +7,21 @@
   import { onMount, onDestroy } from "svelte";
   import { monologueDevice } from "$lib/midi/monologueDevice";
 
-  interface MidiEvent {
+  type MidiEventType = "noteon" | "cc";
+
+  interface MidiUiEvent {
     id: number;
-    type: "noteon" | "cc";
+    type: MidiEventType;
     timestamp: Date;
     data: any;
   }
 
-  let events: MidiEvent[] = $state([]);
+  let events: MidiUiEvent[] = $state([]);
   let eventIdCounter = 0;
   const MAX_EVENTS = 50; // Keep only the last 50 events
 
-  function addEvent(type: "noteon" | "cc", data: any) {
-    const newEvent: MidiEvent = {
+  function addEvent(type: MidiEventType, data: any) {
+    const newEvent: MidiUiEvent = {
       id: eventIdCounter++,
       type,
       timestamp: new Date(),
@@ -41,11 +43,11 @@
     };
 
     window.addEventListener("midi:noteon" as any, handleNoteOn);
-    window.addEventListener("midi:cc" as any, handleCC);
+    window.addEventListener("midi:parameter" as any, handleCC);
 
     return () => {
       window.removeEventListener("midi:noteon" as any, handleNoteOn);
-      window.removeEventListener("midi:cc" as any, handleCC);
+      window.removeEventListener("midi:parameter" as any, handleCC);
     };
   });
 

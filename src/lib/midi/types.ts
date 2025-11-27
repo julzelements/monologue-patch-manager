@@ -44,3 +44,14 @@ export interface MidiError {
   message: string;
   details?: string;
 }
+
+/**
+ * Custom event detail for parameter changes dispatched from monologueDevice
+ */
+export interface MonologueParameterChangeDetail {
+  parameterId: string;
+  normalisedValue: number;
+  midiValue: number;
+}
+
+export type MonologueParameterChangeEvent = CustomEvent<MonologueParameterChangeDetail>;
