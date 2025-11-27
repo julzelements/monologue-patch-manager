@@ -1,27 +1,73 @@
 <script lang="ts">
+  import { onMount, onDestroy } from "svelte";
   import Knob from "../knobs/Knob.svelte";
   import VerticalToggle from "../toggles/VerticalToggle.svelte";
   import { CC_NAMES, LABELS } from "@julzelements/monologue-midi";
 
-  export let typeValue: number | undefined = undefined;
-  export let targetValue: number | undefined = undefined;
-  export let attackValue: number | undefined = undefined;
-  export let decayValue: number | undefined = undefined;
-  export let intensityValue: number | undefined = undefined;
-  export let onValueChange: (name: string, value: number) => void;
-  export let onToggleChange: (name: string, value: string) => void;
+  let {
+    typeValue = undefined,
+    targetValue = undefined,
+    attackValue = undefined,
+    decayValue = undefined,
+    intensityValue = undefined,
+    onValueChange,
+    onToggleChange,
+  }: {
+    typeValue?: number;
+    targetValue?: number;
+    attackValue?: number;
+    decayValue?: number;
+    intensityValue?: number;
+    onValueChange: (name: string, value: number) => void;
+    onToggleChange: (name: string, value: string) => void;
+  } = $props();
+
+  let typeRef = $state(typeValue);
+  let targetRef = $state(targetValue);
+  let attackRef = $state(attackValue);
+  let decayRef = $state(decayValue);
+  let intensityRef = $state(intensityValue);
+
+  // Listen for MIDI parameter changes
+  function handleParameterChange(event: CustomEvent) {
+    const { parameterId, normalisedValue } = event.detail;
+
+    if (parameterId === "envelopeAttack") {
+      attackRef = normalisedValue * 1023;
+    } else if (parameterId === "envelopeDecay") {
+      decayRef = normalisedValue * 1023;
+    } else if (parameterId === "envelopeIntensity") {
+      intensityRef = normalisedValue * 1023;
+    } else if (parameterId === "envelopeType") {
+      typeRef = normalisedValue * 1023;
+    } else if (parameterId === "envelopeTarget") {
+      targetRef = normalisedValue * 1023;
+    }
+  }
+
+  onMount(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("midi:parameter" as any, handleParameterChange);
+    }
+  });
+
+  onDestroy(() => {
+    if (typeof window !== "undefined") {
+      window.removeEventListener("midi:parameter" as any, handleParameterChange);
+    }
+  });
 </script>
 
-<Knob knobId={CC_NAMES.ampEgAttack} name={"ATTACK"} top={47} left={541} initialValue={attackValue} {onValueChange} />
-<Knob knobId={CC_NAMES.ampEgDecay} name={"DECAY"} top={47} left={615.5} initialValue={decayValue} {onValueChange} />
-<Knob knobId={CC_NAMES.egInt} name={"EG INT"} top={47} left={689} initialValue={intensityValue} {onValueChange} />
+<Knob knobId={CC_NAMES.ampEgAttack} name={"ATTACK"} top={47} left={541} initialValue={attackRef} {onValueChange} />
+<Knob knobId={CC_NAMES.ampEgDecay} name={"DECAY"} top={47} left={615.5} initialValue={decayRef} {onValueChange} />
+<Knob knobId={CC_NAMES.egInt} name={"EG INT"} top={47} left={689} initialValue={intensityRef} {onValueChange} />
 <VerticalToggle
   id={CC_NAMES.vco2Wave}
   name={"EG TYPE"}
   top={40}
   left={497.5}
   positionNames={[...LABELS.EG_TYPE_LABELS].reverse()}
-  initialValue={typeValue ?? 0}
+  initialValue={typeRef ?? 0}
   onValueChange={onToggleChange}
 />
 <VerticalToggle
@@ -30,6 +76,6 @@
   top={39}
   left={752.3}
   positionNames={[...LABELS.EG_TARGET_LABELS].reverse()}
-  initialValue={targetValue ?? 0}
+  initialValue={targetRef ?? 0}
   onValueChange={onToggleChange}
 />
