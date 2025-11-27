@@ -7,6 +7,7 @@ import { WebMidi, type Input, type Output } from "webmidi";
 import { monologueConnectionStrings } from "@julzelements/monologue-midi";
 import { midiStore } from "$lib/stores/midiStore";
 import { MidiErrorType, type MidiDeviceInfo, type MidiError } from "./types";
+import { monologueDevice } from "./monologueDevice";
 
 class MidiService {
   private input: Input | null = null;
@@ -129,13 +130,6 @@ class MidiService {
       let input = WebMidi.getInputByName(monologueConnectionStrings.input);
       let output = WebMidi.getOutputByName(monologueConnectionStrings.output);
 
-      if (input) {
-        console.log(input);
-        input.addListener("noteon", (event) => {
-          console.log(event);
-        });
-      }
-
       if (!input || !output) {
         const error: MidiError = {
           type: MidiErrorType.DEVICE_NOT_FOUND,
@@ -150,6 +144,9 @@ class MidiService {
       // Connect to the device
       this.input = input;
       this.output = output;
+
+      // Set up Monologue-specific listeners
+      monologueDevice.setupListeners(this.input);
 
       // Update store with device info
       const deviceInfo: MidiDeviceInfo = {
