@@ -34,10 +34,8 @@ class MonologueDevice {
       // Decode CC using monologue-midi
       const parameterId = CC_TO_PARAMETER[ccNumber];
 
-      if (parameterId && normalisedValue && midiValue) {
-        // Convert normalized value to parameter's native range (e.g., 0-1023 for continuous params)
-
-        // Dispatch event with parameter value for UI updates
+      // Allow 0 values; only require that we have a known parameterId
+      if (parameterId !== undefined) {
         window.dispatchEvent(
           new CustomEvent("midi:parameter", {
             detail: {
