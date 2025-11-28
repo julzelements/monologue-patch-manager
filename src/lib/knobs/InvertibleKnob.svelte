@@ -17,6 +17,28 @@
   const maxRot = 160;
   const speed = 1.5;
 
+  function emitValueFromRotation() {
+    const raw = Math.round(((currentRot + maxRot) / (maxRot * 2)) * maxValue);
+    const clamped = Math.min(Math.max(raw, 0), maxValue);
+
+    // Map 0–maxValue from the knob into 0–127 space
+    const midi = Math.round((clamped / maxValue) * 127);
+
+    let effectiveMidi: number;
+
+    if (inverted) {
+      // Inverted: use 63–0 range
+      const flipped = 127 - midi;
+      effectiveMidi = Math.min(Math.max(flipped, 0), 63);
+    } else {
+      // Non-inverted: use 64–127 range
+      effectiveMidi = Math.min(Math.max(midi, 64), 127);
+    }
+
+    const valueForCallback = Math.round((effectiveMidi / 127) * maxValue);
+    onValueChange(name, valueForCallback);
+  }
+
   // Initialize rotation from initialValue (0-maxValue range)
   $: if (initialValue !== undefined && initialValue !== initializedValue) {
     const normalized = initialValue / maxValue; // Convert to 0-1 range
@@ -40,9 +62,7 @@
     if (currentRot > maxRot) currentRot = maxRot;
     if (currentRot < -maxRot) currentRot = -maxRot;
 
-    const value = Math.round(((currentRot + maxRot) / (maxRot * 2)) * maxValue);
-    const clampedValue = Math.min(Math.max(value, 0), maxValue);
-    onValueChange(name, clampedValue);
+    emitValueFromRotation();
   }
 
   function handlePointerUp() {
@@ -52,6 +72,7 @@
 
   function handleInvertClick() {
     inverted = !inverted;
+    emitValueFromRotation();
   }
 </script>
 
