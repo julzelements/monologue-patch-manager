@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import Knob from "../knobs/Knob.svelte";
+  import InvertibleKnob from "../knobs/InvertibleKnob.svelte";
   import VerticalToggle from "../toggles/VerticalToggle.svelte";
   import { CC_NAMES, LABELS } from "@julzelements/monologue-midi";
   import type { MonologueCCEvent } from "$lib/midi/types";
@@ -61,7 +62,14 @@
 
 <Knob knobId={CC_NAMES.ampEgAttack} name={"ATTACK"} top={47} left={541} initialValue={attackRef} {onValueChange} />
 <Knob knobId={CC_NAMES.ampEgDecay} name={"DECAY"} top={47} left={615.5} initialValue={decayRef} {onValueChange} />
-<Knob knobId={CC_NAMES.egInt} name={"EG INT"} top={47} left={689} initialValue={intensityRef} {onValueChange} />
+<InvertibleKnob
+  knobId={CC_NAMES.egInt}
+  name={"EG INT"}
+  top={47}
+  left={689}
+  initialValue={intensityRef}
+  {onValueChange}
+/>
 <VerticalToggle
   id={CC_NAMES.vco2Wave}
   name={"EG TYPE"}

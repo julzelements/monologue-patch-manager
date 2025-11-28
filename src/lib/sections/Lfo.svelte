@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import Knob from "../knobs/Knob.svelte";
+  import InvertibleKnob from "../knobs/InvertibleKnob.svelte";
   import VerticalToggle from "../toggles/VerticalToggle.svelte";
   import { CC_NAMES, LABELS } from "@julzelements/monologue-midi";
   import type { MonologueCCEvent } from "$lib/midi/types";
@@ -60,7 +61,14 @@
 </script>
 
 <Knob knobId={CC_NAMES.lfoRate} name={"LFO RATE"} top={120} left={615.5} initialValue={rateRef} {onValueChange} />
-<Knob knobId={CC_NAMES.lfoInt} name={"LFO INT"} top={120} left={689} initialValue={intensityRef} {onValueChange} />
+<InvertibleKnob
+  knobId={CC_NAMES.lfoInt}
+  name={"LFO INT"}
+  top={120}
+  left={689}
+  initialValue={intensityRef}
+  {onValueChange}
+/>
 <VerticalToggle
   id={CC_NAMES.lfoTarget}
   name={"LFO MODE"}
