@@ -93,7 +93,7 @@
     <div class="knob-pointer"></div>
   </div>
   <button class="invert-button" type="button" aria-pressed={inverted} on:click={handleInvertClick}>
-    {inverted ? "Inv" : "Norm"}
+    {inverted ? "INV" : "NORM"}
   </button>
 </div>
 
@@ -139,9 +139,11 @@
   }
 
   .invert-button {
+    font-family: "Raleway", sans-serif;
+    font-size: 10px;
+    font-weight: 500;
     height: 20px;
     padding: 0 4px;
-    font-size: 0.6rem;
     border-radius: 3px;
     border: 1px solid #222;
     background: #333;
