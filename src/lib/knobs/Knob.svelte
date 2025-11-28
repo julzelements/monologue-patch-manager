@@ -63,6 +63,7 @@
     aria-valuenow={Math.round(((currentRot + maxRot) / (maxRot * 2)) * maxValue)}
     aria-valuemin="0"
     aria-valuemax={maxValue}
+    data-testid={`knob-${knobId}-dial`}
   >
     <div class="knob-pointer"></div>
   </div>
