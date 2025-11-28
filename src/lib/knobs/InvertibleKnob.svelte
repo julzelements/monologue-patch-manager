@@ -22,17 +22,18 @@
     const clamped = Math.min(Math.max(raw, 0), maxValue);
 
     // Map 0–maxValue from the knob into 0–127 space
-    const midi = Math.round((clamped / maxValue) * 127);
+    const midi = (clamped / maxValue) * 127;
 
     let effectiveMidi: number;
 
     if (inverted) {
-      // Inverted: use 63–0 range
-      const flipped = 127 - midi;
-      effectiveMidi = Math.min(Math.max(flipped, 0), 63);
+      // Inverted: map full travel 0–127 down to 63–0 linearly
+      const t = midi / 127; // 0..1 across dial
+      effectiveMidi = 63 * (1 - t); // 63..0
     } else {
-      // Non-inverted: use 64–127 range
-      effectiveMidi = Math.min(Math.max(midi, 64), 127);
+      // Non-inverted: map full travel 0–127 up to 64–127 linearly
+      const t = midi / 127; // 0..1 across dial
+      effectiveMidi = 64 + (127 - 64) * t; // 64..127
     }
 
     const valueForCallback = Math.round((effectiveMidi / 127) * maxValue);
