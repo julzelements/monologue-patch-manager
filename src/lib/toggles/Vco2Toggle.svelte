@@ -28,7 +28,7 @@
   }
 </script>
 
-<div class="vco2-toggle" style="top: {top}px; left: {left}px;" {id}>
+<div class="vco2-toggle" style="top: {top}px; left: {left}px;" {id} data-testid={`vco2-toggle-${id}`}>
   <div class="vco2-indicator" style="transform: translateY({indicatorPositions[position]}px);"></div>
   <div class="vco2-knob" style="transform: translateY({knobPositions[position]}px);"></div>
   {#each Array(4) as _, i}

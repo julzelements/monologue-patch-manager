@@ -52,7 +52,7 @@
 
 <svelte:window on:pointermove={handlePointerMove} on:pointerup={handlePointerUp} />
 
-<div class="knob" style="top: {top}px; left: {left}px;" id={knobId}>
+<div class="knob" style="top: {top}px; left: {left}px;" id={knobId} data-testid={`knob-${knobId}`}>
   <div
     class="knob-dial"
     style="transform: rotate({currentRot}deg);"

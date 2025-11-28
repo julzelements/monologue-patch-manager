@@ -79,7 +79,12 @@
 
 <svelte:window on:pointermove={handlePointerMove} on:pointerup={handlePointerUp} />
 
-<div class="invertible-knob" style="top: {top}px; left: {left}px;" id={knobId}>
+<div
+  class="invertible-knob"
+  style="top: {top}px; left: {left}px;"
+  id={knobId}
+  data-testid={`invertible-knob-${knobId}`}
+>
   <div
     class="knob-dial {inverted ? 'knob-dial--inverted' : ''}"
     style="transform: rotate({currentRot}deg);"
@@ -90,6 +95,7 @@
     aria-valuenow={Math.round(((currentRot + maxRot) / (maxRot * 2)) * maxValue)}
     aria-valuemin="0"
     aria-valuemax={maxValue}
+    data-testid={`invertible-knob-${knobId}-dial`}
   >
     <div class="knob-pointer"></div>
   </div>

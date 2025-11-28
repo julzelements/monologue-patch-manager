@@ -26,7 +26,7 @@
   }
 </script>
 
-<div class="vertical-toggle" style="top: {top}px; left: {left}px;" {id}>
+<div class="vertical-toggle" style="top: {top}px; left: {left}px;" {id} data-testid={`vertical-toggle-${id}`}>
   <div class="vertical-knob v-pos-{position}"></div>
   {#each Array(3) as _, i}
     <div

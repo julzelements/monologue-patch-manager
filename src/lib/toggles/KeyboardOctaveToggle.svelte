@@ -28,7 +28,12 @@
   }
 </script>
 
-<div class="keyboard-octave-toggle" style="top: {top}px; left: {left}px;" {id}>
+<div
+  class="keyboard-octave-toggle"
+  style="top: {top}px; left: {left}px;"
+  {id}
+  data-testid={`keyboard-octave-toggle-${id}`}
+>
   <div class="keyboard-octave-indicator" style="transform: translateX({indicatorPositions[position]}px);"></div>
   <div class="keyboard-octave-knob" style="transform: translateX({knobPositions[position]}px);"></div>
   {#each Array(5) as _, i}
