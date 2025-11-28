@@ -135,21 +135,22 @@
 
   .invert-button {
     position: absolute;
-    left: -24px;
-    bottom: -25.5px;
+    left: 5px;
+    bottom: -28px;
     font-family: "Raleway", sans-serif;
-    font-size: 7px;
+    font-size: 8px;
     font-weight: 600;
-    height: 20px;
-    padding: 0 4px;
-    border-radius: 3px;
-    border: 1px solid #222;
-    background: #333;
-    color: #eee;
+    height: auto;
+    padding: 0;
+    border-radius: 0;
+    border: none;
+    background: transparent;
+    color: #000;
+    text-shadow: 0.5px 0.5px 0 rgba(75, 75, 75, 0.5);
     cursor: pointer;
   }
 
   .invert-button:hover {
-    background: #444;
+    text-decoration: underline;
   }
 </style>
