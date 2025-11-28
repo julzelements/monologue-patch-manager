@@ -92,19 +92,14 @@
   >
     <div class="knob-pointer"></div>
   </div>
-  <button class="invert-button" type="button" aria-pressed={inverted} on:click={handleInvertClick}>
-    {inverted ? "INV" : "NORM"}
-  </button>
+  <button class="invert-button" type="button" aria-pressed={inverted} on:click={handleInvertClick}>INVERT</button>
 </div>
 
 <style>
   .invertible-knob {
-    width: 55px;
+    width: 35px;
     height: 35px;
     position: absolute;
-    display: flex;
-    align-items: center;
-    gap: 4px;
   }
 
   .knob-dial {
@@ -139,9 +134,12 @@
   }
 
   .invert-button {
+    position: absolute;
+    left: -24px;
+    bottom: -25.5px;
     font-family: "Raleway", sans-serif;
-    font-size: 10px;
-    font-weight: 500;
+    font-size: 7px;
+    font-weight: 600;
     height: 20px;
     padding: 0 4px;
     border-radius: 3px;
