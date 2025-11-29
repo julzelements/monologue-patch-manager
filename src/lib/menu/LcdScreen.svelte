@@ -1,13 +1,26 @@
 <script lang="ts">
-  export let paramName: string = '';
-  export let value: string | number = '';
+  export let paramName: string = "";
+  export let value: string | number = "";
+
+  const PARAM_DISPLAY_NAMES: Record<string, string> = {
+    // Filter
+    filterCutoff: "CUTOFF",
+    filterResonance: "RESONANCE",
+    // VCO2 examples (ready for future central-store wiring)
+    vco2Pitch: "VCO 2 PITCH",
+    vco2Shape: "VCO 2 SHAPE",
+    vco2Level: "VCO 2 MIX",
+  };
+
+  $: displayName = PARAM_DISPLAY_NAMES[paramName] ?? paramName;
+  $: displayValue = String(value);
 </script>
 
 <div class="lcd-screen">
   {#if paramName}
     <div class="lcd-content">
-      <div class="param-name">{paramName}</div>
-      <div class="param-value">{value}</div>
+      <div class="param-name">{displayName}</div>
+      <div class="param-value">{displayValue}</div>
     </div>
   {/if}
 </div>
