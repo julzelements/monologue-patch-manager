@@ -49,13 +49,21 @@
     onValueChange?.("drive", value);
   }
 
-  function updateKeyboardOctave(label: string, index: number) {
+  function updateKeyboardOctave(name: string, label: string) {
+    const labels = [...LABELS.KEYBOARD_OCTAVE_LABELS] as string[];
+    const index = labels.indexOf(label as string);
+    if (index === -1) return;
+
     keyboardOctaveRef = index;
     synthStore.setKeyboardOctave(index);
     onToggleChange?.("keyboardOctave", label);
   }
 
-  function updateSequencerMode(label: string, index: number) {
+  function updateSequencerMode(name: string, label: string) {
+    const labels = ["MOTION", "SLIDE", "NOTE"];
+    const index = labels.indexOf(label);
+    if (index === -1) return;
+
     sequencerModeRef = index;
     synthStore.setSequencerMode(index);
     onToggleChange?.("sequencerMode", label);
