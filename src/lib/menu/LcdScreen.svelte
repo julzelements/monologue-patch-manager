@@ -10,6 +10,11 @@
     vco2Pitch: "VCO 2 PITCH",
     vco2Shape: "VCO 2 SHAPE",
     vco2Level: "VCO 2 MIX",
+    // Global
+    masterLevel: "MASTER",
+    drive: "DRIVE",
+    keyboardOctave: "KEYBOARD OCTAVE",
+    sequencerMode: "SEQ MODE",
   };
 
   $: displayName = PARAM_DISPLAY_NAMES[paramName] ?? paramName;
