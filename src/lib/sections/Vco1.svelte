@@ -3,7 +3,7 @@
   import Knob from "../knobs/Knob.svelte";
   import VerticalToggle from "../toggles/VerticalToggle.svelte";
   import { CC_NAMES, LABELS } from "@julzelements/monologue-midi";
-  import type { MonologueCCEvent } from "$lib/midi/types";
+  import { synthStore, vco1Store } from "$lib/stores";
 
   let {
     shapeValue = undefined,
@@ -15,46 +15,66 @@
     shapeValue?: number;
     levelValue?: number;
     waveValue?: number;
-    onValueChange: (name: string, value: number) => void;
-    onToggleChange: (name: string, value: string) => void;
+    onValueChange?: (name: string, value: number) => void;
+    onToggleChange?: (name: string, value: string) => void;
   } = $props();
+  let shapeRef = $state(shapeValue ?? $vco1Store.shape);
+  let levelRef = $state(levelValue ?? $vco1Store.level);
+  let waveRef = $state(waveValue ?? $vco1Store.wave);
 
-  let shapeRef = $state(shapeValue);
-  let levelRef = $state(levelValue);
-  let waveRef = $state(waveValue);
-
-  // Listen for MIDI parameter changes
-  function handleParameterChange(event: MonologueCCEvent) {
-    const { parameterId, normalisedValue } = event.detail;
-
-    if (parameterId === "vco1Shape") {
-      shapeRef = normalisedValue * 1023;
-    } else if (parameterId === "vco1Level") {
-      levelRef = normalisedValue * 1023;
-    } else if (parameterId === "vco1Wave") {
-      waveRef = 2 - Math.round(normalisedValue * 2); // 0 -> 2 === top -> bottom
-    } else if (parameterId === "vco1Pitch") {
-      // VCO1 Pitch parameter available but not in this component
-    } else if (parameterId === "vco1Octave") {
-      // VCO1 Octave parameter available but not in this component
+  $effect(() => {
+    if (shapeRef !== $vco1Store.shape) {
+      shapeRef = $vco1Store.shape;
     }
+    if (levelRef !== $vco1Store.level) {
+      levelRef = $vco1Store.level;
+    }
+    if (waveRef !== $vco1Store.wave) {
+      waveRef = $vco1Store.wave;
+    }
+  });
+
+  function updateShape(value: number) {
+    shapeRef = value;
+    synthStore.setVco1Shape(value);
+    onValueChange?.("vco1Shape", value);
   }
 
-  onMount(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("midi:parameter" as any, handleParameterChange);
-    }
-  });
+  function updateLevel(value: number) {
+    levelRef = value;
+    synthStore.setVco1Level(value);
+    onValueChange?.("vco1Level", value);
+  }
 
-  onDestroy(() => {
-    if (typeof window !== "undefined") {
-      window.removeEventListener("midi:parameter" as any, handleParameterChange);
-    }
-  });
+  function updateWave(name: string, label: string) {
+    const labels = [...LABELS.VCO1_WAVE_LABELS].reverse() as string[];
+    const index = labels.indexOf(label as string);
+    if (index === -1) return;
+
+    waveRef = index;
+    synthStore.setVco1Wave(index);
+    onToggleChange?.("vco1Wave", label);
+  }
+
+  // VCO1 now reacts only to store updates; MIDI is handled centrally.
 </script>
 
-<Knob knobId={CC_NAMES.vco1Shape} name={"VCO 1 SHAPE"} top={120} left={133} initialValue={shapeRef} {onValueChange} />
-<Knob knobId={CC_NAMES.vco1Level} name={"VCO 1 MIX"} top={47} left={356} initialValue={levelRef} {onValueChange} />
+<Knob
+  knobId={CC_NAMES.vco1Shape}
+  name={"VCO 1 SHAPE"}
+  top={120}
+  left={133}
+  initialValue={shapeRef}
+  onValueChange={(_, value) => updateShape(value)}
+/>
+<Knob
+  knobId={CC_NAMES.vco1Level}
+  name={"VCO 1 MIX"}
+  top={47}
+  left={356}
+  initialValue={levelRef}
+  onValueChange={(_, value) => updateLevel(value)}
+/>
 <VerticalToggle
   id={CC_NAMES.vco1Wave}
   name={"VCO 1 WAVE"}
@@ -62,5 +82,5 @@
   left={143.5}
   positionNames={[...LABELS.VCO1_WAVE_LABELS].reverse()}
   initialValue={waveRef ?? 0}
-  onValueChange={onToggleChange}
+  onValueChange={updateWave}
 />

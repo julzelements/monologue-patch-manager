@@ -15,6 +15,7 @@
   import { prettyPanelSettings, type MonologueParameters, LABELS } from "@julzelements/monologue-midi";
   import Vco1 from "./sections/Vco1.svelte";
   import Vco2 from "./sections/Vco2.svelte";
+  import "./midi/midiParameterStoreBridge";
 
   type PrettyPanelSettings = ReturnType<typeof prettyPanelSettings>;
 

@@ -12,18 +12,16 @@
   let isPointerDown = false;
   let startY = 0;
   let initializedValue: number | undefined = undefined;
-  let hasInitializedFromProp = false;
 
   const maxRot = 160;
   const speed = 1.5;
 
-  // Initialize rotation from initialValue (0-maxValue range) only once
-  $: if (!hasInitializedFromProp && initialValue !== undefined) {
+  // Initialize / update rotation from initialValue (0-maxValue range)
+  $: if (initialValue !== undefined && initialValue !== initializedValue && !isPointerDown) {
     const normalized = initialValue / maxValue; // Convert to 0-1 range
     currentRot = normalized * maxRot * 2 - maxRot; // Convert to -160 to 160 range
     lastRot = currentRot;
     initializedValue = initialValue;
-    hasInitializedFromProp = true;
     console.log(`Knob ${knobId} initialized to ${initialValue}, rotation: ${currentRot}`);
   }
 

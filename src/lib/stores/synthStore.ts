@@ -12,9 +12,16 @@ export type GlobalState = {
   sequencerMode: number; // index into seq mode toggle
 };
 
+export type Vco1State = {
+  shape: number; // 0–1023
+  level: number; // 0–1023
+  wave: number; // 0–2 index into VCO1_WAVE_LABELS
+};
+
 export type SynthState = {
   global: GlobalState;
   filter: FilterState;
+  vco1: Vco1State;
 };
 
 const initialSynthState: SynthState = {
@@ -27,6 +34,11 @@ const initialSynthState: SynthState = {
   filter: {
     cutoff: 512,
     resonance: 0,
+  },
+  vco1: {
+    shape: 0,
+    level: 0,
+    wave: 0,
   },
 };
 
@@ -90,6 +102,33 @@ function createSynthStore() {
         },
       }));
     },
+    setVco1Shape(value: number) {
+      update((state) => ({
+        ...state,
+        vco1: {
+          ...state.vco1,
+          shape: value,
+        },
+      }));
+    },
+    setVco1Level(value: number) {
+      update((state) => ({
+        ...state,
+        vco1: {
+          ...state.vco1,
+          level: value,
+        },
+      }));
+    },
+    setVco1Wave(index: number) {
+      update((state) => ({
+        ...state,
+        vco1: {
+          ...state.vco1,
+          wave: index,
+        },
+      }));
+    },
     reset() {
       set(initialSynthState);
     },
@@ -100,3 +139,4 @@ export const synthStore = createSynthStore();
 
 export const globalStore = derived(synthStore, ($synth) => $synth.global);
 export const filterStore = derived(synthStore, ($synth) => $synth.filter);
+export const vco1Store = derived(synthStore, ($synth) => $synth.vco1);
