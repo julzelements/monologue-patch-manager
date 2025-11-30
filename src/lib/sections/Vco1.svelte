@@ -5,6 +5,8 @@
   import { CC_NAMES, LABELS } from "@julzelements/monologue-midi";
   import { synthStore, vco1Store } from "$lib/stores";
 
+  // TODO: Add VCO1 pitch from sysex
+
   let {
     shapeValue = undefined,
     levelValue = undefined,
@@ -55,8 +57,6 @@
     synthStore.setVco1Wave(index);
     onToggleChange?.("vco1Wave", label);
   }
-
-  // VCO1 now reacts only to store updates; MIDI is handled centrally.
 </script>
 
 <Knob

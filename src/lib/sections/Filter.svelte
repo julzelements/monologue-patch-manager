@@ -38,8 +38,6 @@
     synthStore.setFilterResonance(value);
     onValueChange?.("filterResonance", value);
   }
-
-  // Filter now reacts only to store updates; MIDI is handled centrally.
 </script>
 
 <Knob

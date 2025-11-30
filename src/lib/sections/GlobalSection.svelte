@@ -71,8 +71,6 @@
     synthStore.setSequencerMode(index);
     onToggleChange?.("sequencerMode", label);
   }
-
-  // GlobalSection now reacts only to store updates; MIDI is handled centrally.
 </script>
 
 <Knob

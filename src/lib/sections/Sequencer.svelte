@@ -29,7 +29,7 @@
   onValueChange={(_, value) => updateTempo(value)}
 />
 
-<!-- Key Trig Hold  TODO-->
+<!-- Key Trig Hold  TODO: Add the boolean functionality and saving to sysex-->
 <div class="key-trig-hold"></div>
 
 <style>
