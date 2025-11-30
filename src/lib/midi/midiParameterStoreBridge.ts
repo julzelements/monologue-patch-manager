@@ -48,6 +48,12 @@ if (typeof window !== "undefined") {
         synthStore.setSyncRing(index);
         break;
       }
+      case "filterCutoff":
+        synthStore.setFilterCutoff(value0To1023);
+        break;
+      case "filterResonance":
+        synthStore.setFilterResonance(value0To1023);
+        break;
       case "drive":
         synthStore.setDrive(value0To1023);
         break;

@@ -2,7 +2,6 @@
   import { onMount, onDestroy } from "svelte";
   import Knob from "../knobs/Knob.svelte";
   import { CC_NAMES } from "@julzelements/monologue-midi";
-  import type { MonologueCCEvent } from "$lib/midi/types";
   import { synthStore, filterStore } from "$lib/stores";
 
   let {
@@ -12,7 +11,7 @@
   }: {
     cutoffValue?: number;
     resonanceValue?: number;
-    onValueChange: (name: string, value: number) => void;
+    onValueChange?: (name: string, value: number) => void;
   } = $props();
 
   let cutoffRef = $state(cutoffValue ?? $filterStore.cutoff);
@@ -40,30 +39,7 @@
     onValueChange?.("filterResonance", value);
   }
 
-  // Listen for MIDI parameter changes
-  function handleParameterChange(event: MonologueCCEvent) {
-    const { parameterId, normalisedValue } = event.detail;
-
-    const value = normalisedValue * 1023;
-
-    if (parameterId === "filterCutoff") {
-      updateCutoff(value);
-    } else if (parameterId === "filterResonance") {
-      updateResonance(value);
-    }
-  }
-
-  onMount(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("midi:parameter" as any, handleParameterChange);
-    }
-  });
-
-  onDestroy(() => {
-    if (typeof window !== "undefined") {
-      window.removeEventListener("midi:parameter" as any, handleParameterChange);
-    }
-  });
+  // Filter now reacts only to store updates; MIDI is handled centrally.
 </script>
 
 <Knob
