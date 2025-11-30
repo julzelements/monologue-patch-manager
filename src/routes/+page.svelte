@@ -2,6 +2,6 @@
   import SynthContainer from "$lib/SynthContainer.svelte";
 </script>
 
-<h1>🎛️ Monologue Patch Manager 🎹</h1>
+<h3>🎛️ Monologue Patch Manager 🎹</h3>
 
 <SynthContainer />
