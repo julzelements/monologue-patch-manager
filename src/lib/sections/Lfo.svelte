@@ -106,7 +106,7 @@
   onValueChange={(_, value) => updateIntensity(value)}
 />
 <VerticalToggle
-  id={CC_NAMES.lfoTarget}
+  id={CC_NAMES.lfoMode}
   name={"LFO MODE"}
   top={114}
   left={551}
@@ -124,7 +124,7 @@
   onValueChange={updateWave}
 />
 <VerticalToggle
-  id={"lfoTarget"}
+  id={CC_NAMES.lfoTarget}
   name={"LFO TARGET"}
   top={113}
   left={752.3}
