@@ -16,8 +16,8 @@
     driveValue?: number;
     keyboardOctaveValue?: number;
     sequencerModeValue?: number;
-    onValueChange: (name: string, value: number) => void;
-    onToggleChange: (name: string, value: string) => void;
+    onValueChange?: (name: string, value: number) => void;
+    onToggleChange?: (name: string, value: string) => void;
   } = $props();
 
   let masterRef = $state($globalStore.masterLevel);
@@ -72,27 +72,7 @@
     onToggleChange?.("sequencerMode", label);
   }
 
-  // Listen for MIDI parameter changes
-  function handleParameterChange(event: CustomEvent) {
-    const { parameterId, normalisedValue } = event.detail;
-
-    if (parameterId === "drive") {
-      const value = normalisedValue * 1023;
-      updateDrive(value);
-    }
-  }
-
-  onMount(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("midi:parameter" as any, handleParameterChange);
-    }
-  });
-
-  onDestroy(() => {
-    if (typeof window !== "undefined") {
-      window.removeEventListener("midi:parameter" as any, handleParameterChange);
-    }
-  });
+  // GlobalSection now reacts only to store updates; MIDI is handled centrally.
 </script>
 
 <Knob

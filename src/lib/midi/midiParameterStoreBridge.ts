@@ -9,6 +9,9 @@ if (typeof window !== "undefined") {
     const value0To1023 = Math.round(normalisedValue * 1023);
 
     switch (parameterId) {
+      case "masterLevel":
+        synthStore.setMasterLevel(value0To1023);
+        break;
       case "vco1Shape":
         synthStore.setVco1Shape(value0To1023);
         break;
@@ -43,6 +46,21 @@ if (typeof window !== "undefined") {
       case "syncRing": {
         const index = 2 - Math.round(normalisedValue * 2); // 0..2, inverted
         synthStore.setSyncRing(index);
+        break;
+      }
+      case "drive":
+        synthStore.setDrive(value0To1023);
+        break;
+      case "keyboardOctave": {
+        // keyboard octave is an index into LABELS.KEYBOARD_OCTAVE_LABELS
+        const index = Math.round(normalisedValue * 4); // 0..4
+        synthStore.setKeyboardOctave(index);
+        break;
+      }
+      case "sequencerMode": {
+        // 3 modes: NOTE, SLIDE, MOTION
+        const index = Math.round(normalisedValue * 2); // 0..2
+        synthStore.setSequencerMode(index);
         break;
       }
       default:
