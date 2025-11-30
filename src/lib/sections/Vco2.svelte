@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
   import Knob from "../knobs/Knob.svelte";
   import VerticalToggle from "../toggles/VerticalToggle.svelte";
   import Vco2Toggle from "../toggles/Vco2Toggle.svelte";

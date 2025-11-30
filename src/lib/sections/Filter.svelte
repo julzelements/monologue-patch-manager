@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
   import Knob from "../knobs/Knob.svelte";
   import { CC_NAMES } from "@julzelements/monologue-midi";
   import { synthStore, filterStore } from "$lib/stores";
