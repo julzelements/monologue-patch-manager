@@ -1,15 +1,35 @@
 import { writable, derived, type Writable } from "svelte/store";
 
+export type EnvelopeState = {
+  type: number; // 0–2 index into EG_TYPE_LABELS
+  target: number; // 0–2 index into EG_TARGET_LABELS
+  attack: number; // 0–1023
+  decay: number; // 0–1023
+  intensity: number; // 0–1023
+};
+
 export type FilterState = {
   cutoff: number; // 0–1023
   resonance: number; // 0–1023
 };
 
-export type GlobalState = {
+export type GlobalSectionState = {
   masterLevel: number; // 0–1023
   drive: number; // 0–1023
   keyboardOctave: number; // 0–4 index into KEYBOARD_OCTAVE_LABELS
   sequencerMode: number; // index into seq mode toggle
+};
+
+export type LfoState = {
+  rate: number; // 0–1023
+  intensity: number; // 0–1023
+  mode: number; // 0–2 index into LFO_MODE_LABELS
+  wave: number; // 0–2 index into LFO_TYPE_LABELS
+  target: number; // 0–2 index into LFO_TARGET_LABELS
+};
+
+export type SequencerState = {
+  tempo: number; // BPM, 0–240
 };
 
 export type Vco1State = {
@@ -27,28 +47,8 @@ export type Vco2State = {
   syncRing: number; // 0–2 index into SYNC_RING_LABELS
 };
 
-export type EnvelopeState = {
-  type: number; // 0–2 index into EG_TYPE_LABELS
-  target: number; // 0–2 index into EG_TARGET_LABELS
-  attack: number; // 0–1023
-  decay: number; // 0–1023
-  intensity: number; // 0–1023
-};
-
-export type LfoState = {
-  rate: number; // 0–1023
-  intensity: number; // 0–1023
-  mode: number; // 0–2 index into LFO_MODE_LABELS
-  wave: number; // 0–2 index into LFO_TYPE_LABELS
-  target: number; // 0–2 index into LFO_TARGET_LABELS
-};
-
-export type SequencerState = {
-  tempo: number; // BPM, 0–240
-};
-
 export type SynthState = {
-  global: GlobalState;
+  global: GlobalSectionState;
   filter: FilterState;
   vco1: Vco1State;
   vco2: Vco2State;
