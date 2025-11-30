@@ -5,6 +5,8 @@
   import { CC_NAMES, LABELS } from "@julzelements/monologue-midi";
   import { synthStore, globalStore } from "$lib/stores";
 
+  const SEQUENCER_MODE_LABELS = ["NOTE", "SLIDE", "MOTION"] as const;
+
   let {
     driveValue = undefined,
     keyboardOctaveValue = undefined,
@@ -62,8 +64,8 @@
   }
 
   function updateSequencerMode(name: string, label: string) {
-    const labels = ["NOTE", "SLIDE", "MOTION"];
-    const index = labels.indexOf(label);
+    const labels = [...SEQUENCER_MODE_LABELS] as string[];
+    const index = labels.indexOf(label as string);
     if (index === -1) return;
 
     sequencerModeRef = index;
@@ -102,7 +104,7 @@
   name={"SEQ MODE"}
   top={187.5}
   left={238.5}
-  positionNames={["NOTE", "SLIDE", "MOTION"]}
+  positionNames={[...SEQUENCER_MODE_LABELS]}
   initialValue={sequencerModeRef ?? 0}
   onValueChange={updateSequencerMode}
 />
