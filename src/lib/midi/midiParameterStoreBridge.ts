@@ -21,6 +21,30 @@ if (typeof window !== "undefined") {
         synthStore.setVco1Wave(index);
         break;
       }
+      case "vco2Pitch":
+        synthStore.setVco2Pitch(value0To1023);
+        break;
+      case "vco2Shape":
+        synthStore.setVco2Shape(value0To1023);
+        break;
+      case "vco2Level":
+        synthStore.setVco2Level(value0To1023);
+        break;
+      case "vco2Wave": {
+        const index = 2 - Math.round(normalisedValue * 2); // 0..2, inverted
+        synthStore.setVco2Wave(index);
+        break;
+      }
+      case "vco2Octave": {
+        const index = 3 - Math.round(normalisedValue * 3); // 0..3, inverted
+        synthStore.setVco2Octave(index);
+        break;
+      }
+      case "syncRing": {
+        const index = 2 - Math.round(normalisedValue * 2); // 0..2, inverted
+        synthStore.setSyncRing(index);
+        break;
+      }
       default:
         // Other parameters can be handled here later
         break;

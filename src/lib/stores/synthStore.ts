@@ -18,10 +18,20 @@ export type Vco1State = {
   wave: number; // 0–2 index into VCO1_WAVE_LABELS
 };
 
+export type Vco2State = {
+  pitch: number; // 0–1023
+  shape: number; // 0–1023
+  level: number; // 0–1023
+  wave: number; // 0–2 index into VCO2_WAVE_LABELS
+  octave: number; // 0–3 index into OCTAVE_LABELS
+  syncRing: number; // 0–2 index into SYNC_RING_LABELS
+};
+
 export type SynthState = {
   global: GlobalState;
   filter: FilterState;
   vco1: Vco1State;
+  vco2: Vco2State;
 };
 
 const initialSynthState: SynthState = {
@@ -39,6 +49,14 @@ const initialSynthState: SynthState = {
     shape: 0,
     level: 0,
     wave: 0,
+  },
+  vco2: {
+    pitch: 0,
+    shape: 0,
+    level: 0,
+    wave: 0,
+    octave: 0,
+    syncRing: 0,
   },
 };
 
@@ -129,6 +147,60 @@ function createSynthStore() {
         },
       }));
     },
+    setVco2Pitch(value: number) {
+      update((state) => ({
+        ...state,
+        vco2: {
+          ...state.vco2,
+          pitch: value,
+        },
+      }));
+    },
+    setVco2Shape(value: number) {
+      update((state) => ({
+        ...state,
+        vco2: {
+          ...state.vco2,
+          shape: value,
+        },
+      }));
+    },
+    setVco2Level(value: number) {
+      update((state) => ({
+        ...state,
+        vco2: {
+          ...state.vco2,
+          level: value,
+        },
+      }));
+    },
+    setVco2Wave(index: number) {
+      update((state) => ({
+        ...state,
+        vco2: {
+          ...state.vco2,
+          wave: index,
+        },
+      }));
+    },
+    setVco2Octave(index: number) {
+      update((state) => ({
+        ...state,
+        vco2: {
+          ...state.vco2,
+          octave: index,
+        },
+      }));
+    },
+    setSyncRing(index: number) {
+      update((state) => ({
+        ...state,
+        vco2: {
+          ...state.vco2,
+          syncRing: index,
+        },
+      }));
+    },
     reset() {
       set(initialSynthState);
     },
@@ -140,3 +212,4 @@ export const synthStore = createSynthStore();
 export const globalStore = derived(synthStore, ($synth) => $synth.global);
 export const filterStore = derived(synthStore, ($synth) => $synth.filter);
 export const vco1Store = derived(synthStore, ($synth) => $synth.vco1);
+export const vco2Store = derived(synthStore, ($synth) => $synth.vco2);
