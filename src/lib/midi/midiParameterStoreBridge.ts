@@ -73,6 +73,27 @@ if (typeof window !== "undefined") {
         synthStore.setEnvelopeTarget(index);
         break;
       }
+      case "lfoRate":
+        synthStore.setLfoRate(value0To1023);
+        break;
+      case "lfoIntensity":
+        synthStore.setLfoIntensity(value0To1023);
+        break;
+      case "lfoMode": {
+        const index = 2 - Math.round(normalisedValue * 2); // 0..2, inverted
+        synthStore.setLfoMode(index);
+        break;
+      }
+      case "lfoType": {
+        const index = 2 - Math.round(normalisedValue * 2); // 0..2, inverted
+        synthStore.setLfoWave(index);
+        break;
+      }
+      case "lfoTarget": {
+        const index = 2 - Math.round(normalisedValue * 2); // 0..2, inverted
+        synthStore.setLfoTarget(index);
+        break;
+      }
       case "drive":
         synthStore.setDrive(value0To1023);
         break;

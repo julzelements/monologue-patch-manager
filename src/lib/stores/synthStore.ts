@@ -35,12 +35,21 @@ export type EnvelopeState = {
   intensity: number; // 0–1023
 };
 
+export type LfoState = {
+  rate: number; // 0–1023
+  intensity: number; // 0–1023
+  mode: number; // 0–2 index into LFO_MODE_LABELS
+  wave: number; // 0–2 index into LFO_TYPE_LABELS
+  target: number; // 0–2 index into LFO_TARGET_LABELS
+};
+
 export type SynthState = {
   global: GlobalState;
   filter: FilterState;
   vco1: Vco1State;
   vco2: Vco2State;
   envelope: EnvelopeState;
+  lfo: LfoState;
 };
 
 const initialSynthState: SynthState = {
@@ -73,6 +82,13 @@ const initialSynthState: SynthState = {
     attack: 0,
     decay: 0,
     intensity: 0,
+  },
+  lfo: {
+    rate: 0,
+    intensity: 0,
+    mode: 0,
+    wave: 0,
+    target: 0,
   },
 };
 
@@ -262,6 +278,51 @@ function createSynthStore() {
         },
       }));
     },
+    setLfoRate(value: number) {
+      update((state) => ({
+        ...state,
+        lfo: {
+          ...state.lfo,
+          rate: value,
+        },
+      }));
+    },
+    setLfoIntensity(value: number) {
+      update((state) => ({
+        ...state,
+        lfo: {
+          ...state.lfo,
+          intensity: value,
+        },
+      }));
+    },
+    setLfoMode(index: number) {
+      update((state) => ({
+        ...state,
+        lfo: {
+          ...state.lfo,
+          mode: index,
+        },
+      }));
+    },
+    setLfoWave(index: number) {
+      update((state) => ({
+        ...state,
+        lfo: {
+          ...state.lfo,
+          wave: index,
+        },
+      }));
+    },
+    setLfoTarget(index: number) {
+      update((state) => ({
+        ...state,
+        lfo: {
+          ...state.lfo,
+          target: index,
+        },
+      }));
+    },
     reset() {
       set(initialSynthState);
     },
@@ -275,3 +336,4 @@ export const filterStore = derived(synthStore, ($synth) => $synth.filter);
 export const vco1Store = derived(synthStore, ($synth) => $synth.vco1);
 export const vco2Store = derived(synthStore, ($synth) => $synth.vco2);
 export const envelopeStore = derived(synthStore, ($synth) => $synth.envelope);
+export const lfoStore = derived(synthStore, ($synth) => $synth.lfo);
