@@ -37,10 +37,10 @@
 //   const last = Array.from(messages.pop() ?? []);
 //   expect(last).toStrictEqual([191, 43, 127]);
 
-  // tweak to minimum
-  // await page.mouse.move(startX, startY);
-  // await page.mouse.down();
-  // await page.mouse.move(0, startY, { steps: 20 });
-  // await page.mouse.move(0, startY + 100, { steps: 20 });
-  // await page.mouse.up();
-});
+// tweak to minimum
+// await page.mouse.move(startX, startY);
+// await page.mouse.down();
+// await page.mouse.move(0, startY, { steps: 20 });
+// await page.mouse.move(0, startY + 100, { steps: 20 });
+// await page.mouse.up();
+// });

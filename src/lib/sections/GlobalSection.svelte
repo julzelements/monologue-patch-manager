@@ -60,7 +60,7 @@
   }
 
   function updateSequencerMode(name: string, label: string) {
-    const labels = ["MOTION", "SLIDE", "NOTE"];
+    const labels = ["NOTE", "SLIDE", "MOTION"];
     const index = labels.indexOf(label);
     if (index === -1) return;
 
@@ -122,7 +122,7 @@
   name={"SEQ MODE"}
   top={187.5}
   left={238.5}
-  positionNames={["MOTION", "SLIDE", "NOTE"]}
+  positionNames={["NOTE", "SLIDE", "MOTION"]}
   initialValue={sequencerModeRef ?? 0}
   onValueChange={updateSequencerMode}
 />

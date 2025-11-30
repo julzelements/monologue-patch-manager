@@ -29,14 +29,7 @@
 <div class="vertical-toggle" style="top: {top}px; left: {left}px;" {id} data-testid={`vertical-toggle-${id}`}>
   <div class="vertical-knob v-pos-{position}"></div>
   {#each Array(3) as _, i}
-    <div
-      class="vertical-zone"
-      role="button"
-      tabindex="0"
-      aria-label="{name} {names[i]}"
-      on:click={() => handleClick(i)}
-      on:keydown={(e) => e.key === "Enter" && handleClick(i)}
-    ></div>
+    <div class="vertical-zone" role="button" tabindex="0" aria-label="{name} {names[i]}"></div>
   {/each}
 </div>
 
