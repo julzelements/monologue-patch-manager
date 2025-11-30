@@ -20,12 +20,15 @@
     onToggleChange: (name: string, value: string) => void;
   } = $props();
 
-  let masterRef = $state(0);
+  let masterRef = $state($globalStore.masterLevel);
   let driveRef = $state(driveValue ?? $globalStore.drive);
   let keyboardOctaveRef = $state(keyboardOctaveValue ?? $globalStore.keyboardOctave);
   let sequencerModeRef = $state(sequencerModeValue ?? $globalStore.sequencerMode);
 
   $effect(() => {
+    if (masterRef !== $globalStore.masterLevel) {
+      masterRef = $globalStore.masterLevel;
+    }
     if (driveRef !== $globalStore.drive) {
       driveRef = $globalStore.drive;
     }
