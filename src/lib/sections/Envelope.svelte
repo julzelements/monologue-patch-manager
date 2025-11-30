@@ -4,7 +4,7 @@
   import InvertibleKnob from "../knobs/InvertibleKnob.svelte";
   import VerticalToggle from "../toggles/VerticalToggle.svelte";
   import { CC_NAMES, LABELS } from "@julzelements/monologue-midi";
-  import type { MonologueCCEvent } from "$lib/midi/types";
+  import { synthStore, envelopeStore } from "$lib/stores";
 
   let {
     typeValue = undefined,
@@ -20,55 +20,95 @@
     attackValue?: number;
     decayValue?: number;
     intensityValue?: number;
-    onValueChange: (name: string, value: number) => void;
-    onToggleChange: (name: string, value: string) => void;
+    onValueChange?: (name: string, value: number) => void;
+    onToggleChange?: (name: string, value: string) => void;
   } = $props();
+  let typeRef = $state(typeValue ?? $envelopeStore.type);
+  let targetRef = $state(targetValue ?? $envelopeStore.target);
+  let attackRef = $state(attackValue ?? $envelopeStore.attack);
+  let decayRef = $state(decayValue ?? $envelopeStore.decay);
+  let intensityRef = $state(intensityValue ?? $envelopeStore.intensity);
 
-  let typeRef = $state(typeValue);
-  let targetRef = $state(targetValue);
-  let attackRef = $state(attackValue);
-  let decayRef = $state(decayValue);
-  let intensityRef = $state(intensityValue);
-
-  // Listen for MIDI parameter changes
-  function handleParameterChange(event: MonologueCCEvent) {
-    const { parameterId, normalisedValue } = event.detail;
-
-    if (parameterId === "envelopeAttack") {
-      attackRef = normalisedValue * 1023;
-    } else if (parameterId === "envelopeDecay") {
-      decayRef = normalisedValue * 1023;
-    } else if (parameterId === "envelopeIntensity") {
-      intensityRef = normalisedValue * 1023;
-    } else if (parameterId === "envelopeType") {
-      typeRef = 2 - Math.round(normalisedValue * 2); // 0 -> 2 === top -> bottom
-    } else if (parameterId === "envelopeTarget") {
-      targetRef = 2 - Math.round(normalisedValue * 2); // 0 -> 2 === top -> bottom
+  $effect(() => {
+    if (typeRef !== $envelopeStore.type) {
+      typeRef = $envelopeStore.type;
     }
+    if (targetRef !== $envelopeStore.target) {
+      targetRef = $envelopeStore.target;
+    }
+    if (attackRef !== $envelopeStore.attack) {
+      attackRef = $envelopeStore.attack;
+    }
+    if (decayRef !== $envelopeStore.decay) {
+      decayRef = $envelopeStore.decay;
+    }
+    if (intensityRef !== $envelopeStore.intensity) {
+      intensityRef = $envelopeStore.intensity;
+    }
+  });
+
+  function updateAttack(value: number) {
+    attackRef = value;
+    synthStore.setEnvelopeAttack(value);
+    onValueChange?.("envelopeAttack", value);
   }
 
-  onMount(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("midi:parameter" as any, handleParameterChange);
-    }
-  });
+  function updateDecay(value: number) {
+    decayRef = value;
+    synthStore.setEnvelopeDecay(value);
+    onValueChange?.("envelopeDecay", value);
+  }
 
-  onDestroy(() => {
-    if (typeof window !== "undefined") {
-      window.removeEventListener("midi:parameter" as any, handleParameterChange);
-    }
-  });
+  function updateIntensity(value: number) {
+    intensityRef = value;
+    synthStore.setEnvelopeIntensity(value);
+    onValueChange?.("envelopeIntensity", value);
+  }
+
+  function updateType(name: string, label: string) {
+    const labels = [...LABELS.EG_TYPE_LABELS].reverse() as string[];
+    const index = labels.indexOf(label as string);
+    if (index === -1) return;
+
+    typeRef = index;
+    synthStore.setEnvelopeType(index);
+    onToggleChange?.("envelopeType", label);
+  }
+
+  function updateTarget(name: string, label: string) {
+    const labels = [...LABELS.EG_TARGET_LABELS].reverse() as string[];
+    const index = labels.indexOf(label as string);
+    if (index === -1) return;
+
+    targetRef = index;
+    synthStore.setEnvelopeTarget(index);
+    onToggleChange?.("envelopeTarget", label);
+  }
 </script>
 
-<Knob knobId={CC_NAMES.ampEgAttack} name={"ATTACK"} top={47} left={541} initialValue={attackRef} {onValueChange} />
-<Knob knobId={CC_NAMES.ampEgDecay} name={"DECAY"} top={47} left={615.5} initialValue={decayRef} {onValueChange} />
+<Knob
+  knobId={CC_NAMES.ampEgAttack}
+  name={"ATTACK"}
+  top={47}
+  left={541}
+  initialValue={attackRef}
+  onValueChange={(_, value) => updateAttack(value)}
+/>
+<Knob
+  knobId={CC_NAMES.ampEgDecay}
+  name={"DECAY"}
+  top={47}
+  left={615.5}
+  initialValue={decayRef}
+  onValueChange={(_, value) => updateDecay(value)}
+/>
 <InvertibleKnob
   knobId={CC_NAMES.egInt}
   name={"EG INT"}
   top={47}
   left={689}
   initialValue={intensityRef}
-  {onValueChange}
+  onValueChange={(_, value) => updateIntensity(value)}
 />
 <VerticalToggle
   id={CC_NAMES.vco2Wave}
@@ -77,7 +117,7 @@
   left={497.5}
   positionNames={[...LABELS.EG_TYPE_LABELS].reverse()}
   initialValue={typeRef ?? 0}
-  onValueChange={onToggleChange}
+  onValueChange={updateType}
 />
 <VerticalToggle
   id={CC_NAMES.egTarget}
@@ -86,5 +126,5 @@
   left={752.3}
   positionNames={[...LABELS.EG_TARGET_LABELS].reverse()}
   initialValue={targetRef ?? 0}
-  onValueChange={onToggleChange}
+  onValueChange={updateTarget}
 />

@@ -54,6 +54,25 @@ if (typeof window !== "undefined") {
       case "filterResonance":
         synthStore.setFilterResonance(value0To1023);
         break;
+      case "envelopeAttack":
+        synthStore.setEnvelopeAttack(value0To1023);
+        break;
+      case "envelopeDecay":
+        synthStore.setEnvelopeDecay(value0To1023);
+        break;
+      case "envelopeIntensity":
+        synthStore.setEnvelopeIntensity(value0To1023);
+        break;
+      case "envelopeType": {
+        const index = 2 - Math.round(normalisedValue * 2); // 0..2, inverted
+        synthStore.setEnvelopeType(index);
+        break;
+      }
+      case "envelopeTarget": {
+        const index = 2 - Math.round(normalisedValue * 2); // 0..2, inverted
+        synthStore.setEnvelopeTarget(index);
+        break;
+      }
       case "drive":
         synthStore.setDrive(value0To1023);
         break;
