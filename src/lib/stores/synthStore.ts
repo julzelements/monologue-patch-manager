@@ -43,6 +43,10 @@ export type LfoState = {
   target: number; // 0–2 index into LFO_TARGET_LABELS
 };
 
+export type SequencerState = {
+  tempo: number; // BPM, 0–240
+};
+
 export type SynthState = {
   global: GlobalState;
   filter: FilterState;
@@ -50,6 +54,7 @@ export type SynthState = {
   vco2: Vco2State;
   envelope: EnvelopeState;
   lfo: LfoState;
+  sequencer: SequencerState;
 };
 
 const initialSynthState: SynthState = {
@@ -89,6 +94,9 @@ const initialSynthState: SynthState = {
     mode: 0,
     wave: 0,
     target: 0,
+  },
+  sequencer: {
+    tempo: 120,
   },
 };
 
@@ -320,6 +328,15 @@ function createSynthStore() {
         lfo: {
           ...state.lfo,
           target: index,
+        },
+      }));
+    },
+    setSequencerTempo(value: number) {
+      update((state) => ({
+        ...state,
+        sequencer: {
+          ...state.sequencer,
+          tempo: value,
         },
       }));
     },

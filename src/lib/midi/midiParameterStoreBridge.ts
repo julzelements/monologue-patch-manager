@@ -94,6 +94,10 @@ if (typeof window !== "undefined") {
         synthStore.setLfoTarget(index);
         break;
       }
+      case "sequencerTempo":
+        // Tempo is 0–240 BPM; assume normalisedValue is 0–1
+        synthStore.setSequencerTempo(Math.round(normalisedValue * 240));
+        break;
       case "drive":
         synthStore.setDrive(value0To1023);
         break;

@@ -1,16 +1,33 @@
 <script lang="ts">
   import Knob from "../knobs/Knob.svelte";
+  import { synthStore } from "$lib/stores";
 
   let {
     tempoValue = undefined,
     onValueChange,
   }: {
     tempoValue?: number;
-    onValueChange: (name: string, value: number) => void;
+    onValueChange?: (name: string, value: number) => void;
   } = $props();
+
+  let tempoRef = $state(tempoValue ?? 120);
+
+  function updateTempo(value: number) {
+    tempoRef = value;
+    synthStore.setSequencerTempo(value);
+    onValueChange?.("sequencerTempo", value);
+  }
 </script>
 
-<Knob knobId={"tempo"} name={"TEMPO"} top={47} left={801} initialValue={tempoValue} maxValue={240} {onValueChange} />
+<Knob
+  knobId={"tempo"}
+  name={"TEMPO"}
+  top={47}
+  left={801}
+  initialValue={tempoRef}
+  maxValue={240}
+  onValueChange={(_, value) => updateTempo(value)}
+/>
 
 <!-- Key Trig Hold  TODO-->
 <div class="key-trig-hold"></div>
