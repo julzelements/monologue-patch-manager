@@ -110,7 +110,7 @@
   onValueChange={(_, value) => updateIntensity(value)}
 />
 <VerticalToggle
-  id={CC_NAMES.vco2Wave}
+  id={CC_NAMES.egType}
   name={"EG TYPE"}
   top={40}
   left={497.5}

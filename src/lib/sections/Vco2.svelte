@@ -126,8 +126,8 @@
   onValueChange={(_, value) => updateLevel(value)}
 />
 <Vco2Toggle
-  id={CC_NAMES.vco1Octave}
-  name={"VCO 1 OCTAVE"}
+  id={CC_NAMES.vco2Octave}
+  name={"VCO 2 OCTAVE"}
   top={40}
   left={202}
   positionNames={[...LABELS.OCTAVE_LABELS].reverse()}
