@@ -64,7 +64,7 @@
     onValueChange?.("envelopeIntensity", value);
   }
 
-  function updateType(name: string, label: string) {
+  function updateType(_name: string, label: string) {
     const labels = [...LABELS.EG_TYPE_LABELS].reverse() as string[];
     const index = labels.indexOf(label as string);
     if (index === -1) return;
@@ -74,7 +74,7 @@
     onToggleChange?.("envelopeType", label);
   }
 
-  function updateTarget(name: string, label: string) {
+  function updateTarget(_name: string, label: string) {
     const labels = [...LABELS.EG_TARGET_LABELS].reverse() as string[];
     const index = labels.indexOf(label as string);
     if (index === -1) return;

@@ -70,7 +70,7 @@
     onValueChange?.("vco2Level", value);
   }
 
-  function updateWave(name: string, label: string) {
+  function updateWave(_name: string, label: string) {
     const labels = [...LABELS.VCO2_WAVE_LABELS].reverse() as string[];
     const index = labels.indexOf(label as string);
     if (index === -1) return;
@@ -80,7 +80,7 @@
     onToggleChange?.("vco2Wave", label);
   }
 
-  function updateOctave(name: string, label: string) {
+  function updateOctave(_name: string, label: string) {
     const labels = [...LABELS.OCTAVE_LABELS].reverse() as string[];
     const index = labels.indexOf(label as string);
     if (index === -1) return;
@@ -90,7 +90,7 @@
     onToggleChange?.("vco2Octave", label);
   }
 
-  function updateSyncRing(name: string, label: string) {
+  function updateSyncRing(_name: string, label: string) {
     const labels = [...LABELS.SYNC_RING_LABELS].reverse() as string[];
     const index = labels.indexOf(label as string);
     if (index === -1) return;

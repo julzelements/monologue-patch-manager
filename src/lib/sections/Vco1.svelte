@@ -47,7 +47,7 @@
     onValueChange?.("vco1Level", value);
   }
 
-  function updateWave(name: string, label: string) {
+  function updateWave(_name: string, label: string) {
     const labels = [...LABELS.VCO1_WAVE_LABELS].reverse() as string[];
     const index = labels.indexOf(label as string);
     if (index === -1) return;

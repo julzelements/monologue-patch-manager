@@ -53,7 +53,7 @@
     onValueChange?.("drive", value);
   }
 
-  function updateKeyboardOctave(name: string, label: string) {
+  function updateKeyboardOctave(_name: string, label: string) {
     const labels = [...LABELS.KEYBOARD_OCTAVE_LABELS] as string[];
     const index = labels.indexOf(label as string);
     if (index === -1) return;
@@ -63,7 +63,7 @@
     onToggleChange?.("keyboardOctave", label);
   }
 
-  function updateSequencerMode(name: string, label: string) {
+  function updateSequencerMode(_name: string, label: string) {
     const labels = [...SEQUENCER_MODE_LABELS] as string[];
     const index = labels.indexOf(label as string);
     if (index === -1) return;
