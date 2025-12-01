@@ -1,6 +1,6 @@
 <script lang="ts">
   import Knob from "../knobs/Knob.svelte";
-  import { synthStore } from "$lib/stores";
+  import { synthStore, sequencerStore } from "$lib/stores";
 
   let {
     tempoValue = undefined,
@@ -10,7 +10,13 @@
     onValueChange?: (name: string, value: number) => void;
   } = $props();
 
-  let tempoRef = $state(tempoValue ?? 120);
+  let tempoRef = $state(tempoValue ?? $sequencerStore.tempo);
+
+  $effect(() => {
+    if (tempoRef !== $sequencerStore.tempo) {
+      tempoRef = $sequencerStore.tempo;
+    }
+  });
 
   function updateTempo(value: number) {
     tempoRef = value;

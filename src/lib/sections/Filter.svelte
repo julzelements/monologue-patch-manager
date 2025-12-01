@@ -16,7 +16,6 @@
   let cutoffRef = $state(cutoffValue ?? $filterStore.cutoff);
   let resonanceRef = $state(resonanceValue ?? $filterStore.resonance);
 
-  // Keep local refs in sync only when the store changes independently
   $effect(() => {
     if (cutoffRef !== $filterStore.cutoff) {
       cutoffRef = $filterStore.cutoff;

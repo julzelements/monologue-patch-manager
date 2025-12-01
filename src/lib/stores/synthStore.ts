@@ -354,3 +354,4 @@ export const vco1Store = derived(synthStore, ($synth) => $synth.vco1);
 export const vco2Store = derived(synthStore, ($synth) => $synth.vco2);
 export const envelopeStore = derived(synthStore, ($synth) => $synth.envelope);
 export const lfoStore = derived(synthStore, ($synth) => $synth.lfo);
+export const sequencerStore = derived(synthStore, ($synth) => $synth.sequencer);
