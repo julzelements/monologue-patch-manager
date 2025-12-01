@@ -40,14 +40,24 @@
     }
   });
 
-  function handleKnobChange(name: string, value: number) {
+  function updateLcd(name: string, value: string | number) {
     currentParamName = name;
     currentValue = value;
   }
 
+  function handleKnobChange(name: string, value: number) {
+    updateLcd(name, value);
+  }
+
   function handleToggleChange(name: string, value: string) {
-    currentParamName = name;
-    currentValue = value;
+    updateLcd(name, value);
+  }
+
+  if (typeof window !== "undefined") {
+    window.addEventListener("ui:lcd-parameter", ((event: CustomEvent<{ name: string; value: string | number }>) => {
+      const { name, value } = event.detail;
+      updateLcd(name, value);
+    }) as EventListener);
   }
 </script>
 

@@ -6,15 +6,36 @@
     // Filter
     filterCutoff: "CUTOFF",
     filterResonance: "RESONANCE",
-    // VCO2 examples (ready for future central-store wiring)
+    // VCO1
+    vco1Shape: "VCO 1 SHAPE",
+    vco1Level: "VCO 1 MIX",
+    vco1Wave: "VCO 1 WAVE",
+    // VCO2
     vco2Pitch: "VCO 2 PITCH",
     vco2Shape: "VCO 2 SHAPE",
     vco2Level: "VCO 2 MIX",
+    vco2Wave: "VCO 2 WAVE",
+    vco2Octave: "VCO 2 OCTAVE",
+    syncRing: "SYNC / RING",
+    // Envelope
+    envelopeAttack: "ATTACK",
+    envelopeDecay: "DECAY",
+    envelopeIntensity: "EG INT",
+    envelopeType: "EG TYPE",
+    envelopeTarget: "EG TARGET",
+    // LFO
+    lfoRate: "LFO RATE",
+    lfoIntensity: "LFO INT",
+    lfoMode: "LFO MODE",
+    lfoType: "LFO WAVE",
+    lfoTarget: "LFO TARGET",
     // Global
     masterLevel: "MASTER",
     drive: "DRIVE",
     keyboardOctave: "KEYBOARD OCTAVE",
     sequencerMode: "SEQ MODE",
+    // Sequencer
+    sequencerTempo: "SEQ TEMPO",
   };
 
   $: displayName = PARAM_DISPLAY_NAMES[paramName] ?? paramName;
@@ -55,6 +76,6 @@
   }
 
   .param-value {
-    margin-top: 2px;
+    margin-top: 1px;
   }
 </style>
